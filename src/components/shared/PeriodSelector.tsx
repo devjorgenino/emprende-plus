@@ -16,17 +16,20 @@ const PERIODS: Array<{ key: Period; label: string }> = [
 
 export function PeriodSelector({ selected, onChange }: PeriodSelectorProps) {
   return (
-    <View className="flex-row gap-2 mb-4">
+    <View className="flex-row gap-2 mb-4" accessibilityRole="tablist">
       {PERIODS.map((p) => (
         <TouchableOpacity
           key={p.key}
           onPress={() => onChange(p.key)}
+          accessibilityRole="tab"
+          accessibilityState={{ selected: selected === p.key }}
+          accessibilityLabel={p.label}
           className={`px-4 py-2 rounded-full ${
-            selected === p.key ? 'bg-indigo-600' : 'bg-gray-200'
+            selected === p.key ? 'bg-indigo-600' : 'bg-gray-200 dark:bg-gray-700'
           }`}
         >
           <Text className={`text-sm font-medium ${
-            selected === p.key ? 'text-white' : 'text-gray-700'
+            selected === p.key ? 'text-white' : 'text-gray-700 dark:text-gray-300'
           }`}>
             {p.label}
           </Text>

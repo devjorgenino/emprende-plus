@@ -9,7 +9,13 @@ export function ThemeToggle() {
   const c = useThemeColors();
 
   return (
-    <TouchableOpacity onPress={toggleTheme} className="p-1">
+    <TouchableOpacity
+      onPress={toggleTheme}
+      accessibilityRole="button"
+      accessibilityLabel={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'}
+      accessibilityState={{ selected: theme === 'dark' }}
+      className="p-1"
+    >
       <Ionicons
         name={theme === 'dark' ? 'sunny-outline' : 'moon-outline'}
         size={20}

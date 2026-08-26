@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Modal, FlatList, TextInput, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, FlatList, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { getAllClients, createClient, type Client } from '../../services/db/repositories/client.repository';
 import { strings } from '../../constants/strings';
@@ -37,30 +37,37 @@ export function ClientPicker({ value, onChange }: ClientPickerProps) {
     <>
       <TouchableOpacity
         onPress={() => setVisible(true)}
-        style={{ flexDirection: 'row', alignItems: 'center' }}
+        accessibilityRole="button"
+        accessibilityLabel={`${strings.selectClient}: ${value || strings.selectClient}`}
+        className="flex-row items-center"
       >
-        <View style={{ flex: 1, borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 8, paddingHorizontal: 16, paddingVertical: 12, backgroundColor: '#fff' }}>
-          <Text style={{ fontSize: 16, color: value ? '#111827' : '#9ca3af' }}>
+        <View className="flex-1 border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-3 bg-white dark:bg-gray-800">
+          <Text className={`text-base ${value ? 'text-gray-900 dark:text-gray-100' : 'text-gray-400 dark:text-gray-500'}`}>
             {value || strings.selectClient}
           </Text>
         </View>
-        <Ionicons name="chevron-down" size={18} color="#6b7280" style={{ marginLeft: 8 }} />
+        <Ionicons name="chevron-down" size={18} color="#6b7280" className="ml-2" />
       </TouchableOpacity>
 
-      <Modal visible={visible} transparent animationType="slide">
-        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end' }}>
-          <View style={{ backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '70%' }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-              <Text style={{ fontSize: 18, fontWeight: '600', color: '#111827' }}>{strings.tabClients}</Text>
-              <TouchableOpacity onPress={() => setVisible(false)}>
+      <Modal visible={visible} transparent animationType="slide" onRequestClose={() => setVisible(false)}>
+        <View className="flex-1 bg-black/40 justify-end">
+          <View className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 rounded-t-3xl p-5 max-h-[70%]">
+            <View className="flex-row justify-between items-center mb-4">
+              <Text className="text-lg font-semibold text-gray-900 dark:text-gray-100">{strings.tabClients}</Text>
+              <TouchableOpacity
+                onPress={() => setVisible(false)}
+                accessibilityRole="button"
+                accessibilityLabel={strings.cancel}
+                className="p-1"
+              >
                 <Ionicons name="close" size={24} color="#6b7280" />
               </TouchableOpacity>
             </View>
 
             {clients.length === 0 ? (
-              <View style={{ paddingVertical: 32, alignItems: 'center' }}>
-                <Ionicons name="people-outline" size={40} color="#d1d5db" />
-                <Text style={{ fontSize: 14, color: '#9ca3af', marginTop: 8, textAlign: 'center' }}>
+              <View className="py-8 items-center">
+                <Ionicons name="people-outline" size={40} color="#9ca3af" />
+                <Text className="text-sm text-gray-400 dark:text-gray-500 mt-2 text-center">
                   {strings.clientsAutoSave}
                 </Text>
               </View>
@@ -71,9 +78,11 @@ export function ClientPicker({ value, onChange }: ClientPickerProps) {
                 renderItem={({ item }) => (
                   <TouchableOpacity
                     onPress={() => handleSelect(item)}
-                    style={{ paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' }}
+                    accessibilityRole="button"
+                    accessibilityLabel={item.name}
+                    className="py-3.5 border-b border-gray-100 dark:border-gray-700"
                   >
-                    <Text style={{ fontSize: 16, color: '#111827' }}>{item.name}</Text>
+                    <Text className="text-base text-gray-900 dark:text-gray-100">{item.name}</Text>
                   </TouchableOpacity>
                 )}
               />

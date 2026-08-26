@@ -75,23 +75,25 @@ export default function ExpensesScreen() {
           {isLoading && expenses.length === 0 ? (
             <View className="py-12 items-center">
               <ActivityIndicator size="large" color={colors.primary} />
-              <Text className="mt-4 text-gray-500">{strings.loadingExpenses}</Text>
+              <Text className="mt-4 text-gray-500 dark:text-gray-400">{strings.loadingExpenses}</Text>
             </View>
           ) : error && expenses.length === 0 ? (
             <View className="py-12 items-center">
               <Ionicons name="alert-circle-outline" size={48} color={colors.error} />
-              <Text className="text-red-500 text-base mt-2">{error}</Text>
-              <TouchableOpacity onPress={loadExpenses} className="mt-4">
-                <Text className="text-indigo-600 font-medium">{strings.retry}</Text>
+              <Text className="text-red-500 dark:text-red-400 text-base mt-2">{error}</Text>
+              <TouchableOpacity onPress={loadExpenses} accessibilityRole="button" accessibilityLabel={strings.retry} className="mt-4">
+                <Text className="text-indigo-600 dark:text-indigo-400 font-medium">{strings.retry}</Text>
               </TouchableOpacity>
             </View>
           ) : expenses.length === 0 ? (
             <View className="py-12 items-center">
               <Ionicons name="cart-outline" size={48} color={colors.border} />
-              <Text className="text-gray-400 text-base mt-2">{strings.noExpenses}</Text>
-              <Text className="text-gray-400 text-sm mt-1">{strings.addFirstExpense}</Text>
+              <Text className="text-gray-400 dark:text-gray-500 text-base mt-2">{strings.noExpenses}</Text>
+              <Text className="text-gray-400 dark:text-gray-500 text-sm mt-1">{strings.addFirstExpense}</Text>
               <TouchableOpacity
                 onPress={() => router.push('/expenses/new')}
+                accessibilityRole="button"
+                accessibilityLabel={strings.registerExpense}
                 className="mt-6 bg-indigo-600 px-6 py-3 rounded-lg"
               >
                 <Text className="text-white font-medium">{strings.registerExpense}</Text>
@@ -105,12 +107,13 @@ export default function ExpensesScreen() {
                   value={searchQuery}
                   onChangeText={setSearchQuery}
                   placeholder={strings.searchExpense}
+                  accessibilityLabel={strings.searchExpense}
                   className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 pl-10 text-base text-gray-900 dark:text-gray-100"
                   placeholderTextColor={colors.textSecondary}
                 />
                 <Ionicons name="search" size={18} color={colors.textSecondary} className="absolute left-3 top-3.5" />
                 {searchQuery ? (
-                  <TouchableOpacity onPress={() => setSearchQuery('')} className="absolute right-3 top-3">
+                  <TouchableOpacity onPress={() => setSearchQuery('')} accessibilityRole="button" accessibilityLabel={strings.cancel} className="absolute right-3 top-3">
                     <Ionicons name="close-circle" size={20} color={colors.textSecondary} />
                   </TouchableOpacity>
                 ) : null}
@@ -120,6 +123,9 @@ export default function ExpensesScreen() {
               <View className="flex-row flex-wrap gap-2 mb-4">
                 <TouchableOpacity
                   onPress={() => setCategoryFilter('all')}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: categoryFilter === 'all' }}
+                  accessibilityLabel={strings.all}
                   className={`px-3 py-1.5 rounded-full border ${categoryFilter === 'all' ? 'bg-indigo-600 border-indigo-600' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'}`}
                 >
                   <Text className={`text-xs font-medium ${categoryFilter === 'all' ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}>
@@ -130,6 +136,9 @@ export default function ExpensesScreen() {
                   <TouchableOpacity
                     key={cat}
                     onPress={() => setCategoryFilter(categoryFilter === cat ? 'all' : cat)}
+                    accessibilityRole="button"
+                    accessibilityState={{ selected: categoryFilter === cat }}
+                    accessibilityLabel={cat}
                     className={`px-3 py-1.5 rounded-full border ${categoryFilter === cat ? 'bg-indigo-600 border-indigo-600' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'}`}
                   >
                     <Text className={`text-xs font-medium ${categoryFilter === cat ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}>
@@ -155,6 +164,8 @@ export default function ExpensesScreen() {
                   {/* Export button */}
                   <TouchableOpacity
                     onPress={handleExport}
+                    accessibilityRole="button"
+                    accessibilityLabel={strings.exportCSV}
                     className="flex-row items-center justify-center mb-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl py-2.5"
                   >
                     <Ionicons name="download-outline" size={18} color={colors.primary} />

@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Card } from '../ui/Card';
-import { colors } from '../../constants/colors';
+import { useThemeColors } from '../../hooks/useThemeColors';
 import { strings } from '../../constants/strings';
 import type { Service } from '../../types';
 
@@ -12,12 +12,14 @@ interface ServiceSelectorProps {
 }
 
 export function ServiceSelector({ services, onSelect, selectedIds }: ServiceSelectorProps) {
+  const c = useThemeColors();
+
   if (services.length === 0) {
     return (
       <View className="py-8 items-center">
-        <Ionicons name="cube-outline" size={48} color={colors.border} />
-        <Text className="text-gray-400 text-base mt-2">{strings.noActiveServices}</Text>
-        <Text className="text-gray-400 text-sm">{strings.addServicesFirst}</Text>
+        <Ionicons name="cube-outline" size={48} color={c.border} />
+        <Text className="text-gray-400 dark:text-gray-500 text-base mt-2">{strings.noActiveServices}</Text>
+        <Text className="text-gray-400 dark:text-gray-500 text-sm">{strings.addServicesFirst}</Text>
       </View>
     );
   }
@@ -27,7 +29,14 @@ export function ServiceSelector({ services, onSelect, selectedIds }: ServiceSele
       {services.map((item) => {
         const selected = selectedIds.has(item.id);
         return (
-          <TouchableOpacity key={item.id} onPress={() => onSelect(item)} disabled={selected}>
+          <TouchableOpacity
+            key={item.id}
+            onPress={() => onSelect(item)}
+            disabled={selected}
+            accessibilityRole="button"
+            accessibilityLabel={`${item.name} $${item.priceUSD.toFixed(2)}${selected ? ` — ${strings.addServicesFirst}` : ''}`}
+            accessibilityState={{ selected }}
+          >
             <Card className={`mb-2 ${selected ? 'opacity-50' : ''}`}>
               <View className="flex-row items-center justify-between">
                 <View className="flex-1 mr-3">
@@ -35,9 +44,9 @@ export function ServiceSelector({ services, onSelect, selectedIds }: ServiceSele
                   <Text className="text-sm text-gray-500 dark:text-gray-400 mt-1">${item.priceUSD.toFixed(2)}</Text>
                 </View>
                 {selected ? (
-                  <Ionicons name="checkmark-circle" size={24} color={colors.secondary} />
+                  <Ionicons name="checkmark-circle" size={24} color={c.secondary} />
                 ) : (
-                  <Ionicons name="add-circle-outline" size={24} color={colors.primary} />
+                  <Ionicons name="add-circle-outline" size={24} color={c.primary} />
                 )}
               </View>
             </Card>

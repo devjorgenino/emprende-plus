@@ -165,6 +165,8 @@ export const strings = {
   shareErrorGeneric: 'Error al compartir',
   exportPdfError: 'No se pudo exportar la cotización a PDF',
   pdfExportError: 'Error al exportar PDF',
+  serviceAddedToCart: '✓ Agregado al carrito: {name}',
+  serviceRemovedFromCart: 'Eliminado del carrito',
 
   // Filtros (Ventas)
   all: 'Todos',

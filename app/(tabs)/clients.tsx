@@ -59,6 +59,8 @@ export default function ClientsScreen() {
         renderItem={({ item: client }) => (
           <TouchableOpacity
             onPress={() => router.push(`/clients/${client.id}`)}
+            accessibilityRole="button"
+            accessibilityLabel={client.name}
             className="mx-4 mb-2 bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700"
           >
             <View className="flex-row items-center justify-between">
@@ -79,6 +81,8 @@ export default function ClientsScreen() {
               </View>
               <TouchableOpacity
                 onPress={() => handleDelete(client)}
+                accessibilityRole="button"
+                accessibilityLabel={`${strings.deleteClient} ${client.name}`}
                 className="w-8 h-8 rounded-full bg-red-50 dark:bg-red-900/30 items-center justify-center"
               >
                 <Ionicons name="trash-outline" size={16} color={colors.error} />
@@ -123,6 +127,8 @@ export default function ClientsScreen() {
       />
       <TouchableOpacity
         onPress={handleAdd}
+        accessibilityRole="button"
+        accessibilityLabel={strings.addClient}
         className="absolute bottom-6 right-6 bg-indigo-600 w-14 h-14 rounded-full items-center justify-center shadow-lg"
       >
         <Ionicons name="add" size={28} color="white" />

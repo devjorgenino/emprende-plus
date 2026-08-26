@@ -23,20 +23,32 @@ export function Modal({
   variant = 'primary',
 }: ModalProps) {
   return (
-    <RNModal visible={visible} transparent animationType="fade">
-      <Pressable className="flex-1 bg-black/50 justify-center items-center" onPress={onCancel}>
-        <Pressable className="bg-white rounded-2xl p-6 mx-6 w-11/12 max-w-sm" onPress={() => {}}>
-          <Text className="text-lg font-bold text-gray-900 mb-2">{title}</Text>
-          <Text className="text-gray-600 mb-6">{message}</Text>
+    <RNModal visible={visible} transparent animationType="fade" onRequestClose={onCancel}>
+      <Pressable
+        className="flex-1 bg-black/50 justify-center items-center"
+        onPress={onCancel}
+        accessibilityRole="none"
+      >
+        <Pressable
+          className="bg-white dark:bg-gray-800 rounded-2xl p-6 mx-6 w-11/12 max-w-sm border border-gray-200 dark:border-gray-700"
+          onPress={() => {}}
+          accessibilityRole="none"
+        >
+          <Text className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">{title}</Text>
+          <Text className="text-gray-600 dark:text-gray-400 mb-6">{message}</Text>
           <View className="flex-row justify-end gap-3">
             <TouchableOpacity
               onPress={onCancel}
-              className="py-2 px-4 rounded-lg border border-gray-200"
+              accessibilityRole="button"
+              accessibilityLabel={cancelLabel}
+              className="py-2 px-4 rounded-lg border border-gray-200 dark:border-gray-600"
             >
-              <Text className="text-gray-700 font-medium">{cancelLabel}</Text>
+              <Text className="text-gray-700 dark:text-gray-300 font-medium">{cancelLabel}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={onConfirm}
+              accessibilityRole="button"
+              accessibilityLabel={confirmLabel}
               className={`py-2 px-4 rounded-lg ${variant === 'danger' ? 'bg-red-500' : 'bg-indigo-600'}`}
             >
               <Text className="text-white font-medium">{confirmLabel}</Text>

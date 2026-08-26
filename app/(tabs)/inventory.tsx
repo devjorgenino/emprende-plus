@@ -32,9 +32,9 @@ export default function InventoryScreen() {
 
   if (isLoading && items.length === 0) {
     return (
-      <View className="flex-1 items-center justify-center bg-gray-50">
+      <View className="flex-1 items-center justify-center bg-gray-50 dark:bg-gray-900">
         <ActivityIndicator size="large" color={colors.primary} />
-        <Text className="mt-4 text-gray-500">{strings.loading}</Text>
+        <Text className="mt-4 text-gray-500 dark:text-gray-400">{strings.loading}</Text>
       </View>
     );
   }
@@ -57,6 +57,8 @@ export default function InventoryScreen() {
         ListHeaderComponent={
           <TouchableOpacity
             onPress={() => router.push('/services')}
+            accessibilityRole="button"
+            accessibilityLabel={strings.manageServices}
             className="mx-4 mb-3 p-4 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl border border-indigo-100 dark:border-indigo-800 flex-row items-center justify-between"
           >
             <View className="flex-row items-center gap-3">
@@ -74,8 +76,8 @@ export default function InventoryScreen() {
         ListEmptyComponent={
           <View className="flex-1 items-center justify-center p-6">
             <Ionicons name="cube-outline" size={64} color={colors.border} />
-            <Text className="text-gray-400 text-lg mt-4">{strings.emptyInventory}</Text>
-            <Text className="text-gray-400 text-sm mt-1">{strings.addMaterial}</Text>
+            <Text className="text-gray-400 dark:text-gray-500 text-lg mt-4">{strings.emptyInventory}</Text>
+            <Text className="text-gray-400 dark:text-gray-500 text-sm mt-1">{strings.addMaterial}</Text>
           </View>
         }
         refreshControl={
@@ -84,6 +86,8 @@ export default function InventoryScreen() {
       />
       <TouchableOpacity
         onPress={() => router.push('/inventory/new')}
+        accessibilityRole="button"
+        accessibilityLabel={strings.addMaterial}
         className="absolute bottom-6 right-6 bg-indigo-600 w-14 h-14 rounded-full items-center justify-center shadow-lg"
       >
         <Ionicons name="add" size={28} color="white" />

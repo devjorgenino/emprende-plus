@@ -6,16 +6,16 @@ interface BadgeProps {
 }
 
 const variantClasses: Record<string, string> = {
-  default: 'bg-gray-100 text-gray-700',
-  primary: 'bg-indigo-100 text-indigo-700',
-  secondary: 'bg-emerald-100 text-emerald-700',
+  default: 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300',
+  primary: 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300',
+  secondary: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300',
 };
 
 export function Badge({ label, variant = 'default' }: BadgeProps) {
-  const [bgClass, textClass] = variantClasses[variant].split(' ');
+  const classes = variantClasses[variant];
   return (
-    <View className={`self-start px-3 py-1 rounded-full ${bgClass}`}>
-      <Text className={`text-xs font-medium ${textClass}`}>{label}</Text>
+    <View className={`self-start px-3 py-1 rounded-full ${classes}`}>
+      <Text className={`text-xs font-medium`}>{label}</Text>
     </View>
   );
 }

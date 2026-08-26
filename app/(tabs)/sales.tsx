@@ -87,9 +87,9 @@ export default function SalesScreen() {
 
   if (isLoading && sales.length === 0) {
     return (
-      <View className="flex-1 items-center justify-center bg-gray-50">
+      <View className="flex-1 items-center justify-center bg-gray-50 dark:bg-gray-900">
         <ActivityIndicator size="large" color={colors.primary} />
-        <Text className="mt-4 text-gray-500">{strings.loading}</Text>
+        <Text className="mt-4 text-gray-500 dark:text-gray-400">{strings.loading}</Text>
       </View>
     );
   }
@@ -116,12 +116,13 @@ export default function SalesScreen() {
                 value={searchQuery}
                 onChangeText={setSearchQuery}
                 placeholder={strings.searchClient}
-                className="bg-white border border-gray-200 rounded-xl px-4 py-3 pl-10 text-base"
+                accessibilityLabel={strings.searchClient}
+                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 pl-10 text-base text-gray-900 dark:text-gray-100"
                 placeholderTextColor={colors.textSecondary}
               />
               <Ionicons name="search" size={18} color={colors.textSecondary} className="absolute left-3 top-3.5" />
               {searchQuery ? (
-                <TouchableOpacity onPress={() => setSearchQuery('')} className="absolute right-3 top-3">
+                <TouchableOpacity onPress={() => setSearchQuery('')} accessibilityRole="button" accessibilityLabel={strings.cancel} className="absolute right-3 top-3">
                   <Ionicons name="close-circle" size={20} color={colors.textSecondary} />
                 </TouchableOpacity>
               ) : null}
@@ -133,9 +134,12 @@ export default function SalesScreen() {
                 <TouchableOpacity
                   key={f.key}
                   onPress={() => setPaymentFilter(f.key)}
-                  className={`px-3 py-1.5 rounded-full border ${paymentFilter === f.key ? 'bg-indigo-50 border-indigo-400' : 'bg-white border-gray-200'}`}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: paymentFilter === f.key }}
+                  accessibilityLabel={f.label}
+                  className={`px-3 py-1.5 rounded-full border ${paymentFilter === f.key ? 'bg-indigo-600 border-indigo-600' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600'}`}
                 >
-                  <Text className={`text-xs font-medium ${paymentFilter === f.key ? 'text-indigo-600' : 'text-gray-600'}`}>
+                  <Text className={`text-xs font-medium ${paymentFilter === f.key ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}>
                     {f.label}
                   </Text>
                 </TouchableOpacity>
@@ -147,9 +151,12 @@ export default function SalesScreen() {
               <View className="flex-row flex-wrap gap-2 mb-3">
                 <TouchableOpacity
                   onPress={() => setClientFilter('all')}
-                  className={`px-3 py-1.5 rounded-full border ${clientFilter === 'all' ? 'bg-indigo-600 border-indigo-600' : 'bg-white border-gray-200'}`}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: clientFilter === 'all' }}
+                  accessibilityLabel={strings.all}
+                  className={`px-3 py-1.5 rounded-full border ${clientFilter === 'all' ? 'bg-indigo-600 border-indigo-600' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600'}`}
                 >
-                  <Text className={`text-xs font-medium ${clientFilter === 'all' ? 'text-white' : 'text-gray-600'}`}>
+                  <Text className={`text-xs font-medium ${clientFilter === 'all' ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}>
                     {strings.all}
                   </Text>
                 </TouchableOpacity>
@@ -157,9 +164,12 @@ export default function SalesScreen() {
                   <TouchableOpacity
                     key={name}
                     onPress={() => setClientFilter(clientFilter === name ? 'all' : name)}
-                    className={`px-3 py-1.5 rounded-full border ${clientFilter === name ? 'bg-indigo-600 border-indigo-600' : 'bg-white border-gray-200'}`}
+                    accessibilityRole="button"
+                    accessibilityState={{ selected: clientFilter === name }}
+                    accessibilityLabel={name}
+                    className={`px-3 py-1.5 rounded-full border ${clientFilter === name ? 'bg-indigo-600 border-indigo-600' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600'}`}
                   >
-                    <Text className={`text-xs font-medium ${clientFilter === name ? 'text-white' : 'text-gray-600'}`}>
+                    <Text className={`text-xs font-medium ${clientFilter === name ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}>
                       {name.length > 14 ? `${name.slice(0, 14)}…` : name}
                     </Text>
                   </TouchableOpacity>
@@ -171,10 +181,12 @@ export default function SalesScreen() {
             {filteredSales.length > 0 && (
               <TouchableOpacity
                 onPress={handleExport}
-                className="flex-row items-center justify-center mb-4 bg-white border border-gray-200 rounded-xl py-2.5"
+                accessibilityRole="button"
+                accessibilityLabel={strings.exportCSV}
+                className="flex-row items-center justify-center mb-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl py-2.5"
               >
                 <Ionicons name="download-outline" size={18} color={colors.primary} />
-                <Text className="text-indigo-600 text-sm font-medium ml-2">{strings.exportCSV}</Text>
+                <Text className="text-indigo-600 dark:text-indigo-400 text-sm font-medium ml-2">{strings.exportCSV}</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -182,8 +194,8 @@ export default function SalesScreen() {
         ListEmptyComponent={
           <View className="flex-1 items-center justify-center p-6">
             <Ionicons name="cash-outline" size={64} color={colors.border} />
-            <Text className="text-gray-400 text-lg mt-4">{strings.emptySales}</Text>
-            {searchQuery && <Text className="text-gray-400 text-sm mt-1">{strings.tryAnother}</Text>}
+            <Text className="text-gray-400 dark:text-gray-500 text-lg mt-4">{strings.emptySales}</Text>
+            {searchQuery && <Text className="text-gray-400 dark:text-gray-500 text-sm mt-1">{strings.tryAnother}</Text>}
           </View>
         }
         refreshControl={

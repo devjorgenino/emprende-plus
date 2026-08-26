@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, InteractionManager, TextInput, Alert } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, InteractionManager, TextInput, Alert, Animated } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import ViewShot from 'react-native-view-shot';
@@ -8,6 +8,7 @@ import { useServiceStore } from '../../src/store/service.store';
 import { useQuoteStore } from '../../src/store/quote.store';
 import { useRateStore } from '../../src/store/rate.store';
 import { ClientPicker } from '../../src/components/shared/ClientPicker';
+import { Toast } from '../../src/components/ui/Toast';
 import { shareQuotePdf } from '../../src/services/pdf/quotePdf';
 import { strings } from '../../src/constants/strings';
 import type { Quote } from '../../src/types';
@@ -37,8 +38,21 @@ export default function CalculatorScreen() {
   const [isExporting, setIsExporting] = useState(false);
   const [isExportingPdf, setIsExportingPdf] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
   const savedToastRef = useRef(false);
   const viewShotRef = useRef<ViewShot>(null);
+  const badgeScale = useRef(new Animated.Value(1)).current;
+
+  // Animación de "bump" en el badge del carrito cuando cambia el número de items
+  useEffect(() => {
+    if (items.length === 0) return;
+    badgeScale.setValue(1);
+    Animated.sequence([
+      Animated.timing(badgeScale, { toValue: 1.35, duration: 120, useNativeDriver: true }),
+      Animated.spring(badgeScale, { toValue: 1, friction: 4, useNativeDriver: true }),
+    ]).start();
+  }, [items.length]);
 
   function switchMode(m: string) {
     if (m === 'cart' && !clientName) {
@@ -49,6 +63,14 @@ export default function CalculatorScreen() {
 
   function handleSelect(id: string, name: string, priceUSD: number) {
     addItem({ id, name, priceUSD });
+    // Feedback visual al agregar un servicio al carrito
+    setToastMessage(strings.serviceAddedToCart.replace('{name}', name));
+    setToastVisible(true);
+  }
+
+  function showToast(message: string) {
+    setToastMessage(message);
+    setToastVisible(true);
   }
 
   const totalUSD = items.reduce((sum, i) => sum + i.subtotalUSD, 0);
@@ -132,10 +154,19 @@ export default function CalculatorScreen() {
 
   return (
     <View className="flex-1 bg-gray-50 dark:bg-gray-900">
+      <Toast
+        message={toastMessage}
+        visible={toastVisible}
+        onHide={() => setToastVisible(false)}
+        type="success"
+      />
       {/* Segmented control */}
       <View className="flex-row mx-4 mt-4 bg-gray-200 dark:bg-gray-800 rounded-lg p-1">
         <TouchableOpacity
           onPress={() => switchMode('select')}
+          accessibilityRole="tab"
+          accessibilityState={{ selected: mode === 'select' }}
+          accessibilityLabel={strings.modeServices}
           className={`flex-1 py-2 rounded-md items-center ${mode === 'select' ? 'bg-white dark:bg-gray-700' : 'bg-transparent'}`}
         >
           <Text className={`text-sm font-medium ${mode === 'select' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400'}`}>
@@ -144,15 +175,22 @@ export default function CalculatorScreen() {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => switchMode('cart')}
+          accessibilityRole="tab"
+          accessibilityState={{ selected: mode === 'cart' }}
+          accessibilityLabel={`${strings.modeCart}${items.length > 0 ? ` (${items.length})` : ''}`}
           className={`flex-1 py-2 rounded-md items-center flex-row justify-center ${mode === 'cart' ? 'bg-white dark:bg-gray-700' : 'bg-transparent'}`}
         >
           <Text className={`text-sm font-medium ${mode === 'cart' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400'}`}>
             {strings.modeCart}
           </Text>
           {items.length > 0 && (
-            <View className="bg-indigo-600 rounded-full w-5 h-5 items-center justify-center ml-1.5">
+            <Animated.View
+              style={{ transform: [{ scale: badgeScale }] }}
+              className="bg-indigo-600 rounded-full w-5 h-5 items-center justify-center ml-1.5"
+              accessible={false}
+            >
               <Text className="text-white text-[11px] font-bold">{items.length}</Text>
-            </View>
+            </Animated.View>
           )}
         </TouchableOpacity>
       </View>
@@ -188,7 +226,9 @@ export default function CalculatorScreen() {
                 <TouchableOpacity
                   key={s.id}
                   onPress={() => handleSelect(s.id, s.name, s.priceUSD)}
-                  className="bg-white dark:bg-gray-800 rounded-xl p-4 mb-2 border border-gray-200 dark:border-gray-700"
+                  accessibilityRole="button"
+                  accessibilityLabel={`${s.name} $${s.priceUSD.toFixed(2)}. ${strings.addService}`}
+                  className="bg-white dark:bg-gray-800 rounded-xl p-4 mb-2 border border-gray-200 dark:border-gray-700 active:opacity-70"
                 >
                   <View className="flex-row justify-between items-center">
                     <View className="flex-1 mr-3">
@@ -266,7 +306,9 @@ export default function CalculatorScreen() {
                         </View>
                         <View className="flex-row items-center gap-2">
                           <TouchableOpacity
-                            onPress={() => { if (item.quantity <= 1) { removeItem(item.serviceId); } else { updateQuantity(item.serviceId, item.quantity - 1); } }}
+                            onPress={() => { if (item.quantity <= 1) { removeItem(item.serviceId); showToast(strings.serviceRemovedFromCart); } else { updateQuantity(item.serviceId, item.quantity - 1); } }}
+                            accessibilityRole="button"
+                            accessibilityLabel={`${strings.delete} ${item.serviceName}`}
                             className="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-900/40 items-center justify-center"
                           >
                             <Ionicons name="remove" size={18} color="#6366F1" />
@@ -274,6 +316,8 @@ export default function CalculatorScreen() {
                           <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 min-w-6 text-center">{item.quantity}</Text>
                           <TouchableOpacity
                             onPress={() => updateQuantity(item.serviceId, item.quantity + 1)}
+                            accessibilityRole="button"
+                            accessibilityLabel={`${strings.add} ${item.serviceName}`}
                             className="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-900/40 items-center justify-center"
                           >
                             <Ionicons name="add" size={18} color="#6366F1" />
@@ -286,7 +330,9 @@ export default function CalculatorScreen() {
                           )}
                         </View>
                         <TouchableOpacity
-                          onPress={() => removeItem(item.serviceId)}
+                          onPress={() => { removeItem(item.serviceId); showToast(strings.serviceRemovedFromCart); }}
+                          accessibilityRole="button"
+                          accessibilityLabel={`${strings.delete} ${item.serviceName}`}
                           className="ml-2 w-8 h-8 rounded-full bg-red-50 dark:bg-red-900/30 items-center justify-center"
                         >
                           <Ionicons name="trash-outline" size={16} color="#EF4444" />
@@ -319,6 +365,8 @@ export default function CalculatorScreen() {
                     <TouchableOpacity
                       onPress={handleShare}
                       disabled={isExporting}
+                      accessibilityRole="button"
+                      accessibilityLabel={strings.share}
                       className="flex-1 bg-white dark:bg-gray-800 py-3.5 rounded-lg items-center border border-gray-200 dark:border-gray-700 flex-row justify-center gap-1.5"
                     >
                       <Ionicons name="share-outline" size={18} color="#6366F1" />
@@ -327,6 +375,8 @@ export default function CalculatorScreen() {
                     <TouchableOpacity
                       onPress={handleExportPdf}
                       disabled={isExportingPdf}
+                      accessibilityRole="button"
+                      accessibilityLabel={strings.exportPDF}
                       className="flex-1 bg-white dark:bg-gray-800 py-3.5 rounded-lg items-center border border-gray-200 dark:border-gray-700 flex-row justify-center gap-1.5"
                     >
                       <Ionicons name="document-text-outline" size={18} color="#6366F1" />
@@ -336,6 +386,9 @@ export default function CalculatorScreen() {
                   <TouchableOpacity
                     onPress={handleSave}
                     disabled={!rate || items.length === 0 || isSaving || saved}
+                    accessibilityRole="button"
+                    accessibilityLabel={strings.saveQuote}
+                    accessibilityState={{ disabled: !rate || items.length === 0 || isSaving || saved }}
                     className={`py-3.5 rounded-lg items-center flex-row justify-center gap-1.5 ${!rate || items.length === 0 || isSaving || saved ? 'bg-gray-400' : 'bg-indigo-600'}`}
                   >
                     <Ionicons name="save-outline" size={18} color="#fff" />
@@ -348,6 +401,9 @@ export default function CalculatorScreen() {
                 {/* Cliente y notas — colapsable */}
                 <TouchableOpacity
                   onPress={() => setShowClientForm(!showClientForm)}
+                  accessibilityRole="button"
+                  accessibilityLabel={strings.clientAndNotes}
+                  accessibilityState={{ expanded: showClientForm }}
                   className="flex-row items-center justify-between py-3 px-1 mb-1"
                 >
                   <Text className="text-sm font-medium text-gray-500 dark:text-gray-400">{strings.clientAndNotes}</Text>

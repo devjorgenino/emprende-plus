@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
-import { colors } from '../../constants/colors';
+import { useThemeColors } from '../../hooks/useThemeColors';
 import { strings } from '../../constants/strings';
 import type { Expense } from '../../types';
 
@@ -22,8 +22,9 @@ const PAYMENT_LABELS: Record<string, string> = {
 };
 
 export function ExpenseItem({ expense, onPress }: ExpenseItemProps) {
+  const c = useThemeColors();
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} accessibilityRole="button">
       <Card className="mb-2">
         <View className="flex-row items-start justify-between">
           <View className="flex-1 mr-3">
@@ -34,14 +35,14 @@ export function ExpenseItem({ expense, onPress }: ExpenseItemProps) {
             </View>
             {expense.supplier && (
               <View className="flex-row items-center mt-1">
-                <Ionicons name="business-outline" size={12} color={colors.textSecondary} />
-                <Text className="text-xs text-gray-500 ml-1">{expense.supplier}</Text>
+                <Ionicons name="business-outline" size={12} color={c.textSecondary} />
+                <Text className="text-xs text-gray-500 dark:text-gray-400 ml-1">{expense.supplier}</Text>
               </View>
             )}
           </View>
           <View className="items-end">
-            <Text className="text-base font-bold text-red-600">- ${expense.amountUSD.toFixed(2)}</Text>
-            <Text className="text-xs text-gray-500">Bs. {expense.amountVES.toFixed(2)}</Text>
+            <Text className="text-base font-bold text-red-600 dark:text-red-400">- ${expense.amountUSD.toFixed(2)}</Text>
+            <Text className="text-xs text-gray-500 dark:text-gray-400">Bs. {expense.amountVES.toFixed(2)}</Text>
           </View>
         </View>
       </Card>

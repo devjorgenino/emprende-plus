@@ -70,19 +70,19 @@ export function ServiceForm({ initialValues, exchangeRate, onSubmit, onCancel, i
         />
 
         {exchangeRate && (
-          <View className="mb-4 p-3 bg-indigo-50 rounded-lg">
-            <Text className="text-sm text-gray-600">
-              {strings.priceInVES} <Text className="font-bold text-indigo-700">Bs. {priceVES.toFixed(2)}</Text>
+          <View className="mb-4 p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg">
+            <Text className="text-sm text-gray-600 dark:text-gray-300">
+              {strings.priceInVES} <Text className="font-bold text-indigo-700 dark:text-indigo-300">Bs. {priceVES.toFixed(2)}</Text>
             </Text>
-            <Text className="text-xs text-gray-400 mt-1">
+            <Text className="text-xs text-gray-400 dark:text-gray-500 mt-1">
               {strings.rateBcvLabel} {exchangeRate.toFixed(2)}
             </Text>
           </View>
         )}
 
         {errors.exchangeRate && (
-          <View className="mb-4 p-3 bg-red-50 rounded-lg">
-            <Text className="text-red-600 text-sm">{errors.exchangeRate}</Text>
+          <View className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 rounded-lg">
+            <Text className="text-red-600 dark:text-red-400 text-sm">{errors.exchangeRate}</Text>
           </View>
         )}
 

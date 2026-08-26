@@ -70,19 +70,22 @@ export function ExpenseForm({ initialValues, exchangeRate, onSubmit, onCancel, i
           error={errors.description}
         />
 
-        <Text className="text-sm font-medium text-gray-700 mb-2">{strings.category}</Text>
+        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{strings.category}</Text>
         <View className="flex-row flex-wrap gap-2 mb-4">
           {CATEGORIES.map((cat) => (
             <TouchableOpacity
               key={cat}
               onPress={() => setCategory(cat)}
+              accessibilityRole="button"
+              accessibilityState={{ selected: category === cat }}
+              accessibilityLabel={cat}
               className={`px-4 py-2 rounded-full border ${
                 category === cat
                   ? 'bg-indigo-600 border-indigo-600'
-                  : 'bg-white border-gray-200'
+                  : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600'
               }`}
             >
-              <Text className={`text-sm ${category === cat ? 'text-white' : 'text-gray-700'}`}>
+              <Text className={`text-sm ${category === cat ? 'text-white' : 'text-gray-700 dark:text-gray-300'}`}>
                 {cat}
               </Text>
             </TouchableOpacity>
@@ -99,35 +102,38 @@ export function ExpenseForm({ initialValues, exchangeRate, onSubmit, onCancel, i
         />
 
         {exchangeRate && (
-          <View className="mb-4 p-3 bg-indigo-50 rounded-lg">
-            <Text className="text-sm text-gray-600">
-              {strings.amountInVES} <Text className="font-bold text-indigo-700">Bs. {amountVES.toFixed(2)}</Text>
+          <View className="mb-4 p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg">
+            <Text className="text-sm text-gray-600 dark:text-gray-300">
+              {strings.amountInVES} <Text className="font-bold text-indigo-700 dark:text-indigo-300">Bs. {amountVES.toFixed(2)}</Text>
             </Text>
-            <Text className="text-xs text-gray-400 mt-1">
+            <Text className="text-xs text-gray-400 dark:text-gray-500 mt-1">
               {strings.rateLabel} {exchangeRate.toFixed(2)}
             </Text>
           </View>
         )}
 
         {errors.exchangeRate && (
-          <View className="mb-4 p-3 bg-red-50 rounded-lg">
-            <Text className="text-red-600 text-sm">{errors.exchangeRate}</Text>
+          <View className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 rounded-lg">
+            <Text className="text-red-600 dark:text-red-400 text-sm">{errors.exchangeRate}</Text>
           </View>
         )}
 
-        <Text className="text-sm font-medium text-gray-700 mb-2">{strings.paymentMethod}</Text>
+        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{strings.paymentMethod}</Text>
         <View className="flex-row flex-wrap gap-2 mb-4">
           {PAYMENT_METHODS.map((pm) => (
             <TouchableOpacity
               key={pm.key}
               onPress={() => setPaymentMethod(pm.key)}
+              accessibilityRole="button"
+              accessibilityState={{ selected: paymentMethod === pm.key }}
+              accessibilityLabel={pm.label}
               className={`px-4 py-2 rounded-full border ${
                 paymentMethod === pm.key
                   ? 'bg-indigo-600 border-indigo-600'
-                  : 'bg-white border-gray-200'
+                  : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600'
               }`}
             >
-              <Text className={`text-sm ${paymentMethod === pm.key ? 'text-white' : 'text-gray-700'}`}>
+              <Text className={`text-sm ${paymentMethod === pm.key ? 'text-white' : 'text-gray-700 dark:text-gray-300'}`}>
                 {pm.label}
               </Text>
             </TouchableOpacity>

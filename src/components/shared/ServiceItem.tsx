@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Card } from '../ui/Card';
-import { colors } from '../../constants/colors';
+import { useThemeColors } from '../../hooks/useThemeColors';
 import { strings } from '../../constants/strings';
 import type { Service } from '../../types';
 
@@ -12,6 +12,7 @@ interface ServiceItemProps {
 }
 
 export function ServiceItem({ service, onEdit, onDelete }: ServiceItemProps) {
+  const c = useThemeColors();
   return (
     <Card className="mb-3">
       <View className="flex-row justify-between items-start">
@@ -32,13 +33,13 @@ export function ServiceItem({ service, onEdit, onDelete }: ServiceItemProps) {
         </View>
       </View>
       <View className="flex-row justify-end gap-4 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
-        <TouchableOpacity onPress={onEdit} className="flex-row items-center gap-1">
-          <Ionicons name="create-outline" size={16} color={colors.primary} />
-          <Text className="text-indigo-600 text-sm">{strings.edit}</Text>
+        <TouchableOpacity onPress={onEdit} accessibilityRole="button" accessibilityLabel={`${strings.edit} ${service.name}`} className="flex-row items-center gap-1">
+          <Ionicons name="create-outline" size={16} color={c.primary} />
+          <Text className="text-indigo-600 dark:text-indigo-400 text-sm">{strings.edit}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onDelete} className="flex-row items-center gap-1">
-          <Ionicons name="trash-outline" size={16} color={colors.error} />
-          <Text className="text-red-500 text-sm">{strings.delete}</Text>
+        <TouchableOpacity onPress={onDelete} accessibilityRole="button" accessibilityLabel={`${strings.delete} ${service.name}`} className="flex-row items-center gap-1">
+          <Ionicons name="trash-outline" size={16} color={c.error} />
+          <Text className="text-red-500 dark:text-red-400 text-sm">{strings.delete}</Text>
         </TouchableOpacity>
       </View>
     </Card>
