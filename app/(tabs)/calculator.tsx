@@ -90,7 +90,7 @@ export default function CalculatorScreen() {
 
   if (isLoading && services.length === 0) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f9fafb' }}>
+      <View className="flex-1 items-center justify-center bg-gray-50 dark:bg-gray-900">
         <ActivityIndicator size="large" color="#6366F1" />
       </View>
     );
@@ -99,48 +99,53 @@ export default function CalculatorScreen() {
   const activeServices = services.filter((s) => s.isActive);
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#f9fafb' }}>
-      <View style={{ flexDirection: 'row', marginHorizontal: 16, marginTop: 16, backgroundColor: '#e5e7eb', borderRadius: 8, padding: 4 }}>
+    <View className="flex-1 bg-gray-50 dark:bg-gray-900">
+      {/* Segmented control */}
+      <View className="flex-row mx-4 mt-4 bg-gray-200 dark:bg-gray-800 rounded-lg p-1">
         <TouchableOpacity
           onPress={() => switchMode('select')}
-          style={{ flex: 1, paddingVertical: 8, borderRadius: 6, alignItems: 'center', backgroundColor: mode === 'select' ? '#fff' : 'transparent' }}
+          className={`flex-1 py-2 rounded-md items-center ${mode === 'select' ? 'bg-white dark:bg-gray-700' : 'bg-transparent'}`}
         >
-          <Text style={{ fontSize: 14, fontWeight: '500', color: mode === 'select' ? '#6366F1' : '#6b7280' }}>Servicios</Text>
+          <Text className={`text-sm font-medium ${mode === 'select' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400'}`}>
+            Servicios
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => switchMode('cart')}
-          style={{ flex: 1, paddingVertical: 8, borderRadius: 6, alignItems: 'center', backgroundColor: mode === 'cart' ? '#fff' : 'transparent' }}
+          className={`flex-1 py-2 rounded-md items-center flex-row justify-center ${mode === 'cart' ? 'bg-white dark:bg-gray-700' : 'bg-transparent'}`}
         >
-          <Text style={{ fontSize: 14, fontWeight: '500', color: mode === 'cart' ? '#6366F1' : '#6b7280' }}>Carrito</Text>
+          <Text className={`text-sm font-medium ${mode === 'cart' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400'}`}>
+            Carrito
+          </Text>
           {items.length > 0 && (
-            <View style={{ backgroundColor: '#6366F1', borderRadius: 10, width: 20, height: 20, alignItems: 'center', justifyContent: 'center', marginLeft: 6 }}>
-              <Text style={{ color: '#fff', fontSize: 11, fontWeight: 'bold' }}>{items.length}</Text>
+            <View className="bg-indigo-600 rounded-full w-5 h-5 items-center justify-center ml-1.5">
+              <Text className="text-white text-[11px] font-bold">{items.length}</Text>
             </View>
           )}
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={{ flex: 1, paddingHorizontal: 16 }} keyboardShouldPersistTaps="always">
+      <ScrollView className="flex-1 px-4" keyboardShouldPersistTaps="always">
         {mode === 'select' ? (
-          <View style={{ paddingTop: 12 }}>
+          <View className="pt-3">
             {activeServices.length === 0 ? (
-              <View style={{ paddingVertical: 48, alignItems: 'center' }}>
-                <Text style={{ fontSize: 16, color: '#9ca3af' }}>No hay servicios activos</Text>
+              <View className="py-12 items-center">
+                <Text className="text-base text-gray-400">No hay servicios activos</Text>
               </View>
             ) : (
               activeServices.map((s) => (
                 <TouchableOpacity
                   key={s.id}
                   onPress={() => handleSelect(s.id, s.name, s.priceUSD)}
-                  style={{ backgroundColor: '#fff', borderRadius: 12, padding: 16, marginBottom: 8, borderWidth: 1, borderColor: '#e5e7eb' }}
+                  className="bg-white dark:bg-gray-800 rounded-xl p-4 mb-2 border border-gray-200 dark:border-gray-700"
                 >
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <View style={{ flex: 1, marginRight: 12 }}>
-                      <Text style={{ fontSize: 16, fontWeight: '500', color: '#111827' }}>{s.name}</Text>
-                      <Text style={{ fontSize: 14, color: '#6b7280', marginTop: 4 }}>${s.priceUSD.toFixed(2)}</Text>
+                  <View className="flex-row justify-between items-center">
+                    <View className="flex-1 mr-3">
+                      <Text className="text-base font-medium text-gray-900 dark:text-gray-100">{s.name}</Text>
+                      <Text className="text-sm text-gray-500 dark:text-gray-400 mt-1">${s.priceUSD.toFixed(2)}</Text>
                     </View>
-                    <View style={{ backgroundColor: '#6366F1', borderRadius: 20, width: 32, height: 32, alignItems: 'center', justifyContent: 'center' }}>
-                      <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', lineHeight: 20 }}>+</Text>
+                    <View className="bg-indigo-600 rounded-full w-8 h-8 items-center justify-center">
+                      <Text className="text-white text-lg font-semibold">+</Text>
                     </View>
                   </View>
                 </TouchableOpacity>
@@ -148,165 +153,177 @@ export default function CalculatorScreen() {
             )}
           </View>
         ) : (
-          <View style={{ paddingTop: 12, paddingBottom: 64 }}>
+          <View className="pt-3 pb-16">
             {items.length === 0 ? (
-              <View style={{ paddingVertical: 48, alignItems: 'center' }}>
-                <Text style={{ fontSize: 16, color: '#9ca3af' }}>Carrito vacío</Text>
-                <Text style={{ fontSize: 14, color: '#9ca3af', marginTop: 4 }}>Selecciona servicios para cotizar</Text>
-                <TouchableOpacity onPress={() => switchMode('select')} style={{ marginTop: 16, backgroundColor: '#6366F1', paddingHorizontal: 24, paddingVertical: 12, borderRadius: 8 }}>
-                  <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>Ver servicios</Text>
+              <View className="py-12 items-center">
+                <Text className="text-base text-gray-400">Carrito vacío</Text>
+                <Text className="text-sm text-gray-400 mt-1">Selecciona servicios para cotizar</Text>
+                <TouchableOpacity
+                  onPress={() => switchMode('select')}
+                  className="mt-4 bg-indigo-600 px-6 py-3 rounded-lg"
+                >
+                  <Text className="text-white text-sm font-medium">Ver servicios</Text>
                 </TouchableOpacity>
               </View>
             ) : (
               <>
-              {/* ViewShot oculto para exportación limpia */}
-              <View style={{ position: 'absolute', left: -9999, top: -9999 }}>
-                <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 1.0 }}>
-                  <View style={{ backgroundColor: '#fff', padding: 16, borderRadius: 12 }}>
-                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#111827', marginBottom: 4 }}>Cotización</Text>
-                    <Text style={{ fontSize: 12, color: '#6b7280', marginBottom: 16 }}>
-                      {new Date().toLocaleDateString('es-VE', { year: 'numeric', month: 'long', day: 'numeric' })}
-                      {clientName ? ` · ${clientName}` : ''}
-                    </Text>
-                    {items.map((item) => (
-                      <View key={item.serviceId} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' }}>
-                        <View style={{ flex: 1, marginRight: 12 }}>
-                          <Text style={{ fontSize: 14, fontWeight: '500', color: '#111827' }}>{item.serviceName}</Text>
-                          <Text style={{ fontSize: 12, color: '#6b7280' }}>x{item.quantity} · ${item.priceUSD.toFixed(2)} c/u</Text>
+                {/* ViewShot oculto para exportación limpia — estilos fijos claros */}
+                <View style={{ position: 'absolute', left: -9999, top: -9999 }}>
+                  <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 1.0 }}>
+                    <View style={{ backgroundColor: '#fff', padding: 16, borderRadius: 12 }}>
+                      <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#111827', marginBottom: 4 }}>Cotización</Text>
+                      <Text style={{ fontSize: 12, color: '#6b7280', marginBottom: 16 }}>
+                        {new Date().toLocaleDateString('es-VE', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        {clientName ? ` · ${clientName}` : ''}
+                      </Text>
+                      {items.map((item) => (
+                        <View key={item.serviceId} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' }}>
+                          <View style={{ flex: 1, marginRight: 12 }}>
+                            <Text style={{ fontSize: 14, fontWeight: '500', color: '#111827' }}>{item.serviceName}</Text>
+                            <Text style={{ fontSize: 12, color: '#6b7280' }}>x{item.quantity} · ${item.priceUSD.toFixed(2)} c/u</Text>
+                          </View>
+                          <Text style={{ fontSize: 14, fontWeight: '600', color: '#111827' }}>${item.subtotalUSD.toFixed(2)}</Text>
                         </View>
-                        <Text style={{ fontSize: 14, fontWeight: '600', color: '#111827' }}>${item.subtotalUSD.toFixed(2)}</Text>
-                      </View>
-                    ))}
-                    <View style={{ marginTop: 12, paddingTop: 12, borderTopWidth: 2, borderTopColor: '#e5e7eb' }}>
-                      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={{ fontSize: 16, fontWeight: '600', color: '#111827' }}>Total</Text>
-                        <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#111827' }}>${totalUSD.toFixed(2)}</Text>
-                      </View>
-                      {rate && (
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
-                          <Text style={{ fontSize: 14, color: '#6b7280' }}>Total Bs.</Text>
-                          <Text style={{ fontSize: 14, color: '#6b7280' }}>Bs. {totalVES.toFixed(2)}</Text>
+                      ))}
+                      <View style={{ marginTop: 12, paddingTop: 12, borderTopWidth: 2, borderTopColor: '#e5e7eb' }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                          <Text style={{ fontSize: 16, fontWeight: '600', color: '#111827' }}>Total</Text>
+                          <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#111827' }}>${totalUSD.toFixed(2)}</Text>
                         </View>
-                      )}
-                      {rate && (
-                        <Text style={{ fontSize: 11, color: '#9ca3af', marginTop: 8 }}>Tasa: 1 USD = Bs. {rate.toFixed(2)}</Text>
-                      )}
-                    </View>
-                  </View>
-                </ViewShot>
-              </View>
-
-              {/* Items editables */}
-              <View style={{ paddingTop: 12 }}>
-                {items.map((item) => (
-                  <View key={item.serviceId} style={{ backgroundColor: '#fff', borderRadius: 12, padding: 12, marginBottom: 8, borderWidth: 1, borderColor: '#e5e7eb' }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <View style={{ flex: 1 }}>
-                        <Text style={{ fontSize: 14, fontWeight: '500', color: '#111827' }}>{item.serviceName}</Text>
-                        <Text style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>${item.priceUSD.toFixed(2)} c/u</Text>
-                      </View>
-                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                        <TouchableOpacity onPress={() => { if (item.quantity <= 1) { removeItem(item.serviceId); } else { updateQuantity(item.serviceId, item.quantity - 1); } }} style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: '#EEF2FF', alignItems: 'center', justifyContent: 'center' }}>
-                          <Ionicons name="remove" size={18} color="#6366F1" />
-                        </TouchableOpacity>
-                        <Text style={{ fontSize: 16, fontWeight: '600', color: '#111827', minWidth: 24, textAlign: 'center' }}>{item.quantity}</Text>
-                        <TouchableOpacity onPress={() => updateQuantity(item.serviceId, item.quantity + 1)} style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: '#EEF2FF', alignItems: 'center', justifyContent: 'center' }}>
-                          <Ionicons name="add" size={18} color="#6366F1" />
-                        </TouchableOpacity>
-                      </View>
-                      <View style={{ alignItems: 'flex-end', marginLeft: 12, minWidth: 72 }}>
-                        <Text style={{ fontSize: 14, fontWeight: '600', color: '#111827' }}>${item.subtotalUSD.toFixed(2)}</Text>
                         {rate && (
-                          <Text style={{ fontSize: 11, color: '#6b7280', marginTop: 1 }}>Bs. {(item.subtotalUSD * rate).toFixed(2)}</Text>
+                          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
+                            <Text style={{ fontSize: 14, color: '#6b7280' }}>Total Bs.</Text>
+                            <Text style={{ fontSize: 14, color: '#6b7280' }}>Bs. {totalVES.toFixed(2)}</Text>
+                          </View>
+                        )}
+                        {rate && (
+                          <Text style={{ fontSize: 11, color: '#9ca3af', marginTop: 8 }}>Tasa: 1 USD = Bs. {rate.toFixed(2)}</Text>
                         )}
                       </View>
-                      <TouchableOpacity onPress={() => removeItem(item.serviceId)} style={{ marginLeft: 8, width: 32, height: 32, borderRadius: 16, backgroundColor: '#FEF2F2', alignItems: 'center', justifyContent: 'center' }}>
-                        <Ionicons name="trash-outline" size={16} color="#EF4444" />
-                      </TouchableOpacity>
+                    </View>
+                  </ViewShot>
+                </View>
+
+                {/* Items editables */}
+                <View className="pt-3">
+                  {items.map((item) => (
+                    <View key={item.serviceId} className="bg-white dark:bg-gray-800 rounded-xl p-3 mb-2 border border-gray-200 dark:border-gray-700">
+                      <View className="flex-row items-center">
+                        <View className="flex-1">
+                          <Text className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.serviceName}</Text>
+                          <Text className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">${item.priceUSD.toFixed(2)} c/u</Text>
+                        </View>
+                        <View className="flex-row items-center gap-2">
+                          <TouchableOpacity
+                            onPress={() => { if (item.quantity <= 1) { removeItem(item.serviceId); } else { updateQuantity(item.serviceId, item.quantity - 1); } }}
+                            className="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-900/40 items-center justify-center"
+                          >
+                            <Ionicons name="remove" size={18} color="#6366F1" />
+                          </TouchableOpacity>
+                          <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 min-w-6 text-center">{item.quantity}</Text>
+                          <TouchableOpacity
+                            onPress={() => updateQuantity(item.serviceId, item.quantity + 1)}
+                            className="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-900/40 items-center justify-center"
+                          >
+                            <Ionicons name="add" size={18} color="#6366F1" />
+                          </TouchableOpacity>
+                        </View>
+                        <View className="items-end ml-3 min-w-[72px]">
+                          <Text className="text-sm font-semibold text-gray-900 dark:text-gray-100">${item.subtotalUSD.toFixed(2)}</Text>
+                          {rate && (
+                            <Text className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">Bs. {(item.subtotalUSD * rate).toFixed(2)}</Text>
+                          )}
+                        </View>
+                        <TouchableOpacity
+                          onPress={() => removeItem(item.serviceId)}
+                          className="ml-2 w-8 h-8 rounded-full bg-red-50 dark:bg-red-900/30 items-center justify-center"
+                        >
+                          <Ionicons name="trash-outline" size={16} color="#EF4444" />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  ))}
+                </View>
+
+                {/* Totales */}
+                <View className="mt-2 pt-4 border-t-2 border-gray-200 dark:border-gray-700">
+                  <View className="flex-row justify-between">
+                    <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">Total USD</Text>
+                    <Text className="text-base font-bold text-gray-900 dark:text-gray-100">${totalUSD.toFixed(2)}</Text>
+                  </View>
+                  {rate && (
+                    <View className="flex-row justify-between mt-1">
+                      <Text className="text-sm text-gray-500 dark:text-gray-400">Total Bs.</Text>
+                      <Text className="text-sm text-gray-500 dark:text-gray-400">Bs. {totalVES.toFixed(2)}</Text>
+                    </View>
+                  )}
+                  {rate && (
+                    <Text className="text-[11px] text-gray-400 dark:text-gray-500 mt-2">Tasa: 1 USD = Bs. {rate.toFixed(2)}</Text>
+                  )}
+                </View>
+
+                {/* Botones acción */}
+                <View className="flex-row gap-2 mt-4 mb-3">
+                  <TouchableOpacity
+                    onPress={handleShare}
+                    disabled={isExporting}
+                    className="flex-1 bg-white dark:bg-gray-800 py-3.5 rounded-lg items-center border border-gray-200 dark:border-gray-700 flex-row justify-center gap-1.5"
+                  >
+                    <Ionicons name="share-outline" size={18} color="#6366F1" />
+                    <Text className="text-indigo-600 dark:text-indigo-400 text-sm font-medium">{isExporting ? 'Compartiendo...' : 'Compartir'}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={handleSave}
+                    disabled={!rate || items.length === 0 || isSaving || saved}
+                    className={`flex-1 py-3.5 rounded-lg items-center flex-row justify-center gap-1.5 ${!rate || items.length === 0 || isSaving || saved ? 'bg-gray-400' : 'bg-indigo-600'}`}
+                  >
+                    <Ionicons name="save-outline" size={18} color="#fff" />
+                    <Text className="text-white text-sm font-semibold">
+                      {saved ? '¡Guardada!' : 'Guardar'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                {/* Cliente y notas — colapsable */}
+                <TouchableOpacity
+                  onPress={() => setShowClientForm(!showClientForm)}
+                  className="flex-row items-center justify-between py-3 px-1 mb-1"
+                >
+                  <Text className="text-sm font-medium text-gray-500 dark:text-gray-400">Cliente y notas (opcional)</Text>
+                  <Text className="text-xs text-gray-400">{showClientForm ? '▲' : '▼'}</Text>
+                </TouchableOpacity>
+                {showClientForm && (
+                  <View className="mb-3">
+                    <View className="mb-3">
+                      <Text className="text-[13px] text-gray-700 dark:text-gray-300 mb-1">Nombre del cliente</Text>
+                      <ClientPicker value={clientName} onChange={setClientName} />
+                    </View>
+                    <View>
+                      <Text className="text-[13px] text-gray-700 dark:text-gray-300 mb-1">Notas</Text>
+                      <View className="border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-3 bg-white dark:bg-gray-800">
+                        <TextInput
+                          value={notes}
+                          onChangeText={setNotes}
+                          placeholder="Notas adicionales"
+                          placeholderTextColor="#9ca3af"
+                          multiline
+                          className="text-base text-gray-900 dark:text-gray-100 p-0 m-0 min-h-[60px]"
+                        />
+                      </View>
                     </View>
                   </View>
-                ))}
-              </View>
+                )}
 
-              {/* Totales */}
-              <View style={{ marginTop: 8, paddingTop: 16, borderTopWidth: 2, borderTopColor: '#e5e7eb' }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: '#111827' }}>Total USD</Text>
-                  <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#111827' }}>${totalUSD.toFixed(2)}</Text>
-                </View>
-                {rate && (
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
-                    <Text style={{ fontSize: 14, color: '#6b7280' }}>Total Bs.</Text>
-                    <Text style={{ fontSize: 14, color: '#6b7280' }}>Bs. {totalVES.toFixed(2)}</Text>
+                {!rate && (
+                  <View className="p-3 bg-red-50 dark:bg-red-900/30 rounded-lg mb-4">
+                    <Text className="text-red-600 dark:text-red-400 text-[13px]">No hay tasa BCV disponible. Verifica tu conexión o ingresa la tasa manualmente.</Text>
                   </View>
                 )}
-                {rate && (
-                  <Text style={{ fontSize: 11, color: '#9ca3af', marginTop: 8 }}>Tasa: 1 USD = Bs. {rate.toFixed(2)}</Text>
-                )}
-              </View>
-
-              {/* Botones acción */}
-              <View style={{ flexDirection: 'row', gap: 8, marginTop: 16, marginBottom: 12 }}>
-                <TouchableOpacity
-                  onPress={handleShare}
-                  disabled={isExporting}
-                  style={{ flex: 1, backgroundColor: '#fff', paddingVertical: 14, borderRadius: 8, alignItems: 'center', borderWidth: 1, borderColor: '#e5e7eb', flexDirection: 'row', justifyContent: 'center', gap: 6 }}
-                >
-                  <Ionicons name="share-outline" size={18} color="#6366F1" />
-                  <Text style={{ color: '#6366F1', fontSize: 14, fontWeight: '500' }}>{isExporting ? 'Compartiendo...' : 'Compartir'}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={handleSave}
-                  disabled={!rate || items.length === 0 || isSaving || saved}
-                  style={{ flex: 1, backgroundColor: !rate || items.length === 0 || isSaving || saved ? '#9ca3af' : '#6366F1', paddingVertical: 14, borderRadius: 8, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 6 }}
-                >
-                  <Ionicons name="save-outline" size={18} color="#fff" />
-                  <Text style={{ color: '#fff', fontSize: 14, fontWeight: '600' }}>
-                    {saved ? '¡Guardada!' : 'Guardar'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-
-              {/* Cliente y notas — colapsable */}
-              <TouchableOpacity
-                onPress={() => setShowClientForm(!showClientForm)}
-                style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 12, paddingHorizontal: 4, marginBottom: 4 }}
-              >
-                <Text style={{ fontSize: 14, fontWeight: '500', color: '#6b7280' }}>Cliente y notas (opcional)</Text>
-                <Text style={{ fontSize: 12, color: '#9ca3af' }}>{showClientForm ? '▲' : '▼'}</Text>
-              </TouchableOpacity>
-              {showClientForm && (
-                <View style={{ marginBottom: 12 }}>
-                  <View style={{ marginBottom: 12 }}>
-                    <Text style={{ fontSize: 13, color: '#374151', marginBottom: 4 }}>Nombre del cliente</Text>
-                    <ClientPicker value={clientName} onChange={setClientName} />
-                  </View>
-                  <View>
-                    <Text style={{ fontSize: 13, color: '#374151', marginBottom: 4 }}>Notas</Text>
-                    <View style={{ borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 8, paddingHorizontal: 16, paddingVertical: 12, backgroundColor: '#fff' }}>
-                      <TextInput
-                        value={notes}
-                        onChangeText={setNotes}
-                        placeholder="Notas adicionales"
-                        placeholderTextColor="#9ca3af"
-                        multiline
-                        style={{ fontSize: 16, color: '#111827', padding: 0, margin: 0, minHeight: 60 }}
-                      />
-                    </View>
-                  </View>
-                </View>
-              )}
-
-              {!rate && (
-                <View style={{ padding: 12, backgroundColor: '#FEF2F2', borderRadius: 8, marginBottom: 16 }}>
-                  <Text style={{ color: '#DC2626', fontSize: 13 }}>No hay tasa BCV disponible. Verifica tu conexión o ingresa la tasa manualmente.</Text>
-                </View>
-              )}
-            </>
-          )}
-        </View>
-      )}
-    </ScrollView>
+              </>
+            )}
+          </View>
+        )}
+      </ScrollView>
     </View>
   );
 }
