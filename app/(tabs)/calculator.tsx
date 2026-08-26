@@ -8,6 +8,8 @@ import { useServiceStore } from '../../src/store/service.store';
 import { useQuoteStore } from '../../src/store/quote.store';
 import { useRateStore } from '../../src/store/rate.store';
 import { ClientPicker } from '../../src/components/shared/ClientPicker';
+import { shareQuotePdf } from '../../src/services/pdf/quotePdf';
+import type { Quote } from '../../src/types';
 
 export default function CalculatorScreen() {
   const router = useRouter();
@@ -32,6 +34,7 @@ export default function CalculatorScreen() {
   const [saved, setSaved] = useState(false);
   const [showClientForm, setShowClientForm] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const savedToastRef = useRef(false);
   const viewShotRef = useRef<ViewShot>(null);
@@ -86,6 +89,30 @@ export default function CalculatorScreen() {
       Alert.alert('Error', 'No se pudo compartir la cotización');
     } finally {
       setIsExporting(false);
+    }
+  }
+
+  async function handleExportPdf() {
+    if (!rate || items.length === 0) return;
+    setIsExportingPdf(true);
+    try {
+      const quote: Quote = {
+        id: `temp-${Date.now()}`,
+        items,
+        totalUSD,
+        totalVES,
+        exchangeRate: rate,
+        exchangeRateDate: new Date().toISOString(),
+        clientName: clientName || undefined,
+        notes: notes || undefined,
+        status: 'draft',
+        createdAt: new Date().toISOString(),
+      };
+      await shareQuotePdf(quote);
+    } catch (e) {
+      Alert.alert('Error', 'No se pudo exportar la cotización a PDF');
+    } finally {
+      setIsExportingPdf(false);
     }
   }
 
@@ -286,19 +313,29 @@ export default function CalculatorScreen() {
                 </View>
 
                 {/* Botones acción */}
-                <View className="flex-row gap-2 mt-4 mb-3">
-                  <TouchableOpacity
-                    onPress={handleShare}
-                    disabled={isExporting}
-                    className="flex-1 bg-white dark:bg-gray-800 py-3.5 rounded-lg items-center border border-gray-200 dark:border-gray-700 flex-row justify-center gap-1.5"
-                  >
-                    <Ionicons name="share-outline" size={18} color="#6366F1" />
-                    <Text className="text-indigo-600 dark:text-indigo-400 text-sm font-medium">{isExporting ? 'Compartiendo...' : 'Compartir'}</Text>
-                  </TouchableOpacity>
+                <View className="gap-2 mt-4 mb-3">
+                  <View className="flex-row gap-2">
+                    <TouchableOpacity
+                      onPress={handleShare}
+                      disabled={isExporting}
+                      className="flex-1 bg-white dark:bg-gray-800 py-3.5 rounded-lg items-center border border-gray-200 dark:border-gray-700 flex-row justify-center gap-1.5"
+                    >
+                      <Ionicons name="share-outline" size={18} color="#6366F1" />
+                      <Text className="text-indigo-600 dark:text-indigo-400 text-sm font-medium">{isExporting ? 'Compartiendo...' : 'Compartir'}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={handleExportPdf}
+                      disabled={isExportingPdf}
+                      className="flex-1 bg-white dark:bg-gray-800 py-3.5 rounded-lg items-center border border-gray-200 dark:border-gray-700 flex-row justify-center gap-1.5"
+                    >
+                      <Ionicons name="document-text-outline" size={18} color="#6366F1" />
+                      <Text className="text-indigo-600 dark:text-indigo-400 text-sm font-medium">{isExportingPdf ? 'Exportando...' : 'Exportar PDF'}</Text>
+                    </TouchableOpacity>
+                  </View>
                   <TouchableOpacity
                     onPress={handleSave}
                     disabled={!rate || items.length === 0 || isSaving || saved}
-                    className={`flex-1 py-3.5 rounded-lg items-center flex-row justify-center gap-1.5 ${!rate || items.length === 0 || isSaving || saved ? 'bg-gray-400' : 'bg-indigo-600'}`}
+                    className={`py-3.5 rounded-lg items-center flex-row justify-center gap-1.5 ${!rate || items.length === 0 || isSaving || saved ? 'bg-gray-400' : 'bg-indigo-600'}`}
                   >
                     <Ionicons name="save-outline" size={18} color="#fff" />
                     <Text className="text-white text-sm font-semibold">
