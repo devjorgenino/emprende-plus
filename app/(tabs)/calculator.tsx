@@ -32,6 +32,7 @@ export default function CalculatorScreen() {
   const [saved, setSaved] = useState(false);
   const [showClientForm, setShowClientForm] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const savedToastRef = useRef(false);
   const viewShotRef = useRef<ViewShot>(null);
 
@@ -97,6 +98,9 @@ export default function CalculatorScreen() {
   }
 
   const activeServices = services.filter((s) => s.isActive);
+  const filteredServices = activeServices.filter((s) =>
+    s.name.toLowerCase().includes(searchQuery.trim().toLowerCase())
+  );
 
   return (
     <View className="flex-1 bg-gray-50 dark:bg-gray-900">
@@ -128,12 +132,31 @@ export default function CalculatorScreen() {
       <ScrollView className="flex-1 px-4" keyboardShouldPersistTaps="always">
         {mode === 'select' ? (
           <View className="pt-3">
-            {activeServices.length === 0 ? (
+            {/* Buscador de servicios */}
+            <View className="flex-row items-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 mb-3">
+              <Ionicons name="search" size={18} color="#9ca3af" />
+              <TextInput
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                placeholder="Buscar servicio..."
+                placeholderTextColor="#9ca3af"
+                className="flex-1 ml-2 text-base text-gray-900 dark:text-gray-100"
+              />
+              {searchQuery ? (
+                <TouchableOpacity onPress={() => setSearchQuery('')}>
+                  <Ionicons name="close-circle" size={20} color="#9ca3af" />
+                </TouchableOpacity>
+              ) : null}
+            </View>
+
+            {filteredServices.length === 0 ? (
               <View className="py-12 items-center">
-                <Text className="text-base text-gray-400">No hay servicios activos</Text>
+                <Text className="text-base text-gray-400">
+                  {activeServices.length === 0 ? 'No hay servicios activos' : 'Sin resultados para la búsqueda'}
+                </Text>
               </View>
             ) : (
-              activeServices.map((s) => (
+              filteredServices.map((s) => (
                 <TouchableOpacity
                   key={s.id}
                   onPress={() => handleSelect(s.id, s.name, s.priceUSD)}
