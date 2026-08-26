@@ -39,6 +39,7 @@ export const strings = {
   clientSalesCount: 'Compras',
   clientNoSales: 'Este cliente aún no tiene ventas registradas',
   clientSaved: 'Los clientes se guardan automáticamente al registrar una venta',
+  tabSettings: 'Config.',
 } as const;
 
 export type StringKey = keyof typeof strings;
