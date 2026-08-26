@@ -120,6 +120,14 @@ describe('InventoryRepository', () => {
     expect(inventoryRepository.getItemById(item.id)?.quantity).toBe(10);
   });
 
+  it('persiste el umbral de stock bajo', () => {
+    const item = makeInventory({ quantity: 2, lowStockThreshold: 5 });
+    inventoryRepository.createItem(item);
+    expect(inventoryRepository.getItemById(item.id)?.lowStockThreshold).toBe(5);
+    inventoryRepository.updateItem({ ...item, lowStockThreshold: 3 });
+    expect(inventoryRepository.getItemById(item.id)?.lowStockThreshold).toBe(3);
+  });
+
   it('elimina un item', () => {
     const item = makeInventory();
     inventoryRepository.createItem(item);

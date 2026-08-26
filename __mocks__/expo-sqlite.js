@@ -133,7 +133,12 @@ function createInMemoryDatabaseImpl() {
         }
         var addCol = sql.match(/ADD COLUMN\s+([^\s]+)/i);
         if (name3 && addCol && db.tables.has(name3)) {
-          db.tables.get(name3).columns.push(addCol[1]);
+          var colName = addCol[1];
+          var table3 = db.tables.get(name3);
+          // Prevent duplicate columns (schema may already include a column that a migration also adds)
+          if (table3.columns.indexOf(colName) === -1) {
+            table3.columns.push(colName);
+          }
         }
         return;
       }
@@ -167,8 +172,16 @@ function createInMemoryDatabaseImpl() {
         var valMatch = bound.match(/VALUES\s*\(([\s\S]*)\)/i);
         if (!valMatch) return;
         var values = valMatch[1].split(',').map(function (v) { return v.trim().replace(/^'(.*)'$/, '$1'); });
+        // Use the explicit column list from the INSERT when present (in order).
+        var colListMatch = bound.match(/\(([^()]*)\)\s*VALUES/i);
+        var targetColumns;
+        if (colListMatch && colListMatch[1].trim()) {
+          targetColumns = colListMatch[1].split(',').map(function (c) { return c.trim(); });
+        } else {
+          targetColumns = table.columns;
+        }
         var row = {};
-        table.columns.forEach(function (col, i) {
+        targetColumns.forEach(function (col, i) {
           row[col] = values[i] !== undefined ? coerce(values[i]) : null;
         });
         table.rows.push(row);

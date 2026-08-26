@@ -53,7 +53,9 @@ export default function DashboardScreen() {
 
   const recentSales = sales.slice(0, 5);
   const recentExpenses = expenses.slice(0, 5);
-  const lowStockItems = inventoryItems.filter((i) => i.quantity <= 1 && i.quantity > 0);
+  const lowStockItems = inventoryItems.filter(
+    (i) => i.lowStockThreshold !== undefined && i.lowStockThreshold > 0 && i.quantity <= i.lowStockThreshold
+  );
 
   const chartData = useMemo(() => {
     const months: { label: string; income: number; expense: number }[] = [];
