@@ -7,8 +7,8 @@ import * as Sharing from 'expo-sharing';
 import { useServiceStore } from '../../src/store/service.store';
 import { useQuoteStore } from '../../src/store/quote.store';
 import { useRateStore } from '../../src/store/rate.store';
+import { useToastStore } from '../../src/store/toast.store';
 import { ClientPicker } from '../../src/components/shared/ClientPicker';
-import { Toast } from '../../src/components/ui/Toast';
 import { shareQuotePdf } from '../../src/services/pdf/quotePdf';
 import { strings } from '../../src/constants/strings';
 import type { Quote } from '../../src/types';
@@ -38,8 +38,7 @@ export default function CalculatorScreen() {
   const [isExporting, setIsExporting] = useState(false);
   const [isExportingPdf, setIsExportingPdf] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [toastVisible, setToastVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const showToast = useToastStore((s) => s.showToast);
   const savedToastRef = useRef(false);
   const viewShotRef = useRef<ViewShot>(null);
   const badgeScale = useRef(new Animated.Value(1)).current;
@@ -64,13 +63,7 @@ export default function CalculatorScreen() {
   function handleSelect(id: string, name: string, priceUSD: number) {
     addItem({ id, name, priceUSD });
     // Feedback visual al agregar un servicio al carrito
-    setToastMessage(strings.serviceAddedToCart.replace('{name}', name));
-    setToastVisible(true);
-  }
-
-  function showToast(message: string) {
-    setToastMessage(message);
-    setToastVisible(true);
+    showToast(strings.serviceAddedToCart.replace('{name}', name), 'success');
   }
 
   const totalUSD = items.reduce((sum, i) => sum + i.subtotalUSD, 0);
@@ -154,12 +147,6 @@ export default function CalculatorScreen() {
 
   return (
     <View className="flex-1 bg-gray-50 dark:bg-gray-900">
-      <Toast
-        message={toastMessage}
-        visible={toastVisible}
-        onHide={() => setToastVisible(false)}
-        type="success"
-      />
       {/* Segmented control */}
       <View className="flex-row mx-4 mt-4 bg-gray-200 dark:bg-gray-800 rounded-lg p-1">
         <TouchableOpacity
@@ -306,7 +293,7 @@ export default function CalculatorScreen() {
                         </View>
                         <View className="flex-row items-center gap-2">
                           <TouchableOpacity
-                            onPress={() => { if (item.quantity <= 1) { removeItem(item.serviceId); showToast(strings.serviceRemovedFromCart); } else { updateQuantity(item.serviceId, item.quantity - 1); } }}
+                            onPress={() => { if (item.quantity <= 1) { removeItem(item.serviceId); showToast(strings.serviceRemovedFromCart, 'info'); } else { updateQuantity(item.serviceId, item.quantity - 1); } }}
                             accessibilityRole="button"
                             accessibilityLabel={`${strings.delete} ${item.serviceName}`}
                             className="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-900/40 items-center justify-center"
@@ -330,7 +317,7 @@ export default function CalculatorScreen() {
                           )}
                         </View>
                         <TouchableOpacity
-                          onPress={() => { removeItem(item.serviceId); showToast(strings.serviceRemovedFromCart); }}
+                          onPress={() => { removeItem(item.serviceId); showToast(strings.serviceRemovedFromCart, 'info'); }}
                           accessibilityRole="button"
                           accessibilityLabel={`${strings.delete} ${item.serviceName}`}
                           className="ml-2 w-8 h-8 rounded-full bg-red-50 dark:bg-red-900/30 items-center justify-center"

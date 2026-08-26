@@ -6,6 +6,7 @@ import { closeDatabase } from '../src/lib/db';
 import { initializeDatabase } from '../src/services/db/schema';
 import { runMigrations } from '../src/services/db/migrations';
 import { useRateStore } from '../src/store/rate.store';
+import { useToastStore } from '../src/store/toast.store';
 import { __resetCounter } from '../__mocks__/expo-crypto';
 import * as serviceRepository from '../src/services/db/repositories/service.repository';
 
@@ -213,5 +214,39 @@ describe('RateStore', () => {
   afterEach(() => {
     // @ts-expect-error cleanup restores the real fetch
     delete globalThis.fetch;
+  });
+});
+
+describe('ToastStore', () => {
+  beforeEach(() => {
+    useToastStore.setState({ toast: null });
+  });
+
+  it('muestra un toast con tipo por defecto success', () => {
+    useToastStore.getState().showToast('Guardado');
+    const toast = useToastStore.getState().toast;
+    expect(toast).not.toBeNull();
+    expect(toast!.message).toBe('Guardado');
+    expect(toast!.type).toBe('success');
+    expect(toast!.id).toBeGreaterThan(0);
+  });
+
+  it('muestra un toast con tipo explícito', () => {
+    useToastStore.getState().showToast('Hubo un error', 'error');
+    expect(useToastStore.getState().toast!.type).toBe('error');
+  });
+
+  it('oculta el toast actual', () => {
+    useToastStore.getState().showToast('Info', 'info');
+    useToastStore.getState().hideToast();
+    expect(useToastStore.getState().toast).toBeNull();
+  });
+
+  it('cada toast nuevo recibe un id incremental', () => {
+    useToastStore.getState().showToast('Uno');
+    const firstId = useToastStore.getState().toast!.id;
+    useToastStore.getState().showToast('Dos');
+    const secondId = useToastStore.getState().toast!.id;
+    expect(secondId).toBeGreaterThan(firstId);
   });
 });
