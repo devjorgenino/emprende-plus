@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useExpenseStore } from '../../src/store/expense.store';
 import { ExpenseItem } from '../../src/components/shared/ExpenseItem';
 import { colors } from '../../src/constants/colors';
+import { strings } from '../../src/constants/strings';
 import { exportExpensesToCSV } from '../../src/utils/csv';
 
 export default function ExpensesScreen() {
@@ -60,7 +61,7 @@ export default function ExpensesScreen() {
     try {
       await exportExpensesToCSV(filtered);
     } catch {
-      Alert.alert('Error', 'No se pudo exportar la lista');
+      Alert.alert(strings.errorTitle, strings.exportError);
     }
   }
 
@@ -74,26 +75,26 @@ export default function ExpensesScreen() {
           {isLoading && expenses.length === 0 ? (
             <View className="py-12 items-center">
               <ActivityIndicator size="large" color={colors.primary} />
-              <Text className="mt-4 text-gray-500">Cargando egresos...</Text>
+              <Text className="mt-4 text-gray-500">{strings.loadingExpenses}</Text>
             </View>
           ) : error && expenses.length === 0 ? (
             <View className="py-12 items-center">
               <Ionicons name="alert-circle-outline" size={48} color={colors.error} />
               <Text className="text-red-500 text-base mt-2">{error}</Text>
               <TouchableOpacity onPress={loadExpenses} className="mt-4">
-                <Text className="text-indigo-600 font-medium">Reintentar</Text>
+                <Text className="text-indigo-600 font-medium">{strings.retry}</Text>
               </TouchableOpacity>
             </View>
           ) : expenses.length === 0 ? (
             <View className="py-12 items-center">
               <Ionicons name="cart-outline" size={48} color={colors.border} />
-              <Text className="text-gray-400 text-base mt-2">No hay egresos registrados</Text>
-              <Text className="text-gray-400 text-sm mt-1">Registra tus compras y gastos aquí</Text>
+              <Text className="text-gray-400 text-base mt-2">{strings.noExpenses}</Text>
+              <Text className="text-gray-400 text-sm mt-1">{strings.addFirstExpense}</Text>
               <TouchableOpacity
                 onPress={() => router.push('/expenses/new')}
                 className="mt-6 bg-indigo-600 px-6 py-3 rounded-lg"
               >
-                <Text className="text-white font-medium">Registrar Egreso</Text>
+                <Text className="text-white font-medium">{strings.registerExpense}</Text>
               </TouchableOpacity>
             </View>
           ) : (
@@ -103,7 +104,7 @@ export default function ExpensesScreen() {
                 <TextInput
                   value={searchQuery}
                   onChangeText={setSearchQuery}
-                  placeholder="Buscar por descripción, categoría, proveedor..."
+                  placeholder={strings.searchExpense}
                   className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 pl-10 text-base text-gray-900 dark:text-gray-100"
                   placeholderTextColor={colors.textSecondary}
                 />
@@ -122,7 +123,7 @@ export default function ExpensesScreen() {
                   className={`px-3 py-1.5 rounded-full border ${categoryFilter === 'all' ? 'bg-indigo-600 border-indigo-600' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'}`}
                 >
                   <Text className={`text-xs font-medium ${categoryFilter === 'all' ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}>
-                    Todos
+                    {strings.all}
                   </Text>
                 </TouchableOpacity>
                 {categories.map((cat) => (
@@ -157,7 +158,7 @@ export default function ExpensesScreen() {
                     className="flex-row items-center justify-center mb-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl py-2.5"
                   >
                     <Ionicons name="download-outline" size={18} color={colors.primary} />
-                    <Text className="text-indigo-600 dark:text-indigo-400 text-sm font-medium ml-2">Exportar CSV</Text>
+                    <Text className="text-indigo-600 dark:text-indigo-400 text-sm font-medium ml-2">{strings.exportCSV}</Text>
                   </TouchableOpacity>
                 </>
               )}
@@ -165,7 +166,7 @@ export default function ExpensesScreen() {
               {filtered.length === 0 ? (
                 <View className="py-8 items-center">
                   <Ionicons name="search-outline" size={36} color={colors.border} />
-                  <Text className="text-gray-400 text-base mt-2">Sin resultados</Text>
+                  <Text className="text-gray-400 text-base mt-2">{strings.noResults}</Text>
                 </View>
               ) : (
                 filtered.map((expense) => (

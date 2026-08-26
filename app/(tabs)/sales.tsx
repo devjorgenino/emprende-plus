@@ -12,14 +12,14 @@ import { exportSalesToCSV } from '../../src/utils/csv';
 import type { Sale, PaymentMethod } from '../../src/types';
 
 const PAYMENT_FILTERS: { key: PaymentMethod | 'all'; label: string }[] = [
-  { key: 'all', label: 'Todos' },
-  { key: 'usd_cash', label: 'USD' },
-  { key: 'ves_cash', label: 'Bs.' },
-  { key: 'pago_movil', label: 'Pago Móvil' },
-  { key: 'kontigo', label: 'Kontigo' },
-  { key: 'binance', label: 'Binance' },
-  { key: 'transfer_ves', label: 'Transf.' },
-  { key: 'other', label: 'Otro' },
+  { key: 'all', label: strings.all },
+  { key: 'usd_cash', label: strings.paymentUSD },
+  { key: 'ves_cash', label: strings.paymentVES },
+  { key: 'pago_movil', label: strings.paymentPagoMovil },
+  { key: 'kontigo', label: strings.paymentKontigo },
+  { key: 'binance', label: strings.paymentBinance },
+  { key: 'transfer_ves', label: strings.paymentTransferVES },
+  { key: 'other', label: strings.paymentOther },
 ];
 
 export default function SalesScreen() {
@@ -81,7 +81,7 @@ export default function SalesScreen() {
     try {
       await exportSalesToCSV(filteredSales);
     } catch {
-      Alert.alert('Error', 'No se pudo exportar la lista');
+      Alert.alert(strings.errorTitle, strings.exportError);
     }
   }
 
@@ -115,7 +115,7 @@ export default function SalesScreen() {
               <TextInput
                 value={searchQuery}
                 onChangeText={setSearchQuery}
-                placeholder="Buscar por cliente..."
+                placeholder={strings.searchClient}
                 className="bg-white border border-gray-200 rounded-xl px-4 py-3 pl-10 text-base"
                 placeholderTextColor={colors.textSecondary}
               />
@@ -150,7 +150,7 @@ export default function SalesScreen() {
                   className={`px-3 py-1.5 rounded-full border ${clientFilter === 'all' ? 'bg-indigo-600 border-indigo-600' : 'bg-white border-gray-200'}`}
                 >
                   <Text className={`text-xs font-medium ${clientFilter === 'all' ? 'text-white' : 'text-gray-600'}`}>
-                    Todos
+                    {strings.all}
                   </Text>
                 </TouchableOpacity>
                 {frequentClients.map((name) => (
@@ -174,7 +174,7 @@ export default function SalesScreen() {
                 className="flex-row items-center justify-center mb-4 bg-white border border-gray-200 rounded-xl py-2.5"
               >
                 <Ionicons name="download-outline" size={18} color={colors.primary} />
-                <Text className="text-indigo-600 text-sm font-medium ml-2">Exportar CSV</Text>
+                <Text className="text-indigo-600 text-sm font-medium ml-2">{strings.exportCSV}</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -183,7 +183,7 @@ export default function SalesScreen() {
           <View className="flex-1 items-center justify-center p-6">
             <Ionicons name="cash-outline" size={64} color={colors.border} />
             <Text className="text-gray-400 text-lg mt-4">{strings.emptySales}</Text>
-            {searchQuery && <Text className="text-gray-400 text-sm mt-1">Intenta con otro término de búsqueda</Text>}
+            {searchQuery && <Text className="text-gray-400 text-sm mt-1">{strings.tryAnother}</Text>}
           </View>
         }
         refreshControl={

@@ -45,7 +45,7 @@ export default function ClientDetailScreen() {
   }
 
   function handleDelete() {
-    Alert.alert(strings.deleteClient, `¿Eliminar a "${currentClient.name}"?`, [
+    Alert.alert(strings.deleteClient, `${strings.deleteClientConfirm} "${currentClient.name}"?`, [
       { text: strings.cancel, style: 'cancel' },
       {
         text: strings.deleteClient,
@@ -79,7 +79,7 @@ export default function ClientDetailScreen() {
             <TextInput
               value={phone}
               onChangeText={setPhone}
-              placeholder="+58 ..."
+              placeholder={strings.phonePlaceholder}
               placeholderTextColor="#9ca3af"
               className="border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-3 mb-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               keyboardType="phone-pad"
@@ -88,7 +88,7 @@ export default function ClientDetailScreen() {
             <TextInput
               value={email}
               onChangeText={setEmail}
-              placeholder="cliente@email.com"
+              placeholder={strings.emailPlaceholder}
               placeholderTextColor="#9ca3af"
               className="border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-3 mb-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               keyboardType="email-address"
@@ -98,7 +98,7 @@ export default function ClientDetailScreen() {
             <TextInput
               value={notes}
               onChangeText={setNotes}
-              placeholder="Notas opcionales"
+              placeholder={strings.optionalNotes}
               placeholderTextColor="#9ca3af"
               multiline
               className="border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-3 mb-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 min-h-[60px]"
@@ -124,7 +124,7 @@ export default function ClientDetailScreen() {
                 {client.notes && <Text className="text-sm text-gray-600 dark:text-gray-400">{client.notes}</Text>}
               </View>
             ) : (
-              <Text className="text-sm text-gray-400 dark:text-gray-500">Sin datos de contacto</Text>
+              <Text className="text-sm text-gray-400 dark:text-gray-500">{strings.noContactData}</Text>
             )}
             <View className="flex-row gap-3 mt-4">
               <TouchableOpacity

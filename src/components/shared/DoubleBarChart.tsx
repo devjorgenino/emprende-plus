@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { strings } from '../../constants/strings';
 
 export interface DoubleBarData {
   label: string;
@@ -39,11 +40,11 @@ export function DoubleBarChart({
       <View className="flex-row gap-4 mb-2">
         <View className="flex-row items-center gap-1.5">
           <View className="w-3 h-3 rounded-sm" style={{ backgroundColor: incomeColor }} />
-          <Text className="text-xs text-gray-500 dark:text-gray-400">Ingresos</Text>
+          <Text className="text-xs text-gray-500 dark:text-gray-400">{strings.income}</Text>
         </View>
         <View className="flex-row items-center gap-1.5">
           <View className="w-3 h-3 rounded-sm" style={{ backgroundColor: expenseColor }} />
-          <Text className="text-xs text-gray-500 dark:text-gray-400">Egresos</Text>
+          <Text className="text-xs text-gray-500 dark:text-gray-400">{strings.expenses}</Text>
         </View>
       </View>
 

@@ -72,10 +72,10 @@ export default function SettingsScreen() {
       if (available) {
         await Sharing.shareAsync(uri, { mimeType: 'application/json', dialogTitle: strings.appName + ' Backup' });
       } else {
-        Alert.alert('Backup creado', `Archivo guardado en: ${uri}`);
+        Alert.alert(strings.backupCreated, `${strings.backupSavedTo} ${uri}`);
       }
     } catch (e) {
-      Alert.alert('Error', 'No se pudo crear el backup');
+      Alert.alert(strings.errorTitle, strings.backupError);
     } finally {
       setIsBackingUp(false);
     }
@@ -83,12 +83,12 @@ export default function SettingsScreen() {
 
   async function handleRestore() {
     Alert.alert(
-      'Restaurar Backup',
-      'Esta acción reemplazará todos los datos actuales. ¿Estás seguro?',
+      strings.restoreBackup,
+      strings.restoreWarning,
       [
         { text: strings.cancel, style: 'cancel' },
         {
-          text: 'Restaurar',
+          text: strings.restore,
           style: 'destructive',
           onPress: async () => {
             setIsRestoring(true);
@@ -128,9 +128,9 @@ export default function SettingsScreen() {
                 }
               }
 
-              Alert.alert('Listo', 'Backup restaurado correctamente. Reinicia la app para ver los cambios.');
+              Alert.alert(strings.done, strings.restoreSuccess);
             } catch (e) {
-              Alert.alert('Error', 'No se pudo restaurar el backup. Verifica que el archivo sea válido.');
+              Alert.alert(strings.errorTitle, strings.restoreError);
             } finally {
               setIsRestoring(false);
             }
@@ -144,9 +144,9 @@ export default function SettingsScreen() {
     <ScrollView className="flex-1 bg-gray-50 dark:bg-gray-900" contentContainerStyle={{ padding: 16 }}>
       {/* Sección: Backup */}
       <View className="bg-white dark:bg-gray-800 rounded-xl p-5 mb-4 border border-gray-200 dark:border-gray-700">
-        <Text className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">Respaldo de Datos</Text>
+        <Text className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">{strings.dataBackup}</Text>
         <Text className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-          Exporta todos tus datos como archivo JSON o restaura desde un backup previo.
+          {strings.dataBackupDesc}
         </Text>
 
         <TouchableOpacity
@@ -160,7 +160,7 @@ export default function SettingsScreen() {
             <Ionicons name="cloud-upload-outline" size={18} color="white" />
           )}
           <Text className="text-white text-sm font-semibold">
-            {isBackingUp ? 'Exportando...' : 'Exportar Backup'}
+            {isBackingUp ? strings.exporting : strings.exportBackup}
           </Text>
         </TouchableOpacity>
 
@@ -171,28 +171,28 @@ export default function SettingsScreen() {
         >
           <Ionicons name="cloud-download-outline" size={18} color="#D97706" />
           <Text className="text-amber-700 dark:text-amber-300 text-sm font-semibold">
-            {isRestoring ? 'Restaurando...' : 'Restaurar Backup'}
+            {isRestoring ? strings.restoring : strings.restoreBackup}
           </Text>
         </TouchableOpacity>
       </View>
 
       {/* Sección: Historial de Tasas */}
       <View className="bg-white dark:bg-gray-800 rounded-xl p-5 mb-4 border border-gray-200 dark:border-gray-700">
-        <Text className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">Historial de Tasas</Text>
+        <Text className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">{strings.rateHistory}</Text>
         <Text className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-          Tasas de cambio registradas en ventas, cotizaciones y egresos.
+          {strings.rateHistoryDesc}
         </Text>
 
         {rates.length === 0 ? (
           <Text className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">
-            No hay tasas registradas
+            {strings.noRates}
           </Text>
         ) : (
           <View className="gap-1">
             {rates.map((r, idx) => (
               <View key={idx} className="flex-row justify-between items-center py-2 border-b border-gray-50 dark:border-gray-700">
                 <Text className="text-sm text-gray-700 dark:text-gray-300">
-                  1 USD = Bs. {r.rate.toFixed(2)}
+                  {strings.rateShortLabel} {r.rate.toFixed(2)}
                 </Text>
                 <View className="flex-row items-center gap-2">
                   <Text className="text-xs text-gray-400 dark:text-gray-500">
@@ -210,19 +210,19 @@ export default function SettingsScreen() {
 
       {/* Sección: Info de la App */}
       <View className="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 mb-8">
-        <Text className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">Acerca de</Text>
+        <Text className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">{strings.about}</Text>
         <View className="gap-1 mt-2">
           <View className="flex-row justify-between">
             <Text className="text-sm text-gray-500 dark:text-gray-400">{strings.appName}</Text>
-            <Text className="text-sm text-gray-700 dark:text-gray-300">v1.0.0</Text>
+            <Text className="text-sm text-gray-700 dark:text-gray-300">{strings.version}</Text>
           </View>
           <View className="flex-row justify-between">
-            <Text className="text-sm text-gray-500 dark:text-gray-400">SDK</Text>
-            <Text className="text-sm text-gray-700 dark:text-gray-300">Expo 54</Text>
+            <Text className="text-sm text-gray-500 dark:text-gray-400">{strings.sdk}</Text>
+            <Text className="text-sm text-gray-700 dark:text-gray-300">{strings.expoVersion}</Text>
           </View>
           <View className="flex-row justify-between">
-            <Text className="text-sm text-gray-500 dark:text-gray-400">Framework</Text>
-            <Text className="text-sm text-gray-700 dark:text-gray-300">React Native</Text>
+            <Text className="text-sm text-gray-500 dark:text-gray-400">{strings.framework}</Text>
+            <Text className="text-sm text-gray-700 dark:text-gray-300">{strings.reactNativeVersion}</Text>
           </View>
         </View>
       </View>

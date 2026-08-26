@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { colors } from '../../constants/colors';
+import { strings } from '../../constants/strings';
 import type { InventoryItem as InventoryItemType } from '../../types';
 
 interface InventoryItemProps {
@@ -22,7 +23,7 @@ export function InventoryItem({ item, onEdit, onDelete }: InventoryItemProps) {
             <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">{item.name}</Text>
             {isLowStock && (
               <View className="bg-red-100 dark:bg-red-900/40 rounded-full px-2 py-0.5">
-                <Text className="text-[11px] font-semibold text-red-600 dark:text-red-400">Stock Bajo</Text>
+                <Text className="text-[11px] font-semibold text-red-600 dark:text-red-400">{strings.lowStock}</Text>
               </View>
             )}
           </View>
@@ -34,11 +35,11 @@ export function InventoryItem({ item, onEdit, onDelete }: InventoryItemProps) {
             <Text className="text-xs text-gray-400 dark:text-gray-500">{item.unit}</Text>
           </View>
           {item.supplier && (
-            <Text className="text-xs text-gray-400 dark:text-gray-500 mt-1">Proveedor: {item.supplier}</Text>
+            <Text className="text-xs text-gray-400 dark:text-gray-500 mt-1">{strings.supplierPrefix}{item.supplier}</Text>
           )}
           {item.lowStockThreshold && (
             <Text className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
-              Alerta: &le; {item.lowStockThreshold} {item.unit}
+              {strings.alertPrefix}{item.lowStockThreshold} {item.unit}
             </Text>
           )}
         </View>
@@ -53,11 +54,11 @@ export function InventoryItem({ item, onEdit, onDelete }: InventoryItemProps) {
       <View className="flex-row justify-end gap-4 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
         <TouchableOpacity onPress={onEdit} className="flex-row items-center gap-1">
           <Ionicons name="create-outline" size={16} color={colors.primary} />
-          <Text className="text-indigo-600 dark:text-indigo-400 text-sm">Editar</Text>
+          <Text className="text-indigo-600 dark:text-indigo-400 text-sm">{strings.edit}</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={onDelete} className="flex-row items-center gap-1">
           <Ionicons name="trash-outline" size={16} color={colors.error} />
-          <Text className="text-red-500 text-sm">Eliminar</Text>
+          <Text className="text-red-500 text-sm">{strings.delete}</Text>
         </TouchableOpacity>
       </View>
     </Card>

@@ -156,7 +156,7 @@ export default function DashboardScreen() {
               <View className="w-1/2 pr-2 mb-2">
                 <DashboardCard
                   icon="trending-up"
-                  label="Ingresos USD"
+                  label={strings.incomeUSD}
                   value={`$${data.totalIncomeUSD.toFixed(2)}`}
                   color="#6366F1"
                 />
@@ -164,7 +164,7 @@ export default function DashboardScreen() {
               <View className="w-1/2 pl-2 mb-2">
                 <DashboardCard
                   icon="trending-up"
-                  label="Ingresos Bs."
+                  label={strings.incomeVES}
                   value={`Bs. ${data.totalIncomeVES.toFixed(2)}`}
                   color="#6366F1"
                 />
@@ -172,7 +172,7 @@ export default function DashboardScreen() {
               <View className="w-1/2 pr-2 mb-2">
                 <DashboardCard
                   icon="cart"
-                  label="Egresos USD"
+                  label={strings.expensesUSD}
                   value={`$${data.totalExpensesUSD.toFixed(2)}`}
                   color="#EF4444"
                 />
@@ -180,7 +180,7 @@ export default function DashboardScreen() {
               <View className="w-1/2 pl-2 mb-2">
                 <DashboardCard
                   icon="cart"
-                  label="Egresos Bs."
+                  label={strings.expensesVES}
                   value={`Bs. ${data.totalExpensesVES.toFixed(2)}`}
                   color="#EF4444"
                 />
@@ -188,7 +188,7 @@ export default function DashboardScreen() {
               <View className="w-1/2 pr-2 mb-2">
                 <DashboardCard
                   icon="calculator"
-                  label="Ganancia Neta USD"
+                  label={strings.netIncomeUSD}
                   value={`$${data.netIncomeUSD.toFixed(2)}`}
                   color={data.netIncomeUSD >= 0 ? '#10B981' : '#EF4444'}
                 />
@@ -196,7 +196,7 @@ export default function DashboardScreen() {
               <View className="w-1/2 pl-2 mb-2">
                 <DashboardCard
                   icon="cube"
-                  label="Items Inventario"
+                  label={strings.inventoryItems}
                   value={String(data.inventoryItemsCount)}
                   color="#F59E0B"
                 />
@@ -205,7 +205,7 @@ export default function DashboardScreen() {
 
             {/* Selector de moneda para gráficos */}
             <View className="flex-row items-center justify-end gap-2 mb-2">
-              <Text className="text-xs text-gray-500 dark:text-gray-400">Gráfico en:</Text>
+              <Text className="text-xs text-gray-500 dark:text-gray-400">{strings.chartIn}</Text>
               <TouchableOpacity
                 onPress={() => setChartCurrency('USD')}
                 className={`px-2.5 py-1 rounded-full ${chartCurrency === 'USD' ? 'bg-indigo-600' : 'bg-gray-200 dark:bg-gray-800'}`}
@@ -227,7 +227,7 @@ export default function DashboardScreen() {
             {/* Gráfico de doble barra */}
             <View className="bg-white dark:bg-gray-800 rounded-xl p-4 mb-4">
               <Text className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                Ingresos vs Egresos (6 meses)
+                {strings.incomeVsExpenses}
               </Text>
               <DoubleBarChart
                 data={chartData}
@@ -239,7 +239,7 @@ export default function DashboardScreen() {
             {expensePieData.length > 0 && (
               <View className="bg-white dark:bg-gray-800 rounded-xl p-4 mb-4">
                 <Text className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                  Gastos por Categoría
+                  {strings.expensesByCategory}
                 </Text>
                 <PieChart data={expensePieData} prefix={chartCurrency === 'USD' ? '$' : 'Bs. '} />
               </View>
@@ -251,7 +251,7 @@ export default function DashboardScreen() {
                 <View className="flex-row items-center gap-2 mb-2">
                   <Ionicons name="alert-circle" size={18} color="#F59E0B" />
                   <Text className="text-sm font-semibold text-amber-800 dark:text-amber-200">
-                    Stock bajo ({lowStockItems.length})
+                    {strings.stockLow} ({lowStockItems.length})
                   </Text>
                 </View>
                 {lowStockItems.slice(0, 3).map((item) => (
@@ -261,7 +261,7 @@ export default function DashboardScreen() {
                 ))}
                 {lowStockItems.length > 3 && (
                   <Text className="text-xs text-amber-600 dark:text-amber-400 mt-1 ml-1">
-                    +{lowStockItems.length - 3} más
+                    +{lowStockItems.length - 3} {strings.moreLabel}
                   </Text>
                 )}
               </View>
@@ -271,9 +271,9 @@ export default function DashboardScreen() {
             {recentSales.length > 0 && (
               <View className="mb-4">
                 <View className="flex-row items-center justify-between mb-3">
-                  <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">Últimas ventas</Text>
+                  <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">{strings.recentSales}</Text>
                   <TouchableOpacity onPress={() => router.push('/(tabs)/sales')}>
-                    <Text className="text-sm text-indigo-600 dark:text-indigo-400">Ver más</Text>
+                    <Text className="text-sm text-indigo-600 dark:text-indigo-400">{strings.viewMore}</Text>
                   </TouchableOpacity>
                 </View>
                 {recentSales.map((sale) => (
@@ -290,9 +290,9 @@ export default function DashboardScreen() {
             {recentExpenses.length > 0 && (
               <View className="mb-4">
                 <View className="flex-row items-center justify-between mb-3">
-                  <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">Últimos egresos</Text>
+                  <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">{strings.recentExpenses}</Text>
                   <TouchableOpacity onPress={() => router.push('/(tabs)/expenses')}>
-                    <Text className="text-sm text-indigo-600 dark:text-indigo-400">Ver más</Text>
+                    <Text className="text-sm text-indigo-600 dark:text-indigo-400">{strings.viewMore}</Text>
                   </TouchableOpacity>
                 </View>
                 {recentExpenses.map((expense) => (
@@ -308,9 +308,9 @@ export default function DashboardScreen() {
             {data.saleCount === 0 && data.expenseCount === 0 && (
               <View className="py-8 items-center">
                 <Ionicons name="bar-chart-outline" size={48} color={colors.border} />
-                <Text className="text-gray-400 dark:text-gray-500 text-base mt-2">Sin datos en este período</Text>
+                <Text className="text-gray-400 dark:text-gray-500 text-base mt-2">{strings.noDataPeriod}</Text>
                 <Text className="text-gray-400 dark:text-gray-500 text-sm mt-1">
-                  Registra ventas y egresos para ver tu resumen
+                  {strings.startRecording}
                 </Text>
               </View>
             )}

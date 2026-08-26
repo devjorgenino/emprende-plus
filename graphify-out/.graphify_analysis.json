@@ -1,0 +1,805 @@
+{
+  "communities": {
+    "0": [
+      "app_inventory_id",
+      "app_tabs_expenses",
+      "app_tabs_expenses_expensesscreen",
+      "app_tabs_expenses_expensesscreen_handleexport",
+      "app_tabs_expenses_expensesscreen_handlerefresh",
+      "app_tabs_index",
+      "app_tabs_sales",
+      "app_tabs_sales_payment_filters",
+      "app_tabs_sales_salesscreen",
+      "app_tabs_sales_salesscreen_handleexport",
+      "expo_router",
+      "src_components_shared_cartitem",
+      "src_components_shared_cartitem_cartitem",
+      "src_components_shared_cartsummary",
+      "src_components_shared_cartsummary_cartsummary",
+      "src_components_shared_cartsummary_cartsummaryprops",
+      "src_components_shared_dashboardcard",
+      "src_components_shared_dashboardcard_dashboardcard",
+      "src_components_shared_dashboardcard_dashboardcardprops",
+      "src_components_shared_expenseitem",
+      "src_components_shared_expenseitem_expenseitem",
+      "src_components_shared_expenseitem_expenseitemprops",
+      "src_components_shared_expenseitem_payment_labels",
+      "src_components_shared_inventoryitem",
+      "src_components_shared_inventoryitem_inventoryitem",
+      "src_components_shared_manualratemodal",
+      "src_components_shared_manualratemodal_manualratemodal",
+      "src_components_shared_manualratemodal_manualratemodal_handlesubmit",
+      "src_components_shared_manualratemodal_manualratemodalprops",
+      "src_components_shared_rateindicator",
+      "src_components_shared_saleitem",
+      "src_components_shared_saleitem_methodlabels",
+      "src_components_shared_saleitem_saleitem",
+      "src_components_shared_salessummary",
+      "src_components_shared_salessummary_salessummary",
+      "src_components_shared_salessummary_salessummaryprops",
+      "src_components_shared_serviceitem",
+      "src_components_shared_serviceselector",
+      "src_components_shared_serviceselector_serviceselector",
+      "src_components_shared_simplebarchart",
+      "src_components_shared_simplebarchart_baritem",
+      "src_components_shared_simplebarchart_simplebarchart",
+      "src_components_shared_simplebarchart_simplebarchartprops",
+      "src_components_ui_badge",
+      "src_components_ui_badge_badge",
+      "src_components_ui_badge_badgeprops",
+      "src_components_ui_badge_variantclasses",
+      "src_components_ui_card",
+      "src_components_ui_card_card",
+      "src_components_ui_card_cardprops",
+      "src_constants_colors",
+      "src_constants_colors_colors",
+      "src_utils_csv",
+      "src_utils_csv_escapecsv",
+      "src_utils_csv_expensestocsv",
+      "src_utils_csv_exportexpensestocsv",
+      "src_utils_csv_exportsalestocsv",
+      "src_utils_csv_salestocsv"
+    ],
+    "1": [
+      "app_quotes_id",
+      "app_quotes_id_quotedetailscreen",
+      "app_quotes_id_quotedetailscreen_handleregistersale",
+      "app_quotes_id_quotedetailscreen_handleshare",
+      "app_tabs_calculator",
+      "app_tabs_calculator_calculatorscreen",
+      "app_tabs_calculator_calculatorscreen_handlesave",
+      "app_tabs_calculator_calculatorscreen_handleselect",
+      "app_tabs_calculator_calculatorscreen_handleshare",
+      "app_tabs_calculator_calculatorscreen_switchmode",
+      "src_components_forms_saleform",
+      "src_components_forms_saleform_payment_methods",
+      "src_components_forms_saleform_saleform",
+      "src_components_forms_saleform_saleform_handleconfirm",
+      "src_components_forms_saleform_saleformprops",
+      "src_components_shared_cartitem_cartitemprops",
+      "src_components_shared_quoteimage",
+      "src_components_shared_quoteimage_quoteimage",
+      "src_components_shared_quoteimage_quoteimageprops",
+      "src_components_shared_saleitem_saleitemprops",
+      "src_hooks_useexportquote",
+      "src_hooks_useexportquote_useexportquote",
+      "src_services_db_repositories_quote_repository",
+      "src_services_db_repositories_quote_repository_deletequote",
+      "src_services_db_repositories_quote_repository_getallquotes",
+      "src_services_db_repositories_quote_repository_getquotebyid",
+      "src_services_db_repositories_quote_repository_mapquote",
+      "src_services_db_repositories_quote_repository_mapquoteitem",
+      "src_services_db_repositories_quote_repository_savequote",
+      "src_services_db_repositories_quote_repository_updatequotestatus",
+      "src_services_db_repositories_sale_repository",
+      "src_services_db_repositories_sale_repository_createsale",
+      "src_services_db_repositories_sale_repository_deletesale",
+      "src_services_db_repositories_sale_repository_getallsales",
+      "src_services_db_repositories_sale_repository_getsalebyid",
+      "src_services_db_repositories_sale_repository_mapsale",
+      "src_services_db_repositories_sale_repository_mapsaleitem",
+      "src_services_db_repositories_sale_repository_updatesale",
+      "src_store_quote_store",
+      "src_store_quote_store_now",
+      "src_store_quote_store_quotestate",
+      "src_store_quote_store_usequotestore",
+      "src_store_sale_store",
+      "src_store_sale_store_now",
+      "src_store_sale_store_saleactions",
+      "src_store_sale_store_saleerror",
+      "src_store_sale_store_salestate",
+      "src_types_index_paymentmethod",
+      "src_types_index_quote",
+      "src_types_index_quoteitem",
+      "src_types_index_sale",
+      "src_utils_id",
+      "src_utils_id_generateid"
+    ],
+    "2": [
+      "babel_core",
+      "eslint",
+      "jest",
+      "jest_expo",
+      "nativewind",
+      "package",
+      "package_devdependencies",
+      "package_devdependencies_babel_core",
+      "package_devdependencies_eslint",
+      "package_devdependencies_jest",
+      "package_devdependencies_jest_expo",
+      "package_devdependencies_nativewind",
+      "package_devdependencies_prettier",
+      "package_devdependencies_react_test_renderer",
+      "package_devdependencies_tailwindcss",
+      "package_devdependencies_testing_library_react_native",
+      "package_devdependencies_types_jest",
+      "package_devdependencies_types_react",
+      "package_devdependencies_typescript",
+      "package_jest",
+      "package_jest_preset",
+      "package_jest_setupfilesaftersetup",
+      "package_json_tailwindcss",
+      "package_main",
+      "package_name",
+      "package_private",
+      "package_scripts",
+      "package_scripts_android",
+      "package_scripts_format",
+      "package_scripts_ios",
+      "package_scripts_lint",
+      "package_scripts_start",
+      "package_scripts_test",
+      "package_scripts_typecheck",
+      "package_scripts_web",
+      "package_version",
+      "prettier",
+      "react_test_renderer",
+      "ref_testing_library_jest_native_extend_expect",
+      "testing_library_react_native",
+      "types_jest",
+      "types_react",
+      "typescript"
+    ],
+    "3": [
+      "app_inventory_id_inventorydetailscreen",
+      "app_inventory_id_inventorydetailscreen_handlesubmit",
+      "app_tabs_layout",
+      "app_tabs_layout_tablayout",
+      "src_components_shared_rateindicator_rateindicator",
+      "src_components_shared_rateprovider",
+      "src_components_shared_rateprovider_rateprovider",
+      "src_components_shared_rateprovider_rateproviderprops",
+      "src_components_shared_themeprovider",
+      "src_components_shared_themeprovider_themeprovider",
+      "src_components_shared_themeprovider_themeproviderprops",
+      "src_components_ui_themetoggle",
+      "src_components_ui_themetoggle_themetoggle",
+      "src_constants_colors_colorkey",
+      "src_constants_colors_darkcolors",
+      "src_hooks_usethemecolors",
+      "src_hooks_usethemecolors_usethemecolors",
+      "src_lib_storage",
+      "src_lib_storage_clearall",
+      "src_lib_storage_getboolean",
+      "src_lib_storage_getnumber",
+      "src_lib_storage_getobject",
+      "src_lib_storage_getstring",
+      "src_lib_storage_keys",
+      "src_lib_storage_removekey",
+      "src_lib_storage_setboolean",
+      "src_lib_storage_setnumber",
+      "src_lib_storage_setobject",
+      "src_lib_storage_setstring",
+      "src_store_rate_store",
+      "src_store_rate_store_cachedrate",
+      "src_store_rate_store_rateactions",
+      "src_store_rate_store_ratesource",
+      "src_store_rate_store_ratestate",
+      "src_store_rate_store_useratestore",
+      "src_store_theme_store",
+      "src_store_theme_store_theme",
+      "src_store_theme_store_themestate",
+      "src_store_theme_store_usethemestore"
+    ],
+    "4": [
+      "app_services_id",
+      "app_services_id_servicedetailscreen",
+      "app_services_id_servicedetailscreen_handlesubmit",
+      "app_services_index",
+      "app_services_index_serviceslistscreen",
+      "app_services_index_serviceslistscreen_handledelete",
+      "app_tabs_inventory",
+      "app_tabs_inventory_inventoryscreen",
+      "app_tabs_inventory_inventoryscreen_handledelete",
+      "src_components_shared_serviceitem_serviceitem",
+      "src_components_shared_serviceitem_serviceitemprops",
+      "src_components_shared_serviceselector_serviceselectorprops",
+      "src_components_ui_modal",
+      "src_components_ui_modal_modal",
+      "src_components_ui_modal_modalprops",
+      "src_constants_strings",
+      "src_constants_strings_stringkey",
+      "src_constants_strings_strings",
+      "src_features_services_usecreateservice",
+      "src_features_services_usecreateservice_usecreateservice",
+      "src_features_services_usedeleteservice",
+      "src_features_services_usedeleteservice_usedeleteservice",
+      "src_features_services_useservicelist",
+      "src_features_services_useservicelist_useservicelist",
+      "src_features_services_useupdateservice",
+      "src_features_services_useupdateservice_useupdateservice",
+      "src_hooks_useexchangerate",
+      "src_hooks_useexchangerate_useexchangerate",
+      "src_store_quote_store_quoteactions",
+      "src_store_service_store",
+      "src_store_service_store_now",
+      "src_store_service_store_serviceactions",
+      "src_store_service_store_serviceerror",
+      "src_store_service_store_servicestate",
+      "src_store_service_store_useservicestore",
+      "src_types_index_service",
+      "src_types_index_updateserviceinput"
+    ],
+    "5": [
+      "app_layout",
+      "app_layout_rootlayout",
+      "app_layout_statusbarhandler",
+      "src_lib_db",
+      "src_lib_db_closedatabase",
+      "src_lib_db_getdatabase",
+      "src_services_db_migrations",
+      "src_services_db_migrations_migrations",
+      "src_services_db_migrations_runmigrations",
+      "src_services_db_repositories_expense_repository",
+      "src_services_db_repositories_expense_repository_createexpense",
+      "src_services_db_repositories_expense_repository_deleteexpense",
+      "src_services_db_repositories_expense_repository_getallexpenses",
+      "src_services_db_repositories_expense_repository_getexpensebyid",
+      "src_services_db_repositories_expense_repository_mapexpense",
+      "src_services_db_repositories_expense_repository_updateexpense",
+      "src_services_db_repositories_inventory_repository",
+      "src_services_db_repositories_inventory_repository_createitem",
+      "src_services_db_repositories_inventory_repository_deleteitem",
+      "src_services_db_repositories_inventory_repository_getallitems",
+      "src_services_db_repositories_inventory_repository_getitembyid",
+      "src_services_db_repositories_inventory_repository_maprow",
+      "src_services_db_repositories_inventory_repository_updateitem",
+      "src_services_db_repositories_service_repository",
+      "src_services_db_repositories_service_repository_createservice",
+      "src_services_db_repositories_service_repository_deleteservice",
+      "src_services_db_repositories_service_repository_getallservices",
+      "src_services_db_repositories_service_repository_getservicebyid",
+      "src_services_db_repositories_service_repository_updateservice",
+      "src_services_db_schema",
+      "src_services_db_schema_initializedatabase"
+    ],
+    "6": [
+      "ref_expo_tsconfig_base",
+      "ref_nativewind_env_d_ts",
+      "ref_src_components",
+      "ref_src_constants",
+      "ref_src_features",
+      "ref_src_hooks",
+      "ref_src_lib",
+      "ref_src_services",
+      "ref_src_store",
+      "ref_src_types",
+      "ref_src_utils",
+      "ref_ts",
+      "ref_tsx",
+      "tsconfig",
+      "tsconfig_compileroptions",
+      "tsconfig_compileroptions_baseurl",
+      "tsconfig_compileroptions_paths",
+      "tsconfig_compileroptions_strict",
+      "tsconfig_extends",
+      "tsconfig_include",
+      "tsconfig_paths_components",
+      "tsconfig_paths_constants",
+      "tsconfig_paths_features",
+      "tsconfig_paths_hooks",
+      "tsconfig_paths_lib",
+      "tsconfig_paths_services",
+      "tsconfig_paths_store",
+      "tsconfig_paths_types",
+      "tsconfig_paths_utils"
+    ],
+    "7": [
+      "app_expenses_id",
+      "app_expenses_id_expensedetailscreen",
+      "app_expenses_id_expensedetailscreen_handledelete",
+      "app_expenses_id_expensedetailscreen_handlesubmit",
+      "app_expenses_id_headerdeletebutton",
+      "app_expenses_new",
+      "app_expenses_new_newexpensescreen",
+      "app_expenses_new_newexpensescreen_handlesubmit",
+      "src_components_forms_expenseform",
+      "src_components_forms_expenseform_categories",
+      "src_components_forms_expenseform_expenseform",
+      "src_components_forms_expenseform_expenseform_handlesubmit",
+      "src_components_forms_expenseform_expenseform_validate",
+      "src_components_forms_expenseform_expenseformprops",
+      "src_components_forms_expenseform_payment_methods",
+      "src_store_expense_store",
+      "src_store_expense_store_expenseactions",
+      "src_store_expense_store_expenseerror",
+      "src_store_expense_store_expensestate",
+      "src_store_expense_store_now",
+      "src_store_expense_store_useexpensestore",
+      "src_types_index",
+      "src_types_index_asyncstate",
+      "src_types_index_createexpenseinput",
+      "src_types_index_exchangerate",
+      "src_types_index_expense",
+      "src_types_index_updateexpenseinput"
+    ],
+    "8": [
+      "src_components_forms_inventoryform",
+      "src_components_forms_inventoryform_categories",
+      "src_components_forms_inventoryform_inventoryform",
+      "src_components_forms_inventoryform_inventoryform_handlepickphoto",
+      "src_components_forms_inventoryform_inventoryform_handlesubmit",
+      "src_components_forms_inventoryform_inventoryform_pickimage",
+      "src_components_forms_inventoryform_inventoryform_takephoto",
+      "src_components_forms_inventoryform_inventoryform_validate",
+      "src_components_forms_inventoryform_inventoryformprops",
+      "src_components_forms_inventoryform_units",
+      "src_components_forms_quoteform",
+      "src_components_forms_quoteform_quoteform",
+      "src_components_forms_quoteform_quoteformprops",
+      "src_components_forms_serviceform",
+      "src_components_forms_serviceform_serviceform",
+      "src_components_forms_serviceform_serviceform_handlesubmit",
+      "src_components_forms_serviceform_serviceform_validate",
+      "src_components_forms_serviceform_serviceformprops",
+      "src_components_ui_button",
+      "src_components_ui_button_button",
+      "src_components_ui_button_buttonprops",
+      "src_components_ui_button_textvariants",
+      "src_components_ui_button_variantstyles",
+      "src_components_ui_input",
+      "src_components_ui_input_input",
+      "src_components_ui_input_inputprops",
+      "src_types_index_createserviceinput"
+    ],
+    "9": [
+      "app",
+      "app_adaptiveicon_backgroundcolor",
+      "app_adaptiveicon_backgroundimage",
+      "app_adaptiveicon_foregroundimage",
+      "app_adaptiveicon_monochromeimage",
+      "app_android_adaptiveicon",
+      "app_android_package",
+      "app_expo",
+      "app_expo_android",
+      "app_expo_icon",
+      "app_expo_ios",
+      "app_expo_name",
+      "app_expo_orientation",
+      "app_expo_scheme",
+      "app_expo_slug",
+      "app_expo_splash",
+      "app_expo_userinterfacestyle",
+      "app_expo_version",
+      "app_expo_web",
+      "app_ios_bundleidentifier",
+      "app_ios_supportstablet",
+      "app_splash_backgroundcolor",
+      "app_splash_image",
+      "app_splash_resizemode",
+      "app_web_favicon"
+    ],
+    "10": [
+      "app_sales_id",
+      "app_sales_id_methodlabels",
+      "app_sales_id_payment_methods",
+      "app_sales_id_saledetailscreen",
+      "app_sales_id_saledetailscreen_handledelete",
+      "app_sales_id_saledetailscreen_handlesave",
+      "app_sales_id_saledetailscreen_parsedatefromsale",
+      "app_sales_id_saledetailscreen_startedit",
+      "src_components_shared_clientpicker",
+      "src_components_shared_clientpicker_clientpicker",
+      "src_components_shared_clientpicker_clientpicker_handlecreate",
+      "src_components_shared_clientpicker_clientpicker_handleselect",
+      "src_components_shared_clientpicker_clientpicker_load",
+      "src_components_shared_clientpicker_clientpickerprops",
+      "src_services_db_repositories_client_repository",
+      "src_services_db_repositories_client_repository_client",
+      "src_services_db_repositories_client_repository_createclient",
+      "src_services_db_repositories_client_repository_getallclients",
+      "src_services_db_repositories_client_repository_getclientbyid",
+      "src_services_db_repositories_client_repository_getclientbyname",
+      "src_services_db_repositories_client_repository_mapclient",
+      "src_services_db_repositories_client_repository_upsertclientbyname"
+    ],
+    "11": [
+      "app_tabs_index_dashboardscreen",
+      "app_tabs_index_dashboardscreen_handlerefresh",
+      "src_components_shared_inventoryitem_inventoryitemprops",
+      "src_components_shared_periodselector",
+      "src_components_shared_periodselector_periods",
+      "src_components_shared_periodselector_periodselector",
+      "src_components_shared_periodselector_periodselectorprops",
+      "src_features_dashboard_usedashboard",
+      "src_features_dashboard_usedashboard_dashboarddata",
+      "src_features_dashboard_usedashboard_getperioddates",
+      "src_features_dashboard_usedashboard_period",
+      "src_features_dashboard_usedashboard_usedashboard",
+      "src_store_inventory_store",
+      "src_store_inventory_store_createinventoryinput",
+      "src_store_inventory_store_inventoryactions",
+      "src_store_inventory_store_inventoryerror",
+      "src_store_inventory_store_inventorystate",
+      "src_store_inventory_store_now",
+      "src_store_inventory_store_updateinventoryinput",
+      "src_store_inventory_store_useinventorystore",
+      "src_store_sale_store_usesalestore",
+      "src_types_index_inventoryitem"
+    ],
+    "12": [
+      "date_fns",
+      "expo_image_picker",
+      "expo_splash_screen",
+      "package_dependencies",
+      "package_dependencies_date_fns",
+      "package_dependencies_expo_image_picker",
+      "package_dependencies_expo_router",
+      "package_dependencies_expo_splash_screen",
+      "package_dependencies_react_native_css_interop",
+      "react_native_css_interop"
+    ],
+    "13": [
+      "src_components_ui_errorboundary",
+      "src_components_ui_errorboundary_errorboundary",
+      "src_components_ui_errorboundary_errorboundary_componentdidcatch",
+      "src_components_ui_errorboundary_errorboundary_getderivedstatefromerror",
+      "src_components_ui_errorboundary_errorboundary_handlereset",
+      "src_components_ui_errorboundary_errorboundary_render",
+      "src_components_ui_errorboundary_props",
+      "src_components_ui_errorboundary_state"
+    ],
+    "14": [
+      "src_components_shared_daterangefilter",
+      "src_components_shared_daterangefilter_daterangefilter",
+      "src_components_shared_daterangefilter_daterangefilter_handleperiod",
+      "src_components_shared_daterangefilter_daterangefilterprops",
+      "src_components_shared_daterangefilter_getperioddates",
+      "src_components_shared_daterangefilter_quickperiod"
+    ],
+    "15": [
+      "src_constants_index",
+      "src_constants_layout",
+      "src_constants_layout_spacing",
+      "src_constants_theme",
+      "src_constants_theme_borderradius",
+      "src_constants_theme_typography"
+    ],
+    "16": [
+      "app_expo_plugins",
+      "expo_font",
+      "expo_sqlite",
+      "package_dependencies_expo_font",
+      "package_dependencies_expo_sqlite"
+    ],
+    "17": [
+      "metro_config",
+      "metro_config_config",
+      "metro_config_getdefaultconfig",
+      "metro_config_withnativewind"
+    ],
+    "18": [
+      "src_components_ui_toast",
+      "src_components_ui_toast_toast",
+      "src_components_ui_toast_toastprops"
+    ],
+    "19": [
+      "expo",
+      "package_dependencies_expo"
+    ],
+    "20": [
+      "expo_constants",
+      "package_dependencies_expo_constants"
+    ],
+    "21": [
+      "expo_crypto",
+      "package_dependencies_expo_crypto"
+    ],
+    "22": [
+      "expo_file_system",
+      "package_dependencies_expo_file_system"
+    ],
+    "23": [
+      "expo_linking",
+      "package_dependencies_expo_linking"
+    ],
+    "24": [
+      "expo_metro_runtime",
+      "package_dependencies_expo_metro_runtime"
+    ],
+    "25": [
+      "expo_sharing",
+      "package_dependencies_expo_sharing"
+    ],
+    "26": [
+      "expo_status_bar",
+      "package_dependencies_expo_status_bar"
+    ],
+    "27": [
+      "expo_vector_icons",
+      "package_dependencies_expo_vector_icons"
+    ],
+    "28": [
+      "hookform_resolvers",
+      "package_dependencies_hookform_resolvers"
+    ],
+    "29": [
+      "package_dependencies_react",
+      "react"
+    ],
+    "30": [
+      "package_dependencies_react_dom",
+      "react_dom"
+    ],
+    "31": [
+      "package_dependencies_react_hook_form",
+      "react_hook_form"
+    ],
+    "32": [
+      "package_dependencies_react_native",
+      "react_native"
+    ],
+    "33": [
+      "package_dependencies_react_native_async_storage_async_storage",
+      "react_native_async_storage_async_storage"
+    ],
+    "34": [
+      "package_dependencies_react_native_gesture_handler",
+      "react_native_gesture_handler"
+    ],
+    "35": [
+      "package_dependencies_react_native_reanimated",
+      "react_native_reanimated"
+    ],
+    "36": [
+      "package_dependencies_react_native_safe_area_context",
+      "react_native_safe_area_context"
+    ],
+    "37": [
+      "package_dependencies_react_native_screens",
+      "react_native_screens"
+    ],
+    "38": [
+      "package_dependencies_react_native_view_shot",
+      "react_native_view_shot"
+    ],
+    "39": [
+      "package_dependencies_react_native_web",
+      "react_native_web"
+    ],
+    "40": [
+      "package_dependencies_react_native_worklets",
+      "react_native_worklets"
+    ],
+    "41": [
+      "package_dependencies_zod",
+      "zod"
+    ],
+    "42": [
+      "package_dependencies_zustand",
+      "zustand"
+    ],
+    "43": [
+      "src_types_css_d",
+      "src_types_css_d_css"
+    ],
+    "44": [
+      "babel_config"
+    ],
+    "45": [
+      "nativewind_env_d"
+    ],
+    "46": [
+      "prettier_config"
+    ],
+    "47": [
+      "tailwind_config"
+    ]
+  },
+  "cohesion": {
+    "0": 0.06836055656382335,
+    "1": 0.07039187227866474,
+    "2": 0.046511627906976744,
+    "3": 0.08232118758434548,
+    "4": 0.10960960960960961,
+    "5": 0.13118279569892474,
+    "6": 0.06896551724137931,
+    "7": 0.1396011396011396,
+    "8": 0.10541310541310542,
+    "9": 0.08,
+    "10": 0.1471861471861472,
+    "11": 0.13852813852813853,
+    "12": 0.2,
+    "13": 0.25,
+    "14": 0.4,
+    "15": 0.5333333333333333,
+    "16": 0.4,
+    "17": 0.5,
+    "18": 0.6666666666666666,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0,
+    "25": 1.0,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0,
+    "40": 1.0,
+    "41": 1.0,
+    "42": 1.0,
+    "43": 1.0,
+    "44": 1.0,
+    "45": 1.0,
+    "46": 1.0,
+    "47": 1.0
+  },
+  "gods": [
+    {
+      "id": "src_lib_db_getdatabase",
+      "label": "getDatabase()",
+      "degree": 40
+    },
+    {
+      "id": "src_constants_colors_colors",
+      "label": "colors",
+      "degree": 24
+    },
+    {
+      "id": "src_store_service_store_useservicestore",
+      "label": "useServiceStore",
+      "degree": 21
+    },
+    {
+      "id": "src_utils_id_generateid",
+      "label": "generateId()",
+      "degree": 18
+    },
+    {
+      "id": "src_store_rate_store_useratestore",
+      "label": "useRateStore",
+      "degree": 18
+    },
+    {
+      "id": "expo_router",
+      "label": "expo-router",
+      "degree": 16
+    },
+    {
+      "id": "src_store_sale_store_usesalestore",
+      "label": "useSaleStore",
+      "degree": 13
+    },
+    {
+      "id": "src_store_expense_store_useexpensestore",
+      "label": "useExpenseStore",
+      "degree": 13
+    },
+    {
+      "id": "app_expo",
+      "label": "expo",
+      "degree": 13
+    },
+    {
+      "id": "src_types_index_service",
+      "label": "Service",
+      "degree": 12
+    }
+  ],
+  "surprises": [
+    {
+      "source": "StatusBarHandler()",
+      "target": "useThemeStore",
+      "source_files": [
+        "app/_layout.tsx",
+        "src/store/theme.store.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities; peripheral node `StatusBarHandler()` unexpectedly reaches hub `useThemeStore`"
+    },
+    {
+      "source": "ExpensesScreen()",
+      "target": "useExpenseStore",
+      "source_files": [
+        "app/(tabs)/expenses.tsx",
+        "src/store/expense.store.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "SalesScreen()",
+      "target": "useSaleStore",
+      "source_files": [
+        "app/(tabs)/sales.tsx",
+        "src/store/sale.store.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "QuoteDetailScreen()",
+      "target": "useSaleStore",
+      "source_files": [
+        "app/quotes/[id].tsx",
+        "src/store/sale.store.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "CalculatorScreen()",
+      "target": "useRateStore",
+      "source_files": [
+        "app/(tabs)/calculator.tsx",
+        "src/store/rate.store.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `expo-router` connect `colors.ts` to `quotes/[id].tsx`, `useRateStore`, `service.store.ts`, `getDatabase`, `types/index.ts`, `client.repository.ts`, `dependencies`, `plugins`?",
+      "why": "High betweenness centrality (0.330) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `dependencies` connect `dependencies` to `devDependencies`, `plugins`, `expo`, `expo-constants`, `expo-crypto`, `expo-file-system`, `expo-linking`, `@expo/metro-runtime`, `expo-sharing`, `expo-status-bar`, `@expo/vector-icons`, `@hookform/resolvers`, `react`, `react-dom`, `react-hook-form`, `react-native`, `@react-native-async-storage/async-storage`, `react-native-gesture-handler`, `react-native-reanimated`, `react-native-safe-area-context`, `react-native-screens`, `react-native-view-shot`, `react-native-web`, `react-native-worklets`, `zod`, `zustand`?",
+      "why": "High betweenness centrality (0.308) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `expo-router` connect `dependencies` to `colors.ts`?",
+      "why": "High betweenness centrality (0.230) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `ManualRateModalProps`, `DashboardCardProps`, `BarItem` to the rest of the system?",
+      "why": "145 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `colors.ts` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.06836055656382335 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `quotes/[id].tsx` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.07039187227866474 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `devDependencies` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.046511627906976744 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

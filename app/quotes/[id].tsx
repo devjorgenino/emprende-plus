@@ -10,6 +10,7 @@ import { SaleForm } from '../../src/components/forms/SaleForm';
 import { Button } from '../../src/components/ui/Button';
 import { colors } from '../../src/constants/colors';
 import { shareQuotePdf } from '../../src/services/pdf/quotePdf';
+import { strings } from '../../src/constants/strings';
 import type { Quote, PaymentMethod } from '../../src/types';
 
 export default function QuoteDetailScreen() {
@@ -36,18 +37,18 @@ export default function QuoteDetailScreen() {
       const uri = await captureFn();
       const available = await Sharing.isAvailableAsync();
       if (!available) {
-        setExportError('Compartir no está disponible en este dispositivo');
+        setExportError(strings.shareNotAvailableMsg);
         setIsExporting(false);
         return;
       }
       await Sharing.shareAsync(uri, {
         mimeType: 'image/png',
-        dialogTitle: 'Compartir Cotización',
+        dialogTitle: strings.shareQuoteDialog,
       });
       updateQuoteStatus(quote.id, 'sent');
       setQuote({ ...quote, status: 'sent' });
     } catch (e) {
-      setExportError(e instanceof Error ? e.message : 'Error al compartir');
+      setExportError(e instanceof Error ? e.message : strings.shareErrorGeneric);
     } finally {
       setIsExporting(false);
     }
@@ -62,7 +63,7 @@ export default function QuoteDetailScreen() {
       updateQuoteStatus(quote.id, 'sent');
       setQuote({ ...quote, status: 'sent' });
     } catch (e) {
-      setPdfError(e instanceof Error ? e.message : 'Error al exportar PDF');
+      setPdfError(e instanceof Error ? e.message : strings.exportPdfError);
     } finally {
       setIsExportingPdf(false);
     }
@@ -91,22 +92,22 @@ export default function QuoteDetailScreen() {
     return (
       <View className="flex-1 items-center justify-center bg-gray-50">
         <ActivityIndicator size="large" color={colors.primary} />
-        <Text className="mt-4 text-gray-500">Cargando cotización...</Text>
+        <Text className="mt-4 text-gray-500">{strings.loadingQuote}</Text>
       </View>
     );
   }
 
   const statusLabels: Record<string, { label: string; color: string }> = {
-    draft: { label: 'Borrador', color: colors.textSecondary },
-    sent: { label: 'Enviada', color: colors.primary },
-    accepted: { label: 'Aceptada', color: colors.secondary },
-    rejected: { label: 'Rechazada', color: colors.error },
+    draft: { label: strings.statusDraft, color: colors.textSecondary },
+    sent: { label: strings.statusSent, color: colors.primary },
+    accepted: { label: strings.statusAccepted, color: colors.secondary },
+    rejected: { label: strings.statusRejected, color: colors.error },
   };
   const statusInfo = statusLabels[quote.status] || statusLabels.draft;
 
   return (
     <View className="flex-1 bg-gray-50">
-      <Stack.Screen options={{ title: 'Detalle de Cotización' }} />
+      <Stack.Screen options={{ title: strings.quoteDetailTitle }} />
 
       <ScrollView className="flex-1" contentContainerStyle={{ padding: 16 }}>
         <View className="flex-row items-center gap-2 mb-4">
@@ -117,16 +118,16 @@ export default function QuoteDetailScreen() {
         </View>
 
         {quote.clientName && (
-          <Text className="text-lg font-semibold text-gray-900 mb-4">Cliente: {quote.clientName}</Text>
+          <Text className="text-lg font-semibold text-gray-900 mb-4">{strings.clientLabel}: {quote.clientName}</Text>
         )}
 
         <View className="bg-white rounded-xl p-4 border border-gray-100 mb-4">
-          <Text className="text-sm font-semibold text-gray-500 uppercase mb-3">Servicios</Text>
+          <Text className="text-sm font-semibold text-gray-500 uppercase mb-3">{strings.sectionServices}</Text>
           {quote.items.map((item, idx) => (
             <View key={idx} className="flex-row justify-between items-center py-2 border-b border-gray-100 last:border-0">
               <View className="flex-1 mr-3">
                 <Text className="text-sm text-gray-900">{item.serviceName}</Text>
-                <Text className="text-xs text-gray-400">x{item.quantity} · ${item.priceUSD.toFixed(2)} c/u</Text>
+                <Text className="text-xs text-gray-400">x{item.quantity} · ${item.priceUSD.toFixed(2)} {strings.perUnit}</Text>
               </View>
               <Text className="text-sm font-medium text-gray-900">${item.subtotalUSD.toFixed(2)}</Text>
             </View>
@@ -135,21 +136,21 @@ export default function QuoteDetailScreen() {
 
         <View className="bg-white rounded-xl p-4 border border-gray-100 mb-4">
           <View className="flex-row justify-between mb-2">
-            <Text className="text-base text-gray-600">Total USD</Text>
+            <Text className="text-base text-gray-600">{strings.totalUSDLabel}</Text>
             <Text className="text-base font-bold text-gray-900">${quote.totalUSD.toFixed(2)}</Text>
           </View>
           <View className="flex-row justify-between mb-2">
-            <Text className="text-base text-gray-600">Total VES</Text>
+            <Text className="text-base text-gray-600">{strings.totalVESLabel}</Text>
             <Text className="text-base font-bold text-gray-900">Bs. {quote.totalVES.toFixed(2)}</Text>
           </View>
           <Text className="text-xs text-gray-400 mt-2">
-            Tasa: 1 USD = Bs. {quote.exchangeRate.toFixed(2)}
+            {strings.rateLabel} {quote.exchangeRate.toFixed(2)}
           </Text>
         </View>
 
         {quote.notes && (
           <View className="bg-white rounded-xl p-4 border border-gray-100 mb-4">
-            <Text className="text-sm font-semibold text-gray-500 uppercase mb-1">Notas</Text>
+            <Text className="text-sm font-semibold text-gray-500 uppercase mb-1">{strings.notesLabel}</Text>
             <Text className="text-sm text-gray-700">{quote.notes}</Text>
           </View>
         )}
@@ -175,7 +176,7 @@ export default function QuoteDetailScreen() {
 
         {saleSuccess && (
           <View className="p-3 bg-emerald-50 rounded-lg mb-4">
-            <Text className="text-emerald-700 text-sm font-medium">¡Venta registrada exitosamente!</Text>
+            <Text className="text-emerald-700 text-sm font-medium">{strings.saleRegisteredSuccess}</Text>
           </View>
         )}
       </ScrollView>
@@ -185,14 +186,14 @@ export default function QuoteDetailScreen() {
           <>
             <View className="flex-row gap-3">
               <View className="flex-1">
-                <Button title={isExporting ? 'Exportando...' : 'Compartir'} onPress={handleShare} disabled={isExporting} variant="ghost" />
+                <Button title={isExporting ? strings.exporting : strings.share} onPress={handleShare} disabled={isExporting} variant="ghost" />
               </View>
               <View className="flex-1">
-                <Button title={isExportingPdf ? 'Exportando...' : 'Exportar PDF'} onPress={handleExportPdf} disabled={isExportingPdf} variant="ghost" />
+                <Button title={isExportingPdf ? strings.exporting : strings.exportPDF} onPress={handleExportPdf} disabled={isExportingPdf} variant="ghost" />
               </View>
             </View>
             <Button
-              title={quote.status === 'draft' ? 'Registrar Venta' : 'Venta ya registrada'}
+              title={quote.status === 'draft' ? strings.registerSale : strings.saleAlreadyRegistered}
               onPress={() => setShowSaleForm(true)}
               disabled={quote.status !== 'draft'}
             />

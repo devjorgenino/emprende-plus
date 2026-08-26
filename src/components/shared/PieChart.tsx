@@ -1,4 +1,5 @@
 import { View, Text } from 'react-native';
+import { strings } from '../../constants/strings';
 
 export interface PieSlice {
   label: string;
@@ -23,7 +24,7 @@ export function PieChart({ data, size = 140, prefix = '$' }: PieChartProps) {
   if (total <= 0) {
     return (
       <View className="items-center py-4">
-        <Text className="text-sm text-gray-400">Sin datos de gastos en este período</Text>
+        <Text className="text-sm text-gray-400">{strings.noStock}</Text>
       </View>
     );
   }

@@ -4,8 +4,9 @@ import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
+import { strings } from '../../constants/strings';
 
-const CATEGORIES = ['Materia Prima', 'Herramientas', 'Empaque', 'Oficina', 'Otro'];
+const CATEGORIES = [strings.categoryRawMaterial, strings.categoryTools, strings.categoryPackaging, strings.categoryOffice, strings.paymentOther];
 const UNITS = ['unidad', 'kg', 'litro', 'metro', 'caja', 'otro'];
 
 interface InventoryFormProps {
@@ -60,7 +61,7 @@ export function InventoryForm({ initialValues, exchangeRate, onSubmit, onCancel,
   async function pickImage() {
     const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!perm.granted) {
-      Alert.alert('Permiso requerido', 'Se necesita acceso a la galería para seleccionar una foto');
+      Alert.alert(strings.cameraPermission, strings.galleryPermission);
       return;
     }
     const result = await ImagePicker.launchImageLibraryAsync({ allowsEditing: true, aspect: [1, 1], quality: 0.8 });
@@ -72,7 +73,7 @@ export function InventoryForm({ initialValues, exchangeRate, onSubmit, onCancel,
   async function takePhoto() {
     const perm = await ImagePicker.requestCameraPermissionsAsync();
     if (!perm.granted) {
-      Alert.alert('Permiso requerido', 'Se necesita acceso a la cámara para tomar una foto');
+      Alert.alert(strings.cameraPermission, strings.cameraPermissionMsg);
       return;
     }
     const result = await ImagePicker.launchCameraAsync({ allowsEditing: true, aspect: [1, 1], quality: 0.8 });
@@ -82,21 +83,21 @@ export function InventoryForm({ initialValues, exchangeRate, onSubmit, onCancel,
   }
 
   function handlePickPhoto() {
-    Alert.alert('Foto del material', 'Selecciona una opción', [
-      { text: 'Tomar foto', onPress: takePhoto },
-      { text: 'Elegir de galería', onPress: pickImage },
-      { text: 'Cancelar', style: 'cancel' },
+    Alert.alert(strings.photo, strings.selectPhoto, [
+      { text: strings.takePhoto, onPress: takePhoto },
+      { text: strings.chooseFromGallery, onPress: pickImage },
+      { text: strings.cancel, style: 'cancel' },
     ]);
   }
 
   function validate(): boolean {
     const newErrors: Record<string, string> = {};
-    if (!name.trim()) newErrors.name = 'El nombre es obligatorio';
+    if (!name.trim()) newErrors.name = strings.nameRequired;
     const qty = parseFloat(quantity);
-    if (isNaN(qty) || qty < 0) newErrors.quantity = 'La cantidad no puede ser negativa';
+    if (isNaN(qty) || qty < 0) newErrors.quantity = strings.quantityNonNegative;
     const price = parseFloat(purchasePriceUSD);
-    if (isNaN(price) || price < 0) newErrors.purchasePriceUSD = 'El precio no puede ser negativo';
-    if (!purchaseDate) newErrors.purchaseDate = 'La fecha de compra es obligatoria';
+    if (isNaN(price) || price < 0) newErrors.purchasePriceUSD = strings.priceNonNegative;
+    if (!purchaseDate) newErrors.purchaseDate = strings.purchaseDateRequired;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
@@ -121,10 +122,10 @@ export function InventoryForm({ initialValues, exchangeRate, onSubmit, onCancel,
   return (
     <ScrollView className="flex-1 bg-gray-50">
       <View className="p-4">
-        <Input label="Nombre del material" value={name} onChangeText={setName} placeholder="Ej: Tela algodón" error={errors.name} />
-        <Input label="Descripción" value={description} onChangeText={setDescription} placeholder="Descripción opcional" multiline />
+        <Input label={strings.materialName} value={name} onChangeText={setName} placeholder={strings.materialPlaceholder} error={errors.name} />
+        <Input label={strings.description} value={description} onChangeText={setDescription} placeholder={strings.descriptionOptional} multiline />
 
-        <Text className="text-sm font-medium text-gray-700 mb-2">Categoría</Text>
+        <Text className="text-sm font-medium text-gray-700 mb-2">{strings.category}</Text>
         <View className="flex-row flex-wrap gap-2 mb-4">
           {CATEGORIES.map((cat) => (
             <TouchableOpacity key={cat} onPress={() => setCategory(cat)}
@@ -136,10 +137,10 @@ export function InventoryForm({ initialValues, exchangeRate, onSubmit, onCancel,
 
         <View className="flex-row gap-3">
           <View className="flex-1">
-            <Input label="Cantidad" value={quantity} onChangeText={setQuantity} placeholder="0" keyboardType="decimal-pad" error={errors.quantity} />
+            <Input label={strings.quantityLabel} value={quantity} onChangeText={setQuantity} placeholder="0" keyboardType="decimal-pad" error={errors.quantity} />
           </View>
           <View className="flex-1">
-            <Text className="text-sm font-medium text-gray-700 mb-2">Unidad</Text>
+            <Text className="text-sm font-medium text-gray-700 mb-2">{strings.unitLabel}</Text>
             <View className="flex-row flex-wrap gap-1">
               {UNITS.map((u) => (
                 <TouchableOpacity key={u} onPress={() => setUnit(u)}
@@ -151,52 +152,52 @@ export function InventoryForm({ initialValues, exchangeRate, onSubmit, onCancel,
           </View>
         </View>
 
-        <Input label="Precio de compra (USD)" value={purchasePriceUSD} onChangeText={setPurchasePriceUSD} placeholder="0.00" keyboardType="decimal-pad" error={errors.purchasePriceUSD} />
+        <Input label={strings.purchasePrice} value={purchasePriceUSD} onChangeText={setPurchasePriceUSD} placeholder="0.00" keyboardType="decimal-pad" error={errors.purchasePriceUSD} />
 
         {exchangeRate && (
           <View className="mb-4 p-3 bg-indigo-50 rounded-lg">
             <Text className="text-sm text-gray-600">
-              Precio en Bs: <Text className="font-bold text-indigo-700">Bs. {priceVES.toFixed(2)}</Text>
+              {strings.priceInVES} <Text className="font-bold text-indigo-700">Bs. {priceVES.toFixed(2)}</Text>
             </Text>
-            <Text className="text-xs text-gray-400 mt-1">Tasa: 1 USD = Bs. {exchangeRate.toFixed(2)}</Text>
+            <Text className="text-xs text-gray-400 mt-1">{strings.rateLabel} {exchangeRate.toFixed(2)}</Text>
           </View>
         )}
 
-        <Input label="Proveedor" value={supplier} onChangeText={setSupplier} placeholder="Nombre del proveedor (opcional)" />
-        <Input label="Fecha de compra" value={purchaseDate} onChangeText={setPurchaseDate} placeholder="YYYY-MM-DD" error={errors.purchaseDate} />
+        <Input label={strings.supplierLabel} value={supplier} onChangeText={setSupplier} placeholder={strings.supplierOptionalPlaceholder} />
+        <Input label={strings.purchaseDateLabel} value={purchaseDate} onChangeText={setPurchaseDate} placeholder="YYYY-MM-DD" error={errors.purchaseDate} />
         <View className="mb-4 p-3 bg-amber-50 rounded-lg">
           <Input
-            label="Alerta de stock bajo (umbral)"
+            label={strings.stockAlert}
             value={lowStockThreshold}
             onChangeText={setLowStockThreshold}
-            placeholder="Ej: 5 — se alerta cuando la cantidad es menor o igual"
+            placeholder={strings.lowStockPlaceholder}
             keyboardType="decimal-pad"
           />
           <Text className="text-xs text-amber-700 mt-1">
-            Deja vacío para desactivar la alerta de este material.
+            {strings.stockAlertDesc}
           </Text>
         </View>
-        <Input label="Notas" value={notes} onChangeText={setNotes} placeholder="Notas opcionales" multiline />
+        <Input label={strings.notesLabel} value={notes} onChangeText={setNotes} placeholder={strings.optionalNotes} multiline />
 
         {/* Foto */}
-        <Text className="text-sm font-medium text-gray-700 mb-2">Foto del material</Text>
+        <Text className="text-sm font-medium text-gray-700 mb-2">{strings.photo}</Text>
         {photoUri ? (
           <View className="mb-4">
             <Image source={{ uri: photoUri }} style={{ width: '100%', height: 160, borderRadius: 12 }} resizeMode="cover" />
             <TouchableOpacity onPress={() => setPhotoUri(undefined)} className="mt-2">
-              <Text className="text-red-500 text-sm text-center">Eliminar foto</Text>
+              <Text className="text-red-500 text-sm text-center">{strings.deletePhoto}</Text>
             </TouchableOpacity>
           </View>
         ) : (
           <TouchableOpacity onPress={handlePickPhoto} className="mb-4 border-2 border-dashed border-gray-200 rounded-xl py-6 items-center bg-white">
             <Ionicons name="camera-outline" size={32} color="#9ca3af" />
-            <Text className="text-gray-400 text-sm mt-2">Agregar foto</Text>
+            <Text className="text-gray-400 text-sm mt-2">{strings.addPhoto}</Text>
           </TouchableOpacity>
         )}
 
         <View className="flex-row gap-3 mt-4">
-          <View className="flex-1"><Button title="Cancelar" onPress={onCancel} variant="ghost" /></View>
-          <View className="flex-1"><Button title="Guardar" onPress={handleSubmit} disabled={isSubmitting} /></View>
+          <View className="flex-1"><Button title={strings.cancel} onPress={onCancel} variant="ghost" /></View>
+          <View className="flex-1"><Button title={strings.save} onPress={handleSubmit} disabled={isSubmitting} /></View>
         </View>
       </View>
     </ScrollView>

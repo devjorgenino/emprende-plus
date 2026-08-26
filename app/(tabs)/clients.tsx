@@ -39,7 +39,7 @@ export default function ClientsScreen() {
   function handleDelete(client: Client) {
     Alert.alert(
       strings.deleteClient,
-      `¿Eliminar a "${client.name}"?`,
+      `${strings.deleteClientConfirm} "${client.name}"?`,
       [
         { text: strings.cancel, style: 'cancel' },
         {
