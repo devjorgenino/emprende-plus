@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { strings } from '../../constants/strings';
 
@@ -44,7 +44,7 @@ export function DateRangeFilter({ onPeriodChange }: DateRangeFilterProps) {
     }
   }
 
-  const periods: Array<{ key: QuickPeriod; label: string }> = [
+  const periods: { key: QuickPeriod; label: string }[] = [
     { key: 'today', label: strings.periodToday },
     { key: 'week', label: strings.periodWeek },
     { key: 'month', label: strings.periodMonth },

@@ -26,11 +26,7 @@ export default function SalesScreen() {
   const router = useRouter();
   const sales = useSaleStore((s) => s.sales);
   const isLoading = useSaleStore((s) => s.isLoading);
-  const error = useSaleStore((s) => s.error);
   const loadSales = useSaleStore((s) => s.loadSales);
-  const getSalesInRange = useSaleStore((s) => s.getSalesInRange);
-  const getTotalUSDInRange = useSaleStore((s) => s.getTotalUSDInRange);
-  const getTotalVESInRange = useSaleStore((s) => s.getTotalVESInRange);
   const searchSales = useSaleStore((s) => s.searchSales);
 
   const [searchQuery, setSearchQuery] = useState('');

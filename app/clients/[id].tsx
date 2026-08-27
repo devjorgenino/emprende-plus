@@ -19,6 +19,7 @@ export default function ClientDetailScreen() {
 
   useEffect(() => {
     const c = getClientById(id);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setClient(c);
     setPhone(c?.phone ?? '');
     setEmail(c?.email ?? '');

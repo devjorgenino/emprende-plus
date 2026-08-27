@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Modal, FlatList, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { getAllClients, createClient, type Client } from '../../services/db/repositories/client.repository';
+import { getAllClients, type Client } from '../../services/db/repositories/client.repository';
 import { strings } from '../../constants/strings';
 
 interface ClientPickerProps {
@@ -17,20 +17,15 @@ export function ClientPicker({ value, onChange }: ClientPickerProps) {
     setClients(getAllClients());
   }
 
-  useEffect(() => { if (visible) load(); }, [visible]);
+  // Carga de clientes al abrir el selector (patrón RN estándar)
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (visible) load();
+  }, [visible]);
 
   function handleSelect(client: Client) {
     onChange(client.name);
     setVisible(false);
-  }
-
-  function handleCreate() {
-    Alert.prompt?.(strings.newClient, strings.clientName, (name) => {
-      if (name?.trim()) {
-        createClient(name.trim());
-        load();
-      }
-    });
   }
 
   return (

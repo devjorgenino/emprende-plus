@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, Alert, ActivityIndicator, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { getAllClients, createClient, updateClient, deleteClient, type Client } from '../../src/services/db/repositories/client.repository';
+import { getAllClients, createClient, deleteClient, type Client } from '../../src/services/db/repositories/client.repository';
 import { colors } from '../../src/constants/colors';
 import { strings } from '../../src/constants/strings';
 
@@ -21,7 +21,11 @@ export default function ClientsScreen() {
     }
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  // Carga inicial de clientes desde SQLite (patrón RN estándar de data-loading)
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    load();
+  }, [load]);
 
   const filtered = search.trim()
     ? clients.filter((c) => c.name.toLowerCase().includes(search.trim().toLowerCase()))

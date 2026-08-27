@@ -4,8 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
-import { closeDatabase, getDatabase } from '../../src/lib/db';
-import { colors } from '../../src/constants/colors';
+import { getDatabase } from '../../src/lib/db';
 import { strings } from '../../src/constants/strings';
 import { Logo } from '../../src/components/brand/Logo';
 
@@ -43,8 +42,10 @@ export default function SettingsScreen() {
         .sort((a, b) => (a.date < b.date ? 1 : -1))
         .slice(0, 20);
 
+      // Historial de tasas: lectura síncrona de SQLite al montar (patrón RN)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setRates(all);
-    } catch (e) {
+    } catch {
       // Silently handle — rates are not critical
     }
   }, []);
@@ -75,7 +76,7 @@ export default function SettingsScreen() {
       } else {
         Alert.alert(strings.backupCreated, `${strings.backupSavedTo} ${uri}`);
       }
-    } catch (e) {
+    } catch {
       Alert.alert(strings.errorTitle, strings.backupError);
     } finally {
       setIsBackingUp(false);
@@ -103,7 +104,7 @@ export default function SettingsScreen() {
               }
 
               const json = await FileSystem.readAsStringAsync(result.assets[0].uri);
-              const backup = JSON.parse(json) as Record<string, Array<Record<string, unknown>>>;
+              const backup = JSON.parse(json) as Record<string, Record<string, unknown>[]>;
 
               const db = getDatabase();
               const tables = ['quote_items', 'sale_items', 'sales', 'quotes', 'expenses', 'inventory_items', 'services', 'clients'];
@@ -130,7 +131,7 @@ export default function SettingsScreen() {
               }
 
               Alert.alert(strings.done, strings.restoreSuccess);
-            } catch (e) {
+            } catch {
               Alert.alert(strings.errorTitle, strings.restoreError);
             } finally {
               setIsRestoring(false);

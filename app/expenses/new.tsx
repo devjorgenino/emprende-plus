@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View, Alert } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { useExpenseStore } from '../../src/store/expense.store';
 import { useRateStore } from '../../src/store/rate.store';

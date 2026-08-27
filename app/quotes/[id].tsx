@@ -73,7 +73,7 @@ export default function QuoteDetailScreen() {
     if (!quote) return;
     setIsSavingSale(true);
     try {
-      const saleId = await createSaleFromQuote(quote, paymentMethod);
+      await createSaleFromQuote(quote, paymentMethod);
       setSaleSuccess(true);
       setShowSaleForm(false);
       setQuote({ ...quote, status: 'accepted' });

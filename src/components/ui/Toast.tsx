@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Animated, Text, View, AccessibilityInfo } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -19,8 +19,9 @@ const ICONS: Record<ToastType, { name: 'checkmark-circle' | 'alert-circle' | 'in
 };
 
 export function Toast({ message, visible, onHide, duration = 2200, type = 'success' }: ToastProps) {
-  const opacity = useRef(new Animated.Value(0)).current;
-  const translateY = useRef(new Animated.Value(-12)).current;
+  // Animated.Values estables (creados una sola vez) para el ciclo de vida del toast
+  const opacity = useMemo(() => new Animated.Value(0), []);
+  const translateY = useMemo(() => new Animated.Value(-12), []);
   const icon = ICONS[type];
 
   useEffect(() => {
@@ -39,7 +40,7 @@ export function Toast({ message, visible, onHide, duration = 2200, type = 'succe
       }, duration);
       return () => clearTimeout(timer);
     }
-  }, [visible, message]);
+  }, [visible, message, duration, onHide, opacity, translateY]);
 
   if (!visible) return null;
 

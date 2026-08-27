@@ -14,7 +14,6 @@ export default function InventoryScreen() {
   const router = useRouter();
   const items = useInventoryStore((s) => s.items);
   const isLoading = useInventoryStore((s) => s.isLoading);
-  const error = useInventoryStore((s) => s.error);
   const loadItems = useInventoryStore((s) => s.loadItems);
   const deleteItem = useInventoryStore((s) => s.deleteItem);
   const servicesCount = useServiceStore((s) => s.services.filter((svc) => svc.isActive).length);

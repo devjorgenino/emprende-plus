@@ -43,7 +43,7 @@ export default function DashboardScreen() {
     loadSales();
     loadInventory();
     loadExpenses();
-  }, []);
+  }, [loadServices, loadSales, loadInventory, loadExpenses]);
 
   async function handleRefresh() {
     setRefreshing(true);

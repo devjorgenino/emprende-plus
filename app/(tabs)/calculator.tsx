@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, InteractionManager, TextInput, Alert, Animated } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,6 +10,7 @@ import { useRateStore } from '../../src/store/rate.store';
 import { useToastStore } from '../../src/store/toast.store';
 import { ClientPicker } from '../../src/components/shared/ClientPicker';
 import { shareQuotePdf } from '../../src/services/pdf/quotePdf';
+import { generateId } from '../../src/utils/id';
 import { strings } from '../../src/constants/strings';
 import type { Quote } from '../../src/types';
 
@@ -29,7 +30,7 @@ export default function CalculatorScreen() {
   const setNotes = useQuoteStore((s) => s.setNotes);
   const saveQuote = useQuoteStore((s) => s.saveQuote);
 
-  useEffect(() => { loadServices(); }, []);
+  useEffect(() => { loadServices(); }, [loadServices]);
 
   const [mode, setMode] = useState('select');
   const [isSaving, setIsSaving] = useState(false);
@@ -41,7 +42,8 @@ export default function CalculatorScreen() {
   const showToast = useToastStore((s) => s.showToast);
   const savedToastRef = useRef(false);
   const viewShotRef = useRef<ViewShot>(null);
-  const badgeScale = useRef(new Animated.Value(1)).current;
+  // Valor de animación estable (creado una sola vez) para el badge del carrito
+  const badgeScale = useMemo(() => new Animated.Value(1), []);
 
   // Animación de "bump" en el badge del carrito cuando cambia el número de items
   useEffect(() => {
@@ -51,7 +53,7 @@ export default function CalculatorScreen() {
       Animated.timing(badgeScale, { toValue: 1.35, duration: 120, useNativeDriver: true }),
       Animated.spring(badgeScale, { toValue: 1, friction: 4, useNativeDriver: true }),
     ]).start();
-  }, [items.length]);
+  }, [items.length, badgeScale]);
 
   function switchMode(m: string) {
     if (m === 'cart' && !clientName) {
@@ -101,7 +103,7 @@ export default function CalculatorScreen() {
         return;
       }
       await Sharing.shareAsync(uri, { mimeType: 'image/png', dialogTitle: strings.shareQuoteDialog });
-    } catch (e) {
+    } catch {
       Alert.alert(strings.errorTitle, strings.shareError);
     } finally {
       setIsExporting(false);
@@ -113,7 +115,7 @@ export default function CalculatorScreen() {
     setIsExportingPdf(true);
     try {
       const quote: Quote = {
-        id: `temp-${Date.now()}`,
+        id: generateId(),
         items,
         totalUSD,
         totalVES,
@@ -125,7 +127,7 @@ export default function CalculatorScreen() {
         createdAt: new Date().toISOString(),
       };
       await shareQuotePdf(quote);
-    } catch (e) {
+    } catch {
       Alert.alert(strings.errorTitle, strings.exportPdfError);
     } finally {
       setIsExportingPdf(false);

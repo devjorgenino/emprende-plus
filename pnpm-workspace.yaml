@@ -1,2 +1,4 @@
+allowBuilds:
+  unrs-resolver: true
 patchedDependencies:
   react-native-css-interop: patches/react-native-css-interop.patch

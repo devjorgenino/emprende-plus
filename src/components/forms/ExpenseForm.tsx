@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
-import { colors } from '../../constants/colors';
 import { strings } from '../../constants/strings';
 import type { CreateExpenseInput, PaymentMethod } from '../../types';
 

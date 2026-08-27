@@ -1,10 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const KEYS = {
-  exchangeRate: 'emprende_plus_exchange_rate',
-  theme: 'emprende_plus_theme',
-} as const;
-
 export async function getString(key: string): Promise<string | undefined> {
   const value = await AsyncStorage.getItem(key);
   return value ?? undefined;

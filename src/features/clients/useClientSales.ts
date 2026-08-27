@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useSaleStore } from '../../store/sale.store';
 import type { Sale } from '../../types';
 
@@ -17,14 +17,10 @@ export function useClientSales(clientName: string | undefined): UseClientSalesRe
   const sales = useSaleStore((s) => s.sales);
   const loadSales = useSaleStore((s) => s.loadSales);
   const isLoading = useSaleStore((s) => s.isLoading);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (!mounted) {
-      setMounted(true);
-      void loadSales();
-    }
-  }, [loadSales, mounted]);
+    void loadSales();
+  }, [loadSales]);
 
   const clientSales = useMemo(() => {
     if (!clientName) return [];

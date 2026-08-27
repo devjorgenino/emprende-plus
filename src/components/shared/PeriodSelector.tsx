@@ -7,7 +7,7 @@ interface PeriodSelectorProps {
   onChange: (period: Period) => void;
 }
 
-const PERIODS: Array<{ key: Period; label: string }> = [
+const PERIODS: { key: Period; label: string }[] = [
   { key: 'today', label: strings.periodToday },
   { key: 'week', label: strings.periodWeek },
   { key: 'month', label: strings.periodMonth },

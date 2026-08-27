@@ -13,7 +13,7 @@ import type { Service } from '../../src/types';
 export default function ServicesListScreen() {
   const router = useRouter();
   const { services, isLoading, error, refresh } = useServiceList();
-  const { remove, isDeleting } = useDeleteService();
+  const { remove } = useDeleteService();
   const [deleteTarget, setDeleteTarget] = useState<Service | null>(null);
 
   function handleDelete() {

@@ -21,7 +21,7 @@ export default function ExpensesScreen() {
 
   useEffect(() => {
     loadExpenses();
-  }, []);
+  }, [loadExpenses]);
 
   async function handleRefresh() {
     setRefreshing(true);

@@ -1,5 +1,4 @@
 import { useRef, useState, useCallback } from 'react';
-import { View } from 'react-native';
 import ViewShot from 'react-native-view-shot';
 import * as Sharing from 'expo-sharing';
 import * as quoteRepository from '../services/db/repositories/quote.repository';

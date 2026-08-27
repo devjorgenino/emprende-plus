@@ -4,7 +4,7 @@ import { Button } from '../ui/Button';
 import { strings } from '../../constants/strings';
 import type { PaymentMethod } from '../../types';
 
-const PAYMENT_METHODS: Array<{ key: PaymentMethod; label: string }> = [
+const PAYMENT_METHODS: { key: PaymentMethod; label: string }[] = [
   { key: 'usd_cash', label: strings.paymentUsdCash },
   { key: 'ves_cash', label: strings.paymentVesCash },
   { key: 'pago_movil', label: strings.paymentPagoMovil },
