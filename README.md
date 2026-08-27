@@ -23,7 +23,7 @@
     <img src="https://img.shields.io/badge/SQLite-✓-003B57?style=flat-square&logo=sqlite" alt="SQLite" />
     <img src="https://img.shields.io/badge/iOS-✓-000000?style=flat-square&logo=apple" alt="iOS" />
     <img src="https://img.shields.io/badge/Android-✓-3DDC84?style=flat-square&logo=android" alt="Android" />
-    <img src="https://img.shields.io/badge/coverage-34_tests-10B981?style=flat-square" alt="34 tests" />
+    <img src="https://img.shields.io/badge/coverage-37_tests-10B981?style=flat-square" alt="37 tests" />
   </p>
 </div>
 
@@ -121,7 +121,7 @@
 | 🏎️ Persistencia rápida | MMKV | react-native-mmkv |
 | 📝 Formularios | React Hook Form + Zod | latest |
 | 📅 Fechas | date-fns | v4 |
-| 🧪 Testing | Jest + RNTL | 34 tests |
+| 🧪 Testing | Jest + RNTL | 37 tests |
 | 📦 Package Manager | pnpm | latest |
 | 🎨 Iconos | @expo/vector-icons | Ionicons |
 
@@ -305,7 +305,7 @@ pnpm format     # Prettier
 pnpm typecheck  # tsc --noEmit
 
 # 6. Tests
-pnpm test       # Jest — 34 tests
+pnpm test       # Jest — 37 tests
 ```
 
 ---
@@ -347,7 +347,7 @@ emprende-plus/
 │   ├── constants/                # colors, strings, layout, theme
 │   ├── lib/                      # db.ts, storage.ts
 │   └── utils/                    # csv.ts, id.ts
-├── __tests__/                    # 34 tests (stores, repositories, utils)
+├── __tests__/                    # 37 tests (stores, repositories, utils, logo)
 ├── __mocks__/                    # Mocks para expo-crypto, expo-sqlite, expo-sharing, expo-file-system
 └── specs/                        # Specs F01–F15 (Spec-Driven Development)
 ```
@@ -379,15 +379,16 @@ emprende-plus/
 ## 🧪 Testing
 
 ```
-Test Suites: 3 passed, 3 total
-Tests:       34 passed, 34 total
+Test Suites: 4 passed, 4 total
+Tests:       37 passed, 37 total
 Snapshots:   0 total
-Time:        2.051 s
+Time:        5.825 s
 ```
 
 - **Stores** (Zustand): ServiceStore, SaleStore, InventoryStore, ExpenseStore, RateStore, ToastStore
 - **Repositories** (SQLite): CRUD de todas las entidades
 - **Utils**: formato de moneda, fechas, IDs
+- **Componentes**: Logo de la marca (brand)
 
 ---
 

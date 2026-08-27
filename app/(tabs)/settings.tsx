@@ -7,6 +7,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import { closeDatabase, getDatabase } from '../../src/lib/db';
 import { colors } from '../../src/constants/colors';
 import { strings } from '../../src/constants/strings';
+import { Logo } from '../../src/components/brand/Logo';
 
 interface RateRecord {
   rate: number;
@@ -210,7 +211,12 @@ export default function SettingsScreen() {
 
       {/* Sección: Info de la App */}
       <View className="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 mb-8">
-        <Text className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">{strings.about}</Text>
+        <View className="items-center mb-4">
+          <Logo variant="mark" size={72} showName />
+        </View>
+        <Text className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1 text-center">
+          {strings.about}
+        </Text>
         <View className="gap-1 mt-2">
           <View className="flex-row justify-between">
             <Text className="text-sm text-gray-500 dark:text-gray-400">{strings.appName}</Text>

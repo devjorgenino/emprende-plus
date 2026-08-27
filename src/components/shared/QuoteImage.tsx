@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { strings } from '../../constants/strings';
 import type { Quote } from '../../types';
 
@@ -11,9 +11,15 @@ export function QuoteImage({ quote }: QuoteImageProps) {
     <View className="bg-white p-6" style={{ width: 390 }}>
       {/* Header */}
       <View className="flex-row justify-between items-center mb-6 pb-4 border-b border-gray-200">
-        <View>
-          <Text className="text-2xl font-bold text-indigo-600">{strings.appName}</Text>
-          <Text className="text-xs text-gray-400 mt-1">{strings.quoteTitle}</Text>
+        <View className="flex-row items-center gap-2">
+          <Image
+            source={require('../../../assets/logo-mark.png')}
+            style={{ width: 36, height: 36, resizeMode: 'contain' }}
+          />
+          <View>
+            <Text className="text-2xl font-bold text-indigo-600">{strings.appName}</Text>
+            <Text className="text-xs text-gray-400 mt-1">{strings.quoteTitle}</Text>
+          </View>
         </View>
         <Text className="text-sm text-gray-500">{new Date(quote.createdAt).toLocaleDateString('es-VE')}</Text>
       </View>

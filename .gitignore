@@ -2,6 +2,7 @@
 
 # dependencies
 node_modules/
+.pnpm-store/
 
 # Expo
 .expo/
@@ -39,3 +40,22 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# signing keys
+/keystores/
+
+# Claude
+.claude/
+
+# Agents
+.agents/
+
+# Graphify
+/graphify-out/
+
+# Python
+__pycache__/
+*.pyc
+
+# Specs
+/specs/
