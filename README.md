@@ -354,28 +354,6 @@ emprende-plus/
 
 ---
 
-## 🗺️ Roadmap
-
-| Feature | Estado | Descripción |
-|---------|--------|-------------|
-| F01 — Servicios | ✅ Completo | CRUD de servicios con precio USD y categoría |
-| F02 — Tasa BCV | ✅ Completo | Fetch automático con cache (6h) + entrada manual |
-| F03 — Cotizador | ✅ Completo | Carrito multimoneda con totales en tiempo real |
-| F04 — Exportar Cotización | ✅ Completo | Imagen PNG + PDF con servicios, precios y tasa |
-| F05 — Registro de Ventas | ✅ Completo | Guardar cotización como venta confirmada |
-| F06 — Historial de Ventas | ✅ Completo | Lista con filtros, búsqueda, totales acumulados |
-| F07 — Inventario | ✅ Completo | CRUD con precio multimoneda y alertas de stock |
-| F08 — Dashboard | ✅ Completo | Gráficos, resumen financiero, stock bajo |
-| F09 — Egresos | ✅ Completo | Registro de compras y gastos operativos |
-| F10 — Exportar PDF | ✅ Completo | Cotización a PDF con diseño profesional |
-| F11 — Backup/Restore | ✅ Completo | Exportar/importar datos como JSON |
-| F12 — Historial de Tasas | ✅ Completo | Trazabilidad de tasas usadas |
-| F13 — Clientes | ✅ Completo | Gestión automática con historial de compras |
-| F14 — Filtros + Dark Mode | ✅ Completo | Filtros por categoría, tema oscuro |
-| F15 — Ajustes | ✅ Completo | Pantalla central de configuración |
-
----
-
 ## 🧪 Testing
 
 ```
@@ -415,5 +393,5 @@ Copyright (c) 2026 EmprendePlus
 <div align="center">
   <sub>Hecho con ❤️ para emprendedores venezolanos · 🇻🇪</sub>
   <br />
-  <sub>Spec-Driven Development · TypeScript estricto · Multimoneda siempre</sub>
+  <sub>by Jorge Niño</sub>
 </div>
