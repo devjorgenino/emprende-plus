@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { View, Alert } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
-import { useExpenseStore } from '../../src/store/expense.store';
-import { useRateStore } from '../../src/store/rate.store';
-import { ExpenseForm } from '../../src/components/forms/ExpenseForm';
-import { strings } from '../../src/constants/strings';
-import type { CreateExpenseInput } from '../../src/types';
+import { useExpenseStore } from '../../../src/store/expense.store';
+import { useRateStore } from '../../../src/store/rate.store';
+import { ExpenseForm } from '../../../src/components/forms/ExpenseForm';
+import { strings } from '../../../src/constants/strings';
+import type { CreateExpenseInput } from '../../../src/types';
 
 export default function NewExpenseScreen() {
   const router = useRouter();

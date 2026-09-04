@@ -4,8 +4,13 @@ let db: SQLiteDatabase | null = null;
 
 export function getDatabase(): SQLiteDatabase {
   if (!db) {
-    db = openDatabaseSync('emprende-plus.db');
-    db.execSync('PRAGMA foreign_keys = ON');
+    try {
+      db = openDatabaseSync('emprende-plus.db');
+      db.execSync('PRAGMA foreign_keys = ON');
+    } catch (e) {
+      console.error('Failed to open database:', e);
+      throw e;
+    }
   }
   return db;
 }

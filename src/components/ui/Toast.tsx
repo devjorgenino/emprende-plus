@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { Animated, Text, View, AccessibilityInfo } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type ToastType = 'success' | 'error' | 'info';
 
@@ -18,10 +19,15 @@ const ICONS: Record<ToastType, { name: 'checkmark-circle' | 'alert-circle' | 'in
   info: { name: 'information-circle', color: '#6366F1' },
 };
 
+// Altura de la barra de tabs inferior definida en app/(tabs)/_layout.tsx
+const TAB_BAR_HEIGHT = 64;
+const TOAST_BOTTOM_GAP = 12;
+
 export function Toast({ message, visible, onHide, duration = 2200, type = 'success' }: ToastProps) {
+  const insets = useSafeAreaInsets();
   // Animated.Values estables (creados una sola vez) para el ciclo de vida del toast
   const opacity = useMemo(() => new Animated.Value(0), []);
-  const translateY = useMemo(() => new Animated.Value(-12), []);
+  const translateY = useMemo(() => new Animated.Value(12), []);
   const icon = ICONS[type];
 
   useEffect(() => {
@@ -35,7 +41,7 @@ export function Toast({ message, visible, onHide, duration = 2200, type = 'succe
       const timer = setTimeout(() => {
         Animated.parallel([
           Animated.timing(opacity, { toValue: 0, duration: 180, useNativeDriver: true }),
-          Animated.timing(translateY, { toValue: -12, duration: 180, useNativeDriver: true }),
+          Animated.timing(translateY, { toValue: 12, duration: 180, useNativeDriver: true }),
         ]).start(() => onHide());
       }, duration);
       return () => clearTimeout(timer);
@@ -46,12 +52,16 @@ export function Toast({ message, visible, onHide, duration = 2200, type = 'succe
 
   return (
     <Animated.View
-      style={{ opacity, transform: [{ translateY }] }}
+      style={{
+        opacity,
+        transform: [{ translateY }],
+        bottom: insets.bottom + TAB_BAR_HEIGHT + TOAST_BOTTOM_GAP,
+      }}
       accessible
       accessibilityRole="alert"
       accessibilityLabel={message}
       accessibilityLiveRegion="polite"
-      className="absolute top-4 left-4 right-4 z-50 flex-row items-center gap-2 bg-gray-800 dark:bg-gray-900 dark:border dark:border-gray-700 rounded-lg py-3 px-4 shadow-lg"
+      className="absolute left-4 right-4 z-50 flex-row items-center gap-2 bg-gray-800 dark:bg-gray-900 dark:border dark:border-gray-700 rounded-lg py-3 px-4 shadow-lg"
     >
       <Ionicons name={icon.name} size={18} color={icon.color} />
       <View className="flex-1">

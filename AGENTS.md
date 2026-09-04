@@ -432,3 +432,11 @@ Configura el proyecto Expo con la estructura de directorios completa, instala to
 ---
 
 *Documento generado el 24 de junio de 2026. Versión 2.0 — Constitution revisada con mejoras de arquitectura.*
+
+---
+
+## 🔗 Segundo Cerebro
+Al completar una sesión de trabajo, reporta al Segundo Cerebro:
+```bash
+python "C:/Users/jorge/Documents/Segundo Cerebro/scripts/agent_hook.py" --project "EmprendePlus" --agent "<tu-nombre>" --summary "<resumen>" --files "<archivos>"
+```

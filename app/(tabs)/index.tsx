@@ -291,7 +291,7 @@ export default function DashboardScreen() {
               <View className="mb-4">
                 <View className="flex-row items-center justify-between mb-3">
                   <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">{strings.recentExpenses}</Text>
-                  <TouchableOpacity onPress={() => router.push('/(tabs)/expenses')}>
+                  <TouchableOpacity onPress={() => router.push('/(tabs)/inventory')}>
                     <Text className="text-sm text-indigo-600 dark:text-indigo-400">{strings.viewMore}</Text>
                   </TouchableOpacity>
                 </View>
@@ -299,7 +299,7 @@ export default function DashboardScreen() {
                   <ExpenseItem
                     key={expense.id}
                     expense={expense}
-                    onPress={() => router.push(`/expenses/${expense.id}`)}
+                    onPress={() => router.push(`/inventory/expenses/${expense.id}`)}
                   />
                 ))}
               </View>

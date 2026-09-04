@@ -84,17 +84,9 @@ export default function TabLayout() {
         name="clients"
         options={{
           title: strings.tabClients,
+          href: null,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="people-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="expenses"
-        options={{
-          title: strings.tabExpenses,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="cart-outline" size={size} color={color} />
           ),
         }}
       />

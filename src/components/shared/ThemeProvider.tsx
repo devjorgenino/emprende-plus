@@ -12,13 +12,17 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const isLoaded = useThemeStore((s) => s.isLoaded);
 
   useEffect(() => {
-    loadTheme();
+    loadTheme().catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (isLoaded) {
-      Appearance.setColorScheme(theme);
+      try {
+        Appearance.setColorScheme?.(theme);
+      } catch {
+        // Ignorar si el SO no soporta cambiar el scheme dinámicamente
+      }
     }
   }, [theme, isLoaded]);
 

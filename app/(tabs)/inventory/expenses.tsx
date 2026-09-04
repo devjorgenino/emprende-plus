@@ -2,11 +2,11 @@ import { useEffect, useState, useMemo } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl, TextInput, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { useExpenseStore } from '../../src/store/expense.store';
-import { ExpenseItem } from '../../src/components/shared/ExpenseItem';
-import { colors } from '../../src/constants/colors';
-import { strings } from '../../src/constants/strings';
-import { exportExpensesToCSV } from '../../src/utils/csv';
+import { useExpenseStore } from '../../../src/store/expense.store';
+import { ExpenseItem } from '../../../src/components/shared/ExpenseItem';
+import { colors } from '../../../src/constants/colors';
+import { strings } from '../../../src/constants/strings';
+import { exportExpensesToCSV } from '../../../src/utils/csv';
 
 export default function ExpensesScreen() {
   const router = useRouter();
@@ -91,7 +91,7 @@ export default function ExpensesScreen() {
               <Text className="text-gray-400 dark:text-gray-500 text-base mt-2">{strings.noExpenses}</Text>
               <Text className="text-gray-400 dark:text-gray-500 text-sm mt-1">{strings.addFirstExpense}</Text>
               <TouchableOpacity
-                onPress={() => router.push('/expenses/new')}
+                onPress={() => router.push('/inventory/expenses/new')}
                 accessibilityRole="button"
                 accessibilityLabel={strings.registerExpense}
                 className="mt-6 bg-indigo-600 px-6 py-3 rounded-lg"
@@ -184,7 +184,7 @@ export default function ExpensesScreen() {
                   <ExpenseItem
                     key={expense.id}
                     expense={expense}
-                    onPress={() => router.push(`/expenses/${expense.id}`)}
+                    onPress={() => router.push(`/inventory/expenses/${expense.id}`)}
                   />
                 ))
               )}
@@ -194,7 +194,7 @@ export default function ExpensesScreen() {
       </ScrollView>
 
       <TouchableOpacity
-        onPress={() => router.push('/expenses/new')}
+        onPress={() => router.push('/inventory/expenses/new')}
         className="absolute bottom-6 right-6 bg-indigo-600 w-14 h-14 rounded-full items-center justify-center shadow-lg"
       >
         <Ionicons name="add" size={28} color="white" />

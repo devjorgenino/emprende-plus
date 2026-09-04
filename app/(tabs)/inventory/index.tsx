@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { useInventoryStore } from '../../src/store/inventory.store';
-import { useServiceStore } from '../../src/store/service.store';
-import { InventoryItem } from '../../src/components/shared/InventoryItem';
-import { Modal } from '../../src/components/ui/Modal';
-import { colors } from '../../src/constants/colors';
-import { strings } from '../../src/constants/strings';
-import type { InventoryItem as InventoryItemType } from '../../src/types';
+import { useInventoryStore } from '../../../src/store/inventory.store';
+import { useServiceStore } from '../../../src/store/service.store';
+import { InventoryItem } from '../../../src/components/shared/InventoryItem';
+import { Modal } from '../../../src/components/ui/Modal';
+import { colors } from '../../../src/constants/colors';
+import { strings } from '../../../src/constants/strings';
+import type { InventoryItem as InventoryItemType } from '../../../src/types';
 
 export default function InventoryScreen() {
   const router = useRouter();
