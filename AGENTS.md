@@ -1,4 +1,4 @@
-# EmprendePlus — Prompt Maestro SDD para React Native
+# Emprende+ — Prompt Maestro SDD para React Native
 
 > **Metodología:** Spec-Driven Development (SDD)  
 > **Stack:** React Native + Expo + TypeScript  
@@ -18,24 +18,24 @@ Aplicación móvil multiplataforma (iOS/Android) para gestionar un emprendimient
 
 ## Stack Técnico (PINEADO — No cambiar sin revisar la Constitution)
 
-| Capa | Tecnología | Versión |
-|------|-----------|---------|
-| Framework | React Native + Expo | RN 0.76+ / Expo SDK 52+ |
-| Lenguaje | TypeScript estricto | `strict: true` en tsconfig |
-| Routing | Expo Router | v4 (file-based routing) |
-| Estado global | Zustand | 4+ |
-| Persistencia rápida | MMKV | react-native-mmkv |
-| Persistencia estructurada | SQLite | expo-sqlite (API síncrona SDK 52) |
-| UI / Estilos | NativeWind | v4 (Tailwind para RN) |
-| Exportar cotización | react-native-view-shot + expo-sharing | latest |
-| Tasa de cambio BCV | REST API pública | Ver sección APIs |
-| Iconos | @expo/vector-icons | Ionicons |
-| Formularios | React Hook Form + Zod | latest |
-| Fechas | date-fns | latest |
-| Testing | Jest + React Native Testing Library | latest |
-| Linter | ESLint + Prettier | latest (flat config) |
-| Package Manager | pnpm | latest |
-| ID Generation | crypto.randomUUID() | nativo |
+| Capa                      | Tecnología                            | Versión                           |
+| ------------------------- | ------------------------------------- | --------------------------------- |
+| Framework                 | React Native + Expo                   | RN 0.76+ / Expo SDK 52+           |
+| Lenguaje                  | TypeScript estricto                   | `strict: true` en tsconfig        |
+| Routing                   | Expo Router                           | v4 (file-based routing)           |
+| Estado global             | Zustand                               | 4+                                |
+| Persistencia rápida       | MMKV                                  | react-native-mmkv                 |
+| Persistencia estructurada | SQLite                                | expo-sqlite (API síncrona SDK 52) |
+| UI / Estilos              | NativeWind                            | v4 (Tailwind para RN)             |
+| Exportar cotización       | react-native-view-shot + expo-sharing | latest                            |
+| Tasa de cambio BCV        | REST API pública                      | Ver sección APIs                  |
+| Iconos                    | @expo/vector-icons                    | Ionicons                          |
+| Formularios               | React Hook Form + Zod                 | latest                            |
+| Fechas                    | date-fns                              | latest                            |
+| Testing                   | Jest + React Native Testing Library   | latest                            |
+| Linter                    | ESLint + Prettier                     | latest (flat config)              |
+| Package Manager           | pnpm                                  | latest                            |
+| ID Generation             | crypto.randomUUID()                   | nativo                            |
 
 ---
 
@@ -116,12 +116,12 @@ Screen (app/) → Component (components/) → Hook (features/) → Store (store/
 
 ## Persistencia: MMKV vs SQLite
 
-| Almacena en MMKV | Almacena en SQLite |
-|-----------------|-------------------|
-| Tasa de cambio cacheada (BCV) | Servicios (Service) |
-| Preferencias del usuario | Cotizaciones (Quote, QuoteItem) |
-| Última fecha de sync | Ventas (Sale) |
-| Configuración de la app | Items de inventario (InventoryItem) |
+| Almacena en MMKV              | Almacena en SQLite                  |
+| ----------------------------- | ----------------------------------- |
+| Tasa de cambio cacheada (BCV) | Servicios (Service)                 |
+| Preferencias del usuario      | Cotizaciones (Quote, QuoteItem)     |
+| Última fecha de sync          | Ventas (Sale)                       |
+| Configuración de la app       | Items de inventario (InventoryItem) |
 
 - **MMKV** (`lib/storage.ts`): lectura/escritura síncrona ultra-rápida para datos clave-valor pequeños.
 - **SQLite** (`lib/db.ts` + `services/db/`): datos estructurados que requieren queries, filtros, joins. Se accede mediante repositorios.
@@ -136,22 +136,22 @@ Screen (app/) → Component (components/) → Hook (features/) → Store (store/
 // src/types/index.ts
 
 interface Service {
-  id: string;                    // crypto.randomUUID()
+  id: string; // crypto.randomUUID()
   name: string;
   description?: string;
-  priceUSD: number;              // > 0, hasta 2 decimales
+  priceUSD: number; // > 0, hasta 2 decimales
   category: string;
   isActive: boolean;
-  createdAt: string;             // ISO 8601
-  updatedAt: string;             // ISO 8601
+  createdAt: string; // ISO 8601
+  updatedAt: string; // ISO 8601
 }
 
 interface QuoteItem {
   serviceId: string;
   serviceName: string;
   priceUSD: number;
-  quantity: number;              // entero > 0
-  subtotalUSD: number;           // priceUSD * quantity
+  quantity: number; // entero > 0
+  subtotalUSD: number; // priceUSD * quantity
 }
 
 interface Quote {
@@ -160,12 +160,12 @@ interface Quote {
   totalUSD: number;
   totalVES: number;
   exchangeRate: number;
-  exchangeRateDate: string;      // ISO 8601
+  exchangeRateDate: string; // ISO 8601
   clientName?: string;
   notes?: string;
   status: 'draft' | 'sent' | 'accepted' | 'rejected';
   imageUri?: string;
-  createdAt: string;             // ISO 8601
+  createdAt: string; // ISO 8601
 }
 
 interface Sale {
@@ -184,7 +184,7 @@ interface Sale {
     | 'transfer_ves'
     | 'other';
   notes?: string;
-  createdAt: string;             // ISO 8601
+  createdAt: string; // ISO 8601
 }
 
 interface InventoryItem {
@@ -192,20 +192,20 @@ interface InventoryItem {
   name: string;
   description?: string;
   category: string;
-  quantity: number;              // puede ser decimal (ej. 0.5 kg)
-  unit: string;                  // 'unidad', 'kg', 'litro', 'metro', etc.
+  quantity: number; // puede ser decimal (ej. 0.5 kg)
+  unit: string; // 'unidad', 'kg', 'litro', 'metro', etc.
   purchasePriceUSD: number;
-  purchasePriceVES: number;      // = purchasePriceUSD * exchangeRateAtPurchase (o manual)
+  purchasePriceVES: number; // = purchasePriceUSD * exchangeRateAtPurchase (o manual)
   exchangeRateAtPurchase: number;
   supplier?: string;
-  purchaseDate: string;          // ISO 8601
+  purchaseDate: string; // ISO 8601
   notes?: string;
-  createdAt: string;             // ISO 8601
+  createdAt: string; // ISO 8601
 }
 
 interface ExchangeRate {
   rate: number;
-  fetchedAt: string;             // ISO 8601
+  fetchedAt: string; // ISO 8601
   source: 'bcv' | 'manual' | 'cached';
 }
 
@@ -220,23 +220,23 @@ interface AsyncState<T> {
 
 ## Roadmap de Features (Priorizado)
 
-### Fase 1 — MVP Core *(Implementar primero)*
+### Fase 1 — MVP Core _(Implementar primero)_
 
-| ID | Feature | Descripción |
-|----|---------|-------------|
-| F01 | Gestión de Servicios | CRUD completo de servicios con precio USD y categoría |
-| F02 | Tasa BCV | Fetch automático con cache local (6h) + entrada manual |
-| F03 | Calculadora / Cotizador | Seleccionar servicios, ver precios USD/VES en tiempo real |
-| F04 | Exportar Cotización como Imagen | Imagen con servicios, precios, total USD/VES, fecha y tasa |
-| F05 | Registro de Ventas | Guardar cotización como venta confirmada con método de pago |
+| ID  | Feature                         | Descripción                                                 |
+| --- | ------------------------------- | ----------------------------------------------------------- |
+| F01 | Gestión de Servicios            | CRUD completo de servicios con precio USD y categoría       |
+| F02 | Tasa BCV                        | Fetch automático con cache local (6h) + entrada manual      |
+| F03 | Calculadora / Cotizador         | Seleccionar servicios, ver precios USD/VES en tiempo real   |
+| F04 | Exportar Cotización como Imagen | Imagen con servicios, precios, total USD/VES, fecha y tasa  |
+| F05 | Registro de Ventas              | Guardar cotización como venta confirmada con método de pago |
 
 ### Fase 2 — Control y Registro
 
-| ID | Feature | Descripción |
-|----|---------|-------------|
-| F06 | Historial de Ventas | Lista con filtros por fecha, búsqueda, totales acumulados |
+| ID  | Feature                  | Descripción                                                     |
+| --- | ------------------------ | --------------------------------------------------------------- |
+| F06 | Historial de Ventas      | Lista con filtros por fecha, búsqueda, totales acumulados       |
 | F07 | Inventario de Materiales | CRUD de materiales/implementos con precio de compra multimoneda |
-| F08 | Dashboard / Resumen | Totales del período: ingresos USD/VES, materiales comprados |
+| F08 | Dashboard / Resumen      | Totales del período: ingresos USD/VES, materiales comprados     |
 
 ### Fase 3 — Backlog Futuro
 
@@ -250,12 +250,13 @@ interface AsyncState<T> {
 
 ## APIs para la Tasa de Cambio BCV
 
-| Prioridad | Servicio | Endpoint | Notas |
-|-----------|---------|----------|-------|
-| Principal | bcv-api.rafnixg.dev | `GET /v1/exchange-rates/latest/USD` | REST, JSON limpio |
-| Fallback | cotizave.com | `GET /api/v1/rates` | BCV + paralelo + USDT/VES |
+| Prioridad | Servicio            | Endpoint                            | Notas                     |
+| --------- | ------------------- | ----------------------------------- | ------------------------- |
+| Principal | bcv-api.rafnixg.dev | `GET /v1/exchange-rates/latest/USD` | REST, JSON limpio         |
+| Fallback  | cotizave.com        | `GET /api/v1/rates`                 | BCV + paralelo + USDT/VES |
 
 **Estrategia de cache (MMKV):**
+
 1. Al abrir la app, verificar si la tasa en MMKV tiene menos de 6 horas.
 2. Si es reciente, usar la tasa cacheada (fuente: `'cached'`).
 3. Si es vieja o no existe, hacer fetch a la API principal.
@@ -306,41 +307,54 @@ interface AsyncState<T> {
 ## SPEC: [Nombre del Feature] — [F0X]
 
 ### Objetivo
+
 [Qué problema resuelve este feature para el usuario]
 
 ### Pantallas / Vistas
+
 - [Rutas de Expo Router involucradas]
 
 ### Dependencias nuevas
+
 - [Paquetes npm a instalar, si aplica]
 
 ### Schema SQLite
+
 - [Tablas nuevas o modificadas, columnas, tipos]
 
 ### Comportamiento esperado
+
 **Flujo feliz:**
+
 - [Descripción paso a paso]
 
 **Edge cases a manejar:**
+
 - [Casos borde, errores esperados, estados vacíos]
 
 ### Componentes necesarios
+
 - [Componentes UI nuevos o reutilizados de src/components/]
 
 ### Estado (Zustand store)
+
 - [Qué datos viven en el store]
 - [Qué acciones expone el store]
 
 ### Persistencia
+
 - [MMKV o SQLite, qué se guarda, cuándo se lee/escribe]
 
 ### API / Servicios externos
+
 - [Endpoints a consumir, parámetros, respuesta esperada]
 
 ### Validaciones (Zod schema)
+
 - [Reglas de validación de cada campo del formulario]
 
 ### Scorecard de Validación
+
 - [ ] El usuario puede [acción principal] sin errores
 - [ ] Los datos persisten al cerrar y reabrir la app
 - [ ] Los precios en VES se recalculan correctamente con la tasa BCV
@@ -355,17 +369,17 @@ interface AsyncState<T> {
 
 ### Colores (`src/constants/colors.ts`)
 
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `primary` | `#6366F1` (Indigo) | Acciones principales, botones |
-| `primaryDark` | `#4F46E5` | Hover/pressed states |
-| `secondary` | `#10B981` (Emerald) | Éxito, confirmación |
-| `background` | `#F9FAFB` | Fondo general |
-| `surface` | `#FFFFFF` | Tarjetas, modales |
-| `text` | `#111827` | Texto principal |
-| `textSecondary` | `#6B7280` | Texto secundario |
-| `error` | `#EF4444` | Errores, alerts |
-| `border` | `#E5E7EB` | Bordes de inputs/cards |
+| Token           | Valor               | Uso                           |
+| --------------- | ------------------- | ----------------------------- |
+| `primary`       | `#6366F1` (Indigo)  | Acciones principales, botones |
+| `primaryDark`   | `#4F46E5`           | Hover/pressed states          |
+| `secondary`     | `#10B981` (Emerald) | Éxito, confirmación           |
+| `background`    | `#F9FAFB`           | Fondo general                 |
+| `surface`       | `#FFFFFF`           | Tarjetas, modales             |
+| `text`          | `#111827`           | Texto principal               |
+| `textSecondary` | `#6B7280`           | Texto secundario              |
+| `error`         | `#EF4444`           | Errores, alerts               |
+| `border`        | `#E5E7EB`           | Bordes de inputs/cards        |
 
 ### Tipografía (`src/constants/theme.ts`)
 
@@ -416,7 +430,7 @@ interface AsyncState<T> {
 
 ## Instrucción al Agente de IA
 
-Estás construyendo **EmprendePlus** siguiendo estrictamente la metodología **Spec-Driven Development (SDD)**. Estas son tus reglas de comportamiento:
+Estás construyendo **Emprende+** siguiendo estrictamente la metodología **Spec-Driven Development (SDD)**. Estas son tus reglas de comportamiento:
 
 1. **NO escribas código hasta que el usuario apruebe la spec del feature actual.**
 2. Para cada feature del roadmap: primero genera la spec usando el template de arriba, espera revisión, luego implementa.
@@ -431,12 +445,14 @@ Configura el proyecto Expo con la estructura de directorios completa, instala to
 
 ---
 
-*Documento generado el 24 de junio de 2026. Versión 2.0 — Constitution revisada con mejoras de arquitectura.*
+_Documento generado el 24 de junio de 2026. Versión 2.0 — Constitution revisada con mejoras de arquitectura._
 
 ---
 
 ## 🔗 Segundo Cerebro
+
 Al completar una sesión de trabajo, reporta al Segundo Cerebro:
+
 ```bash
-python "C:/Users/jorge/Documents/Segundo Cerebro/scripts/agent_hook.py" --project "EmprendePlus" --agent "<tu-nombre>" --summary "<resumen>" --files "<archivos>"
+python "C:/Users/jorge/Documents/Segundo Cerebro/scripts/agent_hook.py" --project "Emprende+" --agent "<tu-nombre>" --summary "<resumen>" --files "<archivos>"
 ```

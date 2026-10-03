@@ -1,9 +1,9 @@
 <div align="center">
-  <img src="./assets/icon.png" alt="EmprendePlus Logo" width="100" height="100" />
+  <img src="./assets/icon.png" alt="Emprende+ Logo" width="100" height="100" />
 
-  # 🚀 EmprendePlus
+# 🚀 Emprende+
 
-  **Gestión inteligente para emprendimientos creativos**
+**Gestión inteligente para emprendimientos creativos**
 
   <p align="center">
     <a href="#-características"><strong>Características</strong></a> ·
@@ -110,20 +110,20 @@
 
 ## 🛠 Stack Tecnológico
 
-| Capa | Tecnología | Versión |
-|------|-----------|---------|
-| 📱 Framework | React Native + Expo | SDK 54 / RN 0.81 |
-| 🔤 Lenguaje | TypeScript | 5.9 (strict) |
-| 🧭 Routing | Expo Router | v6 (file-based) |
-| 🎨 Estilos | NativeWind | v4 (Tailwind CSS para RN) |
-| ⚡ Estado global | Zustand | v5 |
-| 🗄️ Persistencia estructurada | SQLite | expo-sqlite 16 |
-| 🏎️ Persistencia rápida | MMKV | react-native-mmkv |
-| 📝 Formularios | React Hook Form + Zod | latest |
-| 📅 Fechas | date-fns | v4 |
-| 🧪 Testing | Jest + RNTL | 37 tests |
-| 📦 Package Manager | pnpm | latest |
-| 🎨 Iconos | @expo/vector-icons | Ionicons |
+| Capa                         | Tecnología            | Versión                   |
+| ---------------------------- | --------------------- | ------------------------- |
+| 📱 Framework                 | React Native + Expo   | SDK 54 / RN 0.81          |
+| 🔤 Lenguaje                  | TypeScript            | 5.9 (strict)              |
+| 🧭 Routing                   | Expo Router           | v6 (file-based)           |
+| 🎨 Estilos                   | NativeWind            | v4 (Tailwind CSS para RN) |
+| ⚡ Estado global             | Zustand               | v5                        |
+| 🗄️ Persistencia estructurada | SQLite                | expo-sqlite 16            |
+| 🏎️ Persistencia rápida       | MMKV                  | react-native-mmkv         |
+| 📝 Formularios               | React Hook Form + Zod | latest                    |
+| 📅 Fechas                    | date-fns              | v4                        |
+| 🧪 Testing                   | Jest + RNTL           | 37 tests                  |
+| 📦 Package Manager           | pnpm                  | latest                    |
+| 🎨 Iconos                    | @expo/vector-icons    | Ionicons                  |
 
 ---
 
@@ -151,13 +151,13 @@
 ### Persistencia: MMKV vs SQLite
 
 | 📦 MMKV (clave-valor, ultra-rápido) | 🗄️ SQLite (estructurado, queries) |
-|--------------------------------------|--------------------------------------|
-| Tasa de cambio cacheada (BCV) | Servicios |
-| Preferencias del usuario | Cotizaciones y Items |
-| Última fecha de sync | Ventas |
-| Configuración de la app | Items de inventario |
-| Tema (claro/oscuro) | Egresos |
-| | Clientes |
+| ----------------------------------- | --------------------------------- |
+| Tasa de cambio cacheada (BCV)       | Servicios                         |
+| Preferencias del usuario            | Cotizaciones y Items              |
+| Última fecha de sync                | Ventas                            |
+| Configuración de la app             | Items de inventario               |
+| Tema (claro/oscuro)                 | Egresos                           |
+|                                     | Clientes                          |
 
 ---
 
@@ -168,16 +168,17 @@
 
 ```typescript
 interface Service {
-  id: string;              // crypto.randomUUID()
+  id: string; // crypto.randomUUID()
   name: string;
   description?: string;
-  priceUSD: number;        // > 0
-  priceVES: number;        // calculado con tasa BCV
+  priceUSD: number; // > 0
+  priceVES: number; // calculado con tasa BCV
   isActive: boolean;
-  createdAt: string;       // ISO 8601
+  createdAt: string; // ISO 8601
   updatedAt: string;
 }
 ```
+
 </details>
 
 <details>
@@ -198,6 +199,7 @@ interface Quote {
   createdAt: string;
 }
 ```
+
 </details>
 
 <details>
@@ -219,6 +221,7 @@ interface Sale {
   createdAt: string;
 }
 ```
+
 </details>
 
 <details>
@@ -231,7 +234,7 @@ interface InventoryItem {
   description?: string;
   category: string;
   quantity: number;
-  unit: string;             // 'unidad' | 'kg' | 'litro' | 'metro' ...
+  unit: string; // 'unidad' | 'kg' | 'litro' | 'metro' ...
   purchasePriceUSD: number;
   purchasePriceVES: number;
   exchangeRateAtPurchase: number;
@@ -243,6 +246,7 @@ interface InventoryItem {
   createdAt: string;
 }
 ```
+
 </details>
 
 <details>
@@ -262,21 +266,22 @@ interface Expense {
   createdAt: string;
 }
 ```
+
 </details>
 
 ---
 
 ## 🎨 Design System
 
-| Token | Light | Dark | Uso |
-|-------|-------|------|-----|
-| `primary` | `#6366F1` (Indigo) | `#818CF8` | Acciones principales, botones |
-| `secondary` | `#10B981` (Emerald) | `#34D399` | Éxito, confirmación |
-| `background` | `#F9FAFB` | `#111827` | Fondo general |
-| `surface` | `#FFFFFF` | `#1F2937` | Tarjetas, modales |
-| `text` | `#111827` | `#F9FAFB` | Texto principal |
-| `error` | `#EF4444` | `#F87171` | Errores, alerts |
-| `border` | `#E5E7EB` | `#374151` | Bordes de inputs/cards |
+| Token        | Light               | Dark      | Uso                           |
+| ------------ | ------------------- | --------- | ----------------------------- |
+| `primary`    | `#6366F1` (Indigo)  | `#818CF8` | Acciones principales, botones |
+| `secondary`  | `#10B981` (Emerald) | `#34D399` | Éxito, confirmación           |
+| `background` | `#F9FAFB`           | `#111827` | Fondo general                 |
+| `surface`    | `#FFFFFF`           | `#1F2937` | Tarjetas, modales             |
+| `text`       | `#111827`           | `#F9FAFB` | Texto principal               |
+| `error`      | `#EF4444`           | `#F87171` | Errores, alerts               |
+| `border`     | `#E5E7EB`           | `#374151` | Bordes de inputs/cards        |
 
 **Tipografía:** System Font (SF Pro iOS / Roboto Android) · Escala: 12 / 14 / 16 / 18 / 20 / 24 / 30  
 **Spacing:** Escala 4-8-12-16-24-32-48-64
@@ -372,10 +377,10 @@ Time:        5.825 s
 
 ## 🔌 APIs Externas
 
-| Servicio | Endpoint | Uso |
-|----------|----------|-----|
-| [bcv-api.rafnixg.dev](https://bcv-api.rafnixg.dev) | `GET /v1/exchange-rates/latest/USD` | Tasa BCV oficial |
-| [cotizave.com](https://cotizave.com) | `GET /api/v1/rates` | Fallback (BCV + paralelo + USDT) |
+| Servicio                                           | Endpoint                            | Uso                              |
+| -------------------------------------------------- | ----------------------------------- | -------------------------------- |
+| [bcv-api.rafnixg.dev](https://bcv-api.rafnixg.dev) | `GET /v1/exchange-rates/latest/USD` | Tasa BCV oficial                 |
+| [cotizave.com](https://cotizave.com)               | `GET /api/v1/rates`                 | Fallback (BCV + paralelo + USDT) |
 
 **Estrategia de caché:** 6 horas en MMKV · Fallback automático · Entrada manual disponible
 
@@ -385,7 +390,7 @@ Time:        5.825 s
 
 ```
 MIT License
-Copyright (c) 2026 EmprendePlus
+Copyright (c) 2026 Emprende+
 ```
 
 ---
