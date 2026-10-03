@@ -326,7 +326,7 @@ export const strings = {
   priceColumn: 'Precio',
   subtotalColumn: 'Subtotal',
   notesPrefix: 'Notas: ',
-  generatedBy: 'Generado por EmprendePlus',
+  generatedBy: 'Generado por Emprende+',
 
   // ClientPicker
   clientsAutoSave:
