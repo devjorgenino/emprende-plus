@@ -1,5 +1,5 @@
 export const strings = {
-  appName: 'EmprendePlus',
+  appName: 'Emprende+',
   tabDashboard: 'Resumen',
   tabCalculator: 'Cotizador',
   tabSales: 'Ventas',
@@ -53,7 +53,8 @@ export const strings = {
   viewServices: 'Ver servicios',
   noActiveServices: 'No hay servicios activos',
   noResults: 'Sin resultados para la búsqueda',
-  noRateAvailable: 'No hay tasa BCV disponible. Verifica tu conexión o ingresa la tasa manualmente.',
+  noRateAvailable:
+    'No hay tasa BCV disponible. Verifica tu conexión o ingresa la tasa manualmente.',
   exportPDF: 'Exportar PDF',
   sharing: 'Compartiendo...',
   saving: 'Guardando...',
@@ -88,18 +89,23 @@ export const strings = {
   deleteConfirm: '¿Estás seguro de eliminar este elemento?',
   deleteClientConfirm: '¿Eliminar a',
   restoreBackup: 'Restaurar Backup',
-  restoreWarning: 'Esta acción reemplazará todos los datos actuales. ¿Estás seguro?',
-  restoreSuccess: 'Backup restaurado correctamente. Reinicia la app para ver los cambios.',
-  restoreError: 'No se pudo restaurar el backup. Verifica que el archivo sea válido.',
+  restoreWarning:
+    'Esta acción reemplazará todos los datos actuales. ¿Estás seguro?',
+  restoreSuccess:
+    'Backup restaurado correctamente. Reinicia la app para ver los cambios.',
+  restoreError:
+    'No se pudo restaurar el backup. Verifica que el archivo sea válido.',
   backupCreated: 'Backup creado',
   backupError: 'No se pudo crear el backup',
   exportBackup: 'Exportar Backup',
   importing: 'Importando...',
   exporting: 'Exportando...',
   dataBackup: 'Respaldo de Datos',
-  dataBackupDesc: 'Exporta todos tus datos como archivo JSON o restaura desde un backup previo.',
+  dataBackupDesc:
+    'Exporta todos tus datos como archivo JSON o restaura desde un backup previo.',
   rateHistory: 'Historial de Tasas',
-  rateHistoryDesc: 'Tasas de cambio registradas en ventas, cotizaciones y egresos.',
+  rateHistoryDesc:
+    'Tasas de cambio registradas en ventas, cotizaciones y egresos.',
   noRates: 'No hay tasas registradas',
   about: 'Acerca de',
   version: 'v1.0.0',
@@ -144,7 +150,8 @@ export const strings = {
   addPhoto: 'Agregar foto',
   cameraPermission: 'Permiso requerido',
   cameraPermissionMsg: 'Se necesita acceso a la cámara para tomar una foto',
-  galleryPermission: 'Se necesita acceso a la galería para seleccionar una foto',
+  galleryPermission:
+    'Se necesita acceso a la galería para seleccionar una foto',
   confirmDeleteInventory: '¿Estás seguro de eliminar este material?',
   confirmDeleteService: '¿Estás seguro de eliminar este servicio?',
   confirmDeleteExpense: '¿Estás seguro de eliminar este egreso?',
@@ -216,7 +223,8 @@ export const strings = {
   // Egresos
   noRateTitle: 'Sin tasa',
   noRateMessage: 'No hay tasa BCV disponible.',
-  noRateNewMessage: 'No hay tasa BCV disponible. Ingresa la tasa manualmente desde el panel principal.',
+  noRateNewMessage:
+    'No hay tasa BCV disponible. Ingresa la tasa manualmente desde el panel principal.',
   updateExpenseError: 'Error al actualizar egreso',
   saveExpenseError: 'Error al guardar egreso',
   deleteExpenseError: 'Error al eliminar',
@@ -306,7 +314,8 @@ export const strings = {
   enterValue: 'Ingresa un valor',
   enterValidNumber: 'Ingresa un número válido mayor a 0',
   manualRateTitle: 'Ingresar Tasa Manual',
-  manualRateDescription: 'Las APIs del BCV no están disponibles. Ingresa la tasa manualmente.',
+  manualRateDescription:
+    'Las APIs del BCV no están disponibles. Ingresa la tasa manualmente.',
   ratePlaceholder: 'Ej: 54.50',
   accept: 'Aceptar',
 
@@ -320,7 +329,8 @@ export const strings = {
   generatedBy: 'Generado por EmprendePlus',
 
   // ClientPicker
-  clientsAutoSave: 'Los clientes se guardan automáticamente al escribir un nombre',
+  clientsAutoSave:
+    'Los clientes se guardan automáticamente al escribir un nombre',
 
   // ErrorBoundary
   somethingWentWrong: 'Algo salió mal',
@@ -370,6 +380,16 @@ export const strings = {
 
   // Modal confirm
   modalConfirm: 'Confirmar',
+
+  // Theme
+  lightMode: 'Claro',
+  darkMode: 'Oscuro',
+
+  // Draft Quotes
+  draftSaved: 'Borrador guardado',
+  draftCleared: 'Borrador eliminado',
+  clearDraft: 'Borrar borrador',
+  draftRestored: 'Borrador restaurado',
 } as const;
 
 export type StringKey = keyof typeof strings;
