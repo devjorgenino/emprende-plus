@@ -1,4 +1,11 @@
-import { Image, ImageProps, View, Text, ViewStyle, ImageStyle } from 'react-native';
+import {
+  Image,
+  ImageProps,
+  View,
+  Text,
+  ViewStyle,
+  ImageStyle,
+} from 'react-native';
 import { useThemeColors } from '../../hooks/useThemeColors';
 
 interface LogoProps extends Omit<ImageProps, 'source'> {
@@ -44,7 +51,10 @@ export function Logo({
 
   return (
     <View
-      style={[{ flexDirection: 'row', alignItems: 'center', gap: 10 }, containerStyle]}
+      style={[
+        { flexDirection: 'row', alignItems: 'center', gap: 10 },
+        containerStyle,
+      ]}
     >
       <Image
         source={logoAssets[variant]}
@@ -60,7 +70,7 @@ export function Logo({
             letterSpacing: -0.5,
           }}
         >
-          EmprendePlus
+          Emprende+
         </Text>
       )}
     </View>
