@@ -18,13 +18,18 @@ function mapExpense(row: Record<string, unknown>): Expense {
 
 export function getAllExpenses(): Expense[] {
   const db = getDatabase();
-  const rows = db.getAllSync<Record<string, unknown>>('SELECT * FROM expenses ORDER BY createdAt DESC');
+  const rows = db.getAllSync<Record<string, unknown>>(
+    'SELECT * FROM expenses ORDER BY createdAt DESC',
+  );
   return rows.map(mapExpense);
 }
 
 export function getExpenseById(id: string): Expense | undefined {
   const db = getDatabase();
-  const row = db.getFirstSync<Record<string, unknown>>('SELECT * FROM expenses WHERE id = ?', id);
+  const row = db.getFirstSync<Record<string, unknown>>(
+    'SELECT * FROM expenses WHERE id = ?',
+    id,
+  );
   return row ? mapExpense(row) : undefined;
 }
 

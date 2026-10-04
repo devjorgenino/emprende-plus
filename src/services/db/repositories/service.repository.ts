@@ -3,12 +3,17 @@ import type { Service } from '../../../types';
 
 export function getAllServices(): Service[] {
   const db = getDatabase();
-  return db.getAllSync<Service>('SELECT * FROM services ORDER BY createdAt DESC');
+  return db.getAllSync<Service>(
+    'SELECT * FROM services ORDER BY createdAt DESC',
+  );
 }
 
 export function getServiceById(id: string): Service | undefined {
   const db = getDatabase();
-  return db.getFirstSync<Service>('SELECT * FROM services WHERE id = ?', id) ?? undefined;
+  return (
+    db.getFirstSync<Service>('SELECT * FROM services WHERE id = ?', id) ??
+    undefined
+  );
 }
 
 export function createService(service: Service): void {

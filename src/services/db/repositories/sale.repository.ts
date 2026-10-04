@@ -19,11 +19,15 @@ function mapSale(row: Record<string, unknown>, items: QuoteItem[] = []): Sale {
 
 export function getAllSales(): Sale[] {
   const db = getDatabase();
-  const rows = db.getAllSync<Record<string, unknown>>('SELECT * FROM sales ORDER BY createdAt DESC');
+  const rows = db.getAllSync<Record<string, unknown>>(
+    'SELECT * FROM sales ORDER BY createdAt DESC',
+  );
   return rows.map((row) => {
-    const items = db.getAllSync<Record<string, unknown>>(
-      'SELECT * FROM sale_items WHERE saleId = ?', row.id as string
-    ).map(mapSaleItem);
+    const items = db
+      .getAllSync<
+        Record<string, unknown>
+      >('SELECT * FROM sale_items WHERE saleId = ?', row.id as string)
+      .map(mapSaleItem);
     return mapSale(row, items);
   });
 }
@@ -40,11 +44,16 @@ function mapSaleItem(row: Record<string, unknown>): QuoteItem {
 
 export function getSaleById(id: string): Sale | undefined {
   const db = getDatabase();
-  const row = db.getFirstSync<Record<string, unknown>>('SELECT * FROM sales WHERE id = ?', id);
+  const row = db.getFirstSync<Record<string, unknown>>(
+    'SELECT * FROM sales WHERE id = ?',
+    id,
+  );
   if (!row) return undefined;
-  const items = db.getAllSync<Record<string, unknown>>(
-    'SELECT * FROM sale_items WHERE saleId = ?', id
-  ).map(mapSaleItem);
+  const items = db
+    .getAllSync<
+      Record<string, unknown>
+    >('SELECT * FROM sale_items WHERE saleId = ?', id)
+    .map(mapSaleItem);
   return mapSale(row, items);
 }
 

@@ -28,21 +28,38 @@ export function ExpenseItem({ expense, onPress }: ExpenseItemProps) {
       <Card className="mb-2">
         <View className="flex-row items-start justify-between">
           <View className="flex-1 mr-3">
-            <Text className="text-base font-medium text-gray-900 dark:text-white">{expense.description}</Text>
+            <Text className="text-base font-medium text-gray-900 dark:text-white">
+              {expense.description}
+            </Text>
             <View className="flex-row items-center gap-2 mt-1">
               <Badge label={expense.category} variant="primary" />
-              <Badge label={PAYMENT_LABELS[expense.paymentMethod] ?? expense.paymentMethod} variant="secondary" />
+              <Badge
+                label={
+                  PAYMENT_LABELS[expense.paymentMethod] ?? expense.paymentMethod
+                }
+                variant="secondary"
+              />
             </View>
             {expense.supplier && (
               <View className="flex-row items-center mt-1">
-                <Ionicons name="business-outline" size={12} color={c.textSecondary} />
-                <Text className="text-xs text-gray-500 dark:text-gray-400 ml-1">{expense.supplier}</Text>
+                <Ionicons
+                  name="business-outline"
+                  size={12}
+                  color={c.textSecondary}
+                />
+                <Text className="text-xs text-gray-500 dark:text-gray-400 ml-1">
+                  {expense.supplier}
+                </Text>
               </View>
             )}
           </View>
           <View className="items-end">
-            <Text className="text-base font-bold text-red-600 dark:text-red-400">- ${expense.amountUSD.toFixed(2)}</Text>
-            <Text className="text-xs text-gray-500 dark:text-gray-400">Bs. {expense.amountVES.toFixed(2)}</Text>
+            <Text className="text-base font-bold text-red-600 dark:text-red-400">
+              - ${expense.amountUSD.toFixed(2)}
+            </Text>
+            <Text className="text-xs text-gray-500 dark:text-gray-400">
+              Bs. {expense.amountVES.toFixed(2)}
+            </Text>
           </View>
         </View>
       </Card>

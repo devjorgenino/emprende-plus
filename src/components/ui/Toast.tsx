@@ -13,7 +13,13 @@ interface ToastProps {
   type?: ToastType;
 }
 
-const ICONS: Record<ToastType, { name: 'checkmark-circle' | 'alert-circle' | 'information-circle'; color: string }> = {
+const ICONS: Record<
+  ToastType,
+  {
+    name: 'checkmark-circle' | 'alert-circle' | 'information-circle';
+    color: string;
+  }
+> = {
   success: { name: 'checkmark-circle', color: '#10B981' },
   error: { name: 'alert-circle', color: '#EF4444' },
   info: { name: 'information-circle', color: '#6366F1' },
@@ -23,7 +29,13 @@ const ICONS: Record<ToastType, { name: 'checkmark-circle' | 'alert-circle' | 'in
 const TAB_BAR_HEIGHT = 64;
 const TOAST_BOTTOM_GAP = 12;
 
-export function Toast({ message, visible, onHide, duration = 2200, type = 'success' }: ToastProps) {
+export function Toast({
+  message,
+  visible,
+  onHide,
+  duration = 2200,
+  type = 'success',
+}: ToastProps) {
   const insets = useSafeAreaInsets();
   // Animated.Values estables (creados una sola vez) para el ciclo de vida del toast
   const opacity = useMemo(() => new Animated.Value(0), []);
@@ -35,13 +47,29 @@ export function Toast({ message, visible, onHide, duration = 2200, type = 'succe
       // Anunciar a lectores de pantalla (accesibilidad)
       AccessibilityInfo.announceForAccessibility(message);
       Animated.parallel([
-        Animated.timing(opacity, { toValue: 1, duration: 180, useNativeDriver: true }),
-        Animated.timing(translateY, { toValue: 0, duration: 180, useNativeDriver: true }),
+        Animated.timing(opacity, {
+          toValue: 1,
+          duration: 180,
+          useNativeDriver: true,
+        }),
+        Animated.timing(translateY, {
+          toValue: 0,
+          duration: 180,
+          useNativeDriver: true,
+        }),
       ]).start();
       const timer = setTimeout(() => {
         Animated.parallel([
-          Animated.timing(opacity, { toValue: 0, duration: 180, useNativeDriver: true }),
-          Animated.timing(translateY, { toValue: 12, duration: 180, useNativeDriver: true }),
+          Animated.timing(opacity, {
+            toValue: 0,
+            duration: 180,
+            useNativeDriver: true,
+          }),
+          Animated.timing(translateY, {
+            toValue: 12,
+            duration: 180,
+            useNativeDriver: true,
+          }),
         ]).start(() => onHide());
       }, duration);
       return () => clearTimeout(timer);

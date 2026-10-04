@@ -13,10 +13,20 @@ interface ServiceFormProps {
   isSubmitting: boolean;
 }
 
-export function ServiceForm({ initialValues, exchangeRate, onSubmit, onCancel, isSubmitting }: ServiceFormProps) {
+export function ServiceForm({
+  initialValues,
+  exchangeRate,
+  onSubmit,
+  onCancel,
+  isSubmitting,
+}: ServiceFormProps) {
   const [name, setName] = useState(initialValues?.name ?? '');
-  const [description, setDescription] = useState(initialValues?.description ?? '');
-  const [priceUSD, setPriceUSD] = useState(initialValues?.priceUSD?.toString() ?? '');
+  const [description, setDescription] = useState(
+    initialValues?.description ?? '',
+  );
+  const [priceUSD, setPriceUSD] = useState(
+    initialValues?.priceUSD?.toString() ?? '',
+  );
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const priceUSDNum = parseFloat(priceUSD) || 0;
@@ -26,7 +36,8 @@ export function ServiceForm({ initialValues, exchangeRate, onSubmit, onCancel, i
     const newErrors: Record<string, string> = {};
     if (!name.trim()) newErrors.name = strings.nameRequired;
     const price = parseFloat(priceUSD);
-    if (isNaN(price) || price <= 0) newErrors.priceUSD = strings.priceMustBePositive;
+    if (isNaN(price) || price <= 0)
+      newErrors.priceUSD = strings.priceMustBePositive;
     if (!exchangeRate) newErrors.exchangeRate = strings.noRateConnectivity;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -72,7 +83,10 @@ export function ServiceForm({ initialValues, exchangeRate, onSubmit, onCancel, i
         {exchangeRate && (
           <View className="mb-4 p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg">
             <Text className="text-sm text-gray-600 dark:text-gray-300">
-              {strings.priceInVES} <Text className="font-bold text-indigo-700 dark:text-indigo-300">Bs. {priceVES.toFixed(2)}</Text>
+              {strings.priceInVES}{' '}
+              <Text className="font-bold text-indigo-700 dark:text-indigo-300">
+                Bs. {priceVES.toFixed(2)}
+              </Text>
             </Text>
             <Text className="text-xs text-gray-400 dark:text-gray-500 mt-1">
               {strings.rateBcvLabel} {exchangeRate.toFixed(2)}
@@ -82,7 +96,9 @@ export function ServiceForm({ initialValues, exchangeRate, onSubmit, onCancel, i
 
         {errors.exchangeRate && (
           <View className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 rounded-lg">
-            <Text className="text-red-600 dark:text-red-400 text-sm">{errors.exchangeRate}</Text>
+            <Text className="text-red-600 dark:text-red-400 text-sm">
+              {errors.exchangeRate}
+            </Text>
           </View>
         )}
 

@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { View, Alert, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
+import {
+  View,
+  Alert,
+  ActivityIndicator,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import { Stack, useRouter, useLocalSearchParams } from 'expo-router';
 import { useExpenseStore } from '../../../src/store/expense.store';
 import { useRateStore } from '../../../src/store/rate.store';
@@ -34,7 +40,10 @@ export default function ExpenseDetailScreen() {
       await updateExpense(id!, data, rate);
       router.back();
     } catch (e) {
-      Alert.alert(strings.errorTitle, e instanceof Error ? e.message : strings.updateExpenseError);
+      Alert.alert(
+        strings.errorTitle,
+        e instanceof Error ? e.message : strings.updateExpenseError,
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -51,7 +60,10 @@ export default function ExpenseDetailScreen() {
             await deleteExpense(id!);
             router.back();
           } catch (e) {
-            Alert.alert(strings.errorTitle, e instanceof Error ? e.message : strings.deleteExpenseError);
+            Alert.alert(
+              strings.errorTitle,
+              e instanceof Error ? e.message : strings.deleteExpenseError,
+            );
           }
         },
       },
@@ -64,9 +76,7 @@ export default function ExpenseDetailScreen() {
         options={{
           title: strings.editExpense,
           headerShown: true,
-          headerRight: () => (
-            <HeaderDeleteButton onPress={handleDelete} />
-          ),
+          headerRight: () => <HeaderDeleteButton onPress={handleDelete} />,
         }}
       />
       <ExpenseForm
@@ -90,7 +100,9 @@ export default function ExpenseDetailScreen() {
 function HeaderDeleteButton({ onPress }: { onPress: () => void }) {
   return (
     <TouchableOpacity onPress={onPress} className="mr-2">
-      <Text style={{ color: '#EF4444', fontSize: 14, fontWeight: '500' }}>{strings.delete}</Text>
+      <Text style={{ color: '#EF4444', fontSize: 14, fontWeight: '500' }}>
+        {strings.delete}
+      </Text>
     </TouchableOpacity>
   );
 }

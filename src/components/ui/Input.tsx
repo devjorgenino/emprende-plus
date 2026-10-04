@@ -10,10 +10,20 @@ interface InputProps {
   multiline?: boolean;
 }
 
-export function Input({ label, value, onChangeText, placeholder, error, keyboardType = 'default', multiline }: InputProps) {
+export function Input({
+  label,
+  value,
+  onChangeText,
+  placeholder,
+  error,
+  keyboardType = 'default',
+  multiline,
+}: InputProps) {
   return (
     <View className="mb-4">
-      <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{label}</Text>
+      <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        {label}
+      </Text>
       <TextInput
         value={value}
         onChangeText={onChangeText}
@@ -28,7 +38,11 @@ export function Input({ label, value, onChangeText, placeholder, error, keyboard
         }`}
         style={{ minHeight: multiline ? 80 : undefined }}
       />
-      {error && <Text className="text-red-500 dark:text-red-400 text-sm mt-1">{error}</Text>}
+      {error && (
+        <Text className="text-red-500 dark:text-red-400 text-sm mt-1">
+          {error}
+        </Text>
+      )}
     </View>
   );
 }

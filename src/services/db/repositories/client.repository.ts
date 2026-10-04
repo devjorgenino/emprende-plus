@@ -23,23 +23,36 @@ function mapClient(row: Record<string, unknown>): Client {
 
 export function getAllClients(): Client[] {
   const db = getDatabase();
-  const rows = db.getAllSync<Record<string, unknown>>('SELECT * FROM clients ORDER BY name ASC');
+  const rows = db.getAllSync<Record<string, unknown>>(
+    'SELECT * FROM clients ORDER BY name ASC',
+  );
   return rows.map(mapClient);
 }
 
 export function getClientById(id: string): Client | undefined {
   const db = getDatabase();
-  const row = db.getFirstSync<Record<string, unknown>>('SELECT * FROM clients WHERE id = ?', id);
+  const row = db.getFirstSync<Record<string, unknown>>(
+    'SELECT * FROM clients WHERE id = ?',
+    id,
+  );
   return row ? mapClient(row) : undefined;
 }
 
 export function getClientByName(name: string): Client | undefined {
   const db = getDatabase();
-  const row = db.getFirstSync<Record<string, unknown>>('SELECT * FROM clients WHERE name = ?', name);
+  const row = db.getFirstSync<Record<string, unknown>>(
+    'SELECT * FROM clients WHERE name = ?',
+    name,
+  );
   return row ? mapClient(row) : undefined;
 }
 
-export function createClient(name: string, phone?: string, email?: string, notes?: string): Client {
+export function createClient(
+  name: string,
+  phone?: string,
+  email?: string,
+  notes?: string,
+): Client {
   const db = getDatabase();
   const client: Client = {
     id: generateId(),
@@ -51,7 +64,12 @@ export function createClient(name: string, phone?: string, email?: string, notes
   };
   db.runSync(
     'INSERT INTO clients (id, name, phone, email, notes, createdAt) VALUES (?, ?, ?, ?, ?, ?)',
-    client.id, client.name, client.phone ?? null, client.email ?? null, client.notes ?? null, client.createdAt,
+    client.id,
+    client.name,
+    client.phone ?? null,
+    client.email ?? null,
+    client.notes ?? null,
+    client.createdAt,
   );
   return client;
 }
@@ -62,15 +80,18 @@ export function upsertClientByName(name: string): Client {
   return createClient(name);
 }
 
-export function updateClient(id: string, data: { phone?: string; email?: string; notes?: string }): void {
+export function updateClient(
+  id: string,
+  data: { phone?: string; email?: string; notes?: string },
+): void {
   const db = getDatabase();
   const existing = getClientById(id);
   if (!existing) return;
   db.runSync(
     'UPDATE clients SET phone = ?, email = ?, notes = ? WHERE id = ?',
-    data.phone !== undefined ? data.phone : existing.phone ?? null,
-    data.email !== undefined ? data.email : existing.email ?? null,
-    data.notes !== undefined ? data.notes : existing.notes ?? null,
+    data.phone !== undefined ? data.phone : (existing.phone ?? null),
+    data.email !== undefined ? data.email : (existing.email ?? null),
+    data.notes !== undefined ? data.notes : (existing.notes ?? null),
     id,
   );
 }

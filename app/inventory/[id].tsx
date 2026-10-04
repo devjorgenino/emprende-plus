@@ -38,20 +38,28 @@ export default function InventoryDetailScreen() {
 
   return (
     <View className="flex-1 bg-gray-50">
-      <Stack.Screen options={{ title: isNew ? strings.newMaterialTitle : strings.editMaterialTitle }} />
+      <Stack.Screen
+        options={{
+          title: isNew ? strings.newMaterialTitle : strings.editMaterialTitle,
+        }}
+      />
       <InventoryForm
-        initialValues={existing ? {
-          name: existing.name,
-          description: existing.description,
-          category: existing.category,
-          quantity: existing.quantity,
-          unit: existing.unit,
-          purchasePriceUSD: existing.purchasePriceUSD,
-          supplier: existing.supplier,
-          purchaseDate: existing.purchaseDate,
-          notes: existing.notes,
-          photoUri: existing.photoUri,
-        } : undefined}
+        initialValues={
+          existing
+            ? {
+                name: existing.name,
+                description: existing.description,
+                category: existing.category,
+                quantity: existing.quantity,
+                unit: existing.unit,
+                purchasePriceUSD: existing.purchasePriceUSD,
+                supplier: existing.supplier,
+                purchaseDate: existing.purchaseDate,
+                notes: existing.notes,
+                photoUri: existing.photoUri,
+              }
+            : undefined
+        }
         exchangeRate={rate}
         onSubmit={handleSubmit}
         onCancel={() => router.back()}

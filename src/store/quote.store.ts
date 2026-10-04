@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import * as quoteRepository from '../services/db/repositories/quote.repository';
 import type { Quote, QuoteItem, Service } from '../types';
 import { generateId } from '../utils/id';
+import { useDraftQuoteStore } from './draft-quote.store';
 
 function now(): string {
   return new Date().toISOString();
@@ -20,7 +21,10 @@ interface QuoteActions {
   setClientName: (name: string) => void;
   setNotes: (notes: string) => void;
   reset: () => void;
-  saveQuote: (exchangeRate: number, exchangeRateDate: string) => Promise<string>;
+  saveQuote: (
+    exchangeRate: number,
+    exchangeRateDate: string,
+  ) => Promise<string>;
 }
 
 export const useQuoteStore = create<QuoteState & QuoteActions>((set, get) => ({
@@ -45,7 +49,9 @@ export const useQuoteStore = create<QuoteState & QuoteActions>((set, get) => ({
   },
 
   removeItem: (serviceId: string) => {
-    set((state) => ({ items: state.items.filter((i) => i.serviceId !== serviceId) }));
+    set((state) => ({
+      items: state.items.filter((i) => i.serviceId !== serviceId),
+    }));
   },
 
   updateQuantity: (serviceId: string, quantity: number) => {
@@ -53,8 +59,12 @@ export const useQuoteStore = create<QuoteState & QuoteActions>((set, get) => ({
     set((state) => ({
       items: state.items.map((i) =>
         i.serviceId === serviceId
-          ? { ...i, quantity: clamped, subtotalUSD: Math.round(i.priceUSD * clamped * 100) / 100 }
-          : i
+          ? {
+              ...i,
+              quantity: clamped,
+              subtotalUSD: Math.round(i.priceUSD * clamped * 100) / 100,
+            }
+          : i,
       ),
     }));
   },
@@ -82,6 +92,7 @@ export const useQuoteStore = create<QuoteState & QuoteActions>((set, get) => ({
     };
 
     quoteRepository.saveQuote(quote);
+    useDraftQuoteStore.getState().clearDraft();
     set({ items: [], clientName: '', notes: '' });
     return quote.id;
   },

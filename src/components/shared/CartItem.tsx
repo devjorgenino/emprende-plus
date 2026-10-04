@@ -13,7 +13,13 @@ interface CartItemProps {
   onRemove: () => void;
 }
 
-export function CartItem({ item, exchangeRate, onIncrement, onDecrement, onRemove }: CartItemProps) {
+export function CartItem({
+  item,
+  exchangeRate,
+  onIncrement,
+  onDecrement,
+  onRemove,
+}: CartItemProps) {
   const subtotalVES = exchangeRate ? item.subtotalUSD * exchangeRate : 0;
   const c = useThemeColors();
 
@@ -21,8 +27,12 @@ export function CartItem({ item, exchangeRate, onIncrement, onDecrement, onRemov
     <Card className="mb-2">
       <View className="flex-row justify-between items-start">
         <View className="flex-1 mr-3">
-          <Text className="text-base font-medium text-gray-900 dark:text-gray-100">{item.serviceName}</Text>
-          <Text className="text-sm text-gray-500 dark:text-gray-400">${item.priceUSD.toFixed(2)} {strings.perUnit}</Text>
+          <Text className="text-base font-medium text-gray-900 dark:text-gray-100">
+            {item.serviceName}
+          </Text>
+          <Text className="text-sm text-gray-500 dark:text-gray-400">
+            ${item.priceUSD.toFixed(2)} {strings.perUnit}
+          </Text>
         </View>
         <TouchableOpacity
           onPress={onRemove}
@@ -43,7 +53,9 @@ export function CartItem({ item, exchangeRate, onIncrement, onDecrement, onRemov
           >
             <Ionicons name="remove" size={18} color={c.text} />
           </TouchableOpacity>
-          <Text className="text-lg font-bold text-gray-900 dark:text-gray-100 min-w-[24px] text-center">{item.quantity}</Text>
+          <Text className="text-lg font-bold text-gray-900 dark:text-gray-100 min-w-[24px] text-center">
+            {item.quantity}
+          </Text>
           <TouchableOpacity
             onPress={onIncrement}
             accessibilityRole="button"
@@ -54,9 +66,13 @@ export function CartItem({ item, exchangeRate, onIncrement, onDecrement, onRemov
           </TouchableOpacity>
         </View>
         <View className="items-end">
-          <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">${item.subtotalUSD.toFixed(2)}</Text>
+          <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">
+            ${item.subtotalUSD.toFixed(2)}
+          </Text>
           {exchangeRate && (
-            <Text className="text-xs text-gray-500 dark:text-gray-400">Bs. {subtotalVES.toFixed(2)}</Text>
+            <Text className="text-xs text-gray-500 dark:text-gray-400">
+              Bs. {subtotalVES.toFixed(2)}
+            </Text>
           )}
         </View>
       </View>

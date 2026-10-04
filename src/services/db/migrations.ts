@@ -162,13 +162,19 @@ export function runMigrations(): void {
     );
   `);
 
-  const currentVersion = db
-    .getAllSync<{ version: number }>('SELECT MAX(version) as version FROM _migrations')
-    .map((r) => r.version)[0] ?? 0;
+  const currentVersion =
+    db
+      .getAllSync<{
+        version: number;
+      }>('SELECT MAX(version) as version FROM _migrations')
+      .map((r) => r.version)[0] ?? 0;
 
   const pending = MIGRATIONS.filter((m) => m.version > currentVersion);
   for (const migration of pending) {
     db.execSync(migration.sql);
-    db.runSync('INSERT INTO _migrations (version) VALUES (?)', migration.version);
+    db.runSync(
+      'INSERT INTO _migrations (version) VALUES (?)',
+      migration.version,
+    );
   }
 }

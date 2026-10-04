@@ -18,7 +18,10 @@ interface SaleState {
 
 interface SaleActions {
   loadSales: () => Promise<void>;
-  createSaleFromQuote: (quote: Quote, paymentMethod: PaymentMethod) => Promise<string>;
+  createSaleFromQuote: (
+    quote: Quote,
+    paymentMethod: PaymentMethod,
+  ) => Promise<string>;
   createSale: (sale: Sale) => Promise<void>;
   updateSale: (sale: Sale) => Promise<void>;
   deleteSale: (id: string) => Promise<void>;
@@ -68,7 +71,8 @@ export const useSaleStore = create<SaleState & SaleActions>((set, get) => ({
       }));
       return sale.id;
     } catch (e) {
-      const message = e instanceof Error ? e.message : 'Error al registrar venta';
+      const message =
+        e instanceof Error ? e.message : 'Error al registrar venta';
       set({ error: message, isLoading: false });
       throw e;
     }
@@ -98,7 +102,8 @@ export const useSaleStore = create<SaleState & SaleActions>((set, get) => ({
         isLoading: false,
       }));
     } catch (e) {
-      const message = e instanceof Error ? e.message : 'Error al actualizar venta';
+      const message =
+        e instanceof Error ? e.message : 'Error al actualizar venta';
       set({ error: message, isLoading: false });
       throw e;
     }
@@ -113,14 +118,17 @@ export const useSaleStore = create<SaleState & SaleActions>((set, get) => ({
         isLoading: false,
       }));
     } catch (e) {
-      const message = e instanceof Error ? e.message : 'Error al eliminar venta';
+      const message =
+        e instanceof Error ? e.message : 'Error al eliminar venta';
       set({ error: message, isLoading: false });
       throw e;
     }
   },
 
   getSaleById: (id: string) => {
-    return get().sales.find((s) => s.id === id) ?? saleRepository.getSaleById(id);
+    return (
+      get().sales.find((s) => s.id === id) ?? saleRepository.getSaleById(id)
+    );
   },
 
   getSalesInRange: (startDate: string, endDate: string) => {
@@ -134,9 +142,7 @@ export const useSaleStore = create<SaleState & SaleActions>((set, get) => ({
 
   searchSales: (query: string) => {
     const q = query.toLowerCase();
-    return get().sales.filter(
-      (s) => s.clientName?.toLowerCase().includes(q)
-    );
+    return get().sales.filter((s) => s.clientName?.toLowerCase().includes(q));
   },
 
   getTotalUSDInRange: (startDate: string, endDate: string) => {

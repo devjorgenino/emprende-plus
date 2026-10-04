@@ -1,12 +1,22 @@
 import { useEffect, useState, useMemo } from 'react';
-import { View, Text, ScrollView, ActivityIndicator, RefreshControl, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+  RefreshControl,
+  TouchableOpacity,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useServiceStore } from '../../src/store/service.store';
 import { useSaleStore } from '../../src/store/sale.store';
 import { useInventoryStore } from '../../src/store/inventory.store';
 import { useExpenseStore } from '../../src/store/expense.store';
-import { useDashboard, type Period } from '../../src/features/dashboard/useDashboard';
+import {
+  useDashboard,
+  type Period,
+} from '../../src/features/dashboard/useDashboard';
 import type { Sale } from '../../src/types';
 import { DashboardCard } from '../../src/components/shared/DashboardCard';
 import { PeriodSelector } from '../../src/components/shared/PeriodSelector';
@@ -36,7 +46,11 @@ export default function DashboardScreen() {
   const isLoadingExpenses = useExpenseStore((s) => s.isLoading);
 
   const data = useDashboard(period);
-  const isLoading = isLoadingServices || isLoadingSales || isLoadingInventory || isLoadingExpenses;
+  const isLoading =
+    isLoadingServices ||
+    isLoadingSales ||
+    isLoadingInventory ||
+    isLoadingExpenses;
 
   useEffect(() => {
     loadServices();
@@ -47,14 +61,22 @@ export default function DashboardScreen() {
 
   async function handleRefresh() {
     setRefreshing(true);
-    await Promise.all([loadServices(), loadSales(), loadInventory(), loadExpenses()]);
+    await Promise.all([
+      loadServices(),
+      loadSales(),
+      loadInventory(),
+      loadExpenses(),
+    ]);
     setRefreshing(false);
   }
 
   const recentSales = sales.slice(0, 5);
   const recentExpenses = expenses.slice(0, 5);
   const lowStockItems = inventoryItems.filter(
-    (i) => i.lowStockThreshold !== undefined && i.lowStockThreshold > 0 && i.quantity <= i.lowStockThreshold
+    (i) =>
+      i.lowStockThreshold !== undefined &&
+      i.lowStockThreshold > 0 &&
+      i.quantity <= i.lowStockThreshold,
   );
 
   const chartData = useMemo(() => {
@@ -75,7 +97,7 @@ export default function DashboardScreen() {
 
       const income = filterByDate(sales).reduce(
         (sum, s) => sum + (chartCurrency === 'USD' ? s.totalUSD : s.totalVES),
-        0
+        0,
       );
       const expense = expenses
         .filter((e) => {
@@ -83,8 +105,9 @@ export default function DashboardScreen() {
           return t >= start && t <= end;
         })
         .reduce(
-          (sum, e) => sum + (chartCurrency === 'USD' ? e.amountUSD : e.amountVES),
-          0
+          (sum, e) =>
+            sum + (chartCurrency === 'USD' ? e.amountUSD : e.amountVES),
+          0,
         );
 
       months.push({
@@ -103,7 +126,11 @@ export default function DashboardScreen() {
       const end = now.toISOString();
       switch (period) {
         case 'today': {
-          const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+          const start = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate(),
+          );
           return { start: start.toISOString(), end };
         }
         case 'week': {
@@ -128,19 +155,40 @@ export default function DashboardScreen() {
         return t >= startTime && t <= endTime;
       })
       .forEach((e) => {
-        byCategory[e.category] = (byCategory[e.category] || 0) + (chartCurrency === 'USD' ? e.amountUSD : e.amountVES);
+        byCategory[e.category] =
+          (byCategory[e.category] || 0) +
+          (chartCurrency === 'USD' ? e.amountUSD : e.amountVES);
       });
 
-    const PIE_COLORS = ['#6366F1', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4', '#F97316', '#84CC16'];
+    const PIE_COLORS = [
+      '#6366F1',
+      '#10B981',
+      '#F59E0B',
+      '#EF4444',
+      '#8B5CF6',
+      '#06B6D4',
+      '#F97316',
+      '#84CC16',
+    ];
     return Object.entries(byCategory)
-      .map(([label, value], idx) => ({ label, value, color: PIE_COLORS[idx % PIE_COLORS.length] }))
+      .map(([label, value], idx) => ({
+        label,
+        value,
+        color: PIE_COLORS[idx % PIE_COLORS.length],
+      }))
       .sort((a, b) => b.value - a.value);
   }, [expenses, period, chartCurrency]);
 
   return (
     <ScrollView
       className="flex-1 bg-gray-50 dark:bg-gray-900"
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor={colors.primary} />}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          tintColor={colors.primary}
+        />
+      }
     >
       <View className="p-4">
         <PeriodSelector selected={period} onChange={setPeriod} />
@@ -205,12 +253,16 @@ export default function DashboardScreen() {
 
             {/* Selector de moneda para gráficos */}
             <View className="flex-row items-center justify-end gap-2 mb-2">
-              <Text className="text-xs text-gray-500 dark:text-gray-400">{strings.chartIn}</Text>
+              <Text className="text-xs text-gray-500 dark:text-gray-400">
+                {strings.chartIn}
+              </Text>
               <TouchableOpacity
                 onPress={() => setChartCurrency('USD')}
                 className={`px-2.5 py-1 rounded-full ${chartCurrency === 'USD' ? 'bg-indigo-600' : 'bg-gray-200 dark:bg-gray-800'}`}
               >
-                <Text className={`text-xs font-medium ${chartCurrency === 'USD' ? 'text-white' : 'text-gray-700 dark:text-gray-300'}`}>
+                <Text
+                  className={`text-xs font-medium ${chartCurrency === 'USD' ? 'text-white' : 'text-gray-700 dark:text-gray-300'}`}
+                >
                   USD
                 </Text>
               </TouchableOpacity>
@@ -218,7 +270,9 @@ export default function DashboardScreen() {
                 onPress={() => setChartCurrency('VES')}
                 className={`px-2.5 py-1 rounded-full ${chartCurrency === 'VES' ? 'bg-indigo-600' : 'bg-gray-200 dark:bg-gray-800'}`}
               >
-                <Text className={`text-xs font-medium ${chartCurrency === 'VES' ? 'text-white' : 'text-gray-700 dark:text-gray-300'}`}>
+                <Text
+                  className={`text-xs font-medium ${chartCurrency === 'VES' ? 'text-white' : 'text-gray-700 dark:text-gray-300'}`}
+                >
                   Bs.
                 </Text>
               </TouchableOpacity>
@@ -241,7 +295,10 @@ export default function DashboardScreen() {
                 <Text className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
                   {strings.expensesByCategory}
                 </Text>
-                <PieChart data={expensePieData} prefix={chartCurrency === 'USD' ? '$' : 'Bs. '} />
+                <PieChart
+                  data={expensePieData}
+                  prefix={chartCurrency === 'USD' ? '$' : 'Bs. '}
+                />
               </View>
             )}
 
@@ -255,7 +312,10 @@ export default function DashboardScreen() {
                   </Text>
                 </View>
                 {lowStockItems.slice(0, 3).map((item) => (
-                  <Text key={item.id} className="text-sm text-amber-700 dark:text-amber-300 ml-1">
+                  <Text
+                    key={item.id}
+                    className="text-sm text-amber-700 dark:text-amber-300 ml-1"
+                  >
                     • {item.name}: {item.quantity} {item.unit}
                   </Text>
                 ))}
@@ -271,9 +331,15 @@ export default function DashboardScreen() {
             {recentSales.length > 0 && (
               <View className="mb-4">
                 <View className="flex-row items-center justify-between mb-3">
-                  <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">{strings.recentSales}</Text>
-                  <TouchableOpacity onPress={() => router.push('/(tabs)/sales')}>
-                    <Text className="text-sm text-indigo-600 dark:text-indigo-400">{strings.viewMore}</Text>
+                  <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">
+                    {strings.recentSales}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => router.push('/(tabs)/sales')}
+                  >
+                    <Text className="text-sm text-indigo-600 dark:text-indigo-400">
+                      {strings.viewMore}
+                    </Text>
                   </TouchableOpacity>
                 </View>
                 {recentSales.map((sale) => (
@@ -290,16 +356,24 @@ export default function DashboardScreen() {
             {recentExpenses.length > 0 && (
               <View className="mb-4">
                 <View className="flex-row items-center justify-between mb-3">
-                  <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">{strings.recentExpenses}</Text>
-                  <TouchableOpacity onPress={() => router.push('/(tabs)/inventory')}>
-                    <Text className="text-sm text-indigo-600 dark:text-indigo-400">{strings.viewMore}</Text>
+                  <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">
+                    {strings.recentExpenses}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => router.push('/(tabs)/inventory')}
+                  >
+                    <Text className="text-sm text-indigo-600 dark:text-indigo-400">
+                      {strings.viewMore}
+                    </Text>
                   </TouchableOpacity>
                 </View>
                 {recentExpenses.map((expense) => (
                   <ExpenseItem
                     key={expense.id}
                     expense={expense}
-                    onPress={() => router.push(`/inventory/expenses/${expense.id}`)}
+                    onPress={() =>
+                      router.push(`/inventory/expenses/${expense.id}`)
+                    }
                   />
                 ))}
               </View>
@@ -307,8 +381,14 @@ export default function DashboardScreen() {
 
             {data.saleCount === 0 && data.expenseCount === 0 && (
               <View className="py-8 items-center">
-                <Ionicons name="bar-chart-outline" size={48} color={colors.border} />
-                <Text className="text-gray-400 dark:text-gray-500 text-base mt-2">{strings.noDataPeriod}</Text>
+                <Ionicons
+                  name="bar-chart-outline"
+                  size={48}
+                  color={colors.border}
+                />
+                <Text className="text-gray-400 dark:text-gray-500 text-base mt-2">
+                  {strings.noDataPeriod}
+                </Text>
                 <Text className="text-gray-400 dark:text-gray-500 text-sm mt-1">
                   {strings.startRecording}
                 </Text>

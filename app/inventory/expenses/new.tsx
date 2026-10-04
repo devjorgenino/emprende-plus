@@ -23,7 +23,10 @@ export default function NewExpenseScreen() {
       await createExpense(data, rate);
       router.back();
     } catch (e) {
-      Alert.alert(strings.errorTitle, e instanceof Error ? e.message : strings.saveExpenseError);
+      Alert.alert(
+        strings.errorTitle,
+        e instanceof Error ? e.message : strings.saveExpenseError,
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -31,7 +34,9 @@ export default function NewExpenseScreen() {
 
   return (
     <View className="flex-1 bg-gray-50 dark:bg-gray-900">
-      <Stack.Screen options={{ title: strings.newExpenseTitle, headerShown: true }} />
+      <Stack.Screen
+        options={{ title: strings.newExpenseTitle, headerShown: true }}
+      />
       <ExpenseForm
         exchangeRate={rate}
         onSubmit={handleSubmit}

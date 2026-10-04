@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useInventoryStore } from '../../../src/store/inventory.store';
@@ -16,8 +23,12 @@ export default function InventoryScreen() {
   const isLoading = useInventoryStore((s) => s.isLoading);
   const loadItems = useInventoryStore((s) => s.loadItems);
   const deleteItem = useInventoryStore((s) => s.deleteItem);
-  const servicesCount = useServiceStore((s) => s.services.filter((svc) => svc.isActive).length);
-  const [deleteTarget, setDeleteTarget] = useState<InventoryItemType | null>(null);
+  const servicesCount = useServiceStore(
+    (s) => s.services.filter((svc) => svc.isActive).length,
+  );
+  const [deleteTarget, setDeleteTarget] = useState<InventoryItemType | null>(
+    null,
+  );
 
   useEffect(() => {
     loadItems();
@@ -33,7 +44,9 @@ export default function InventoryScreen() {
     return (
       <View className="flex-1 items-center justify-center bg-gray-50 dark:bg-gray-900">
         <ActivityIndicator size="large" color={colors.primary} />
-        <Text className="mt-4 text-gray-500 dark:text-gray-400">{strings.loading}</Text>
+        <Text className="mt-4 text-gray-500 dark:text-gray-400">
+          {strings.loading}
+        </Text>
       </View>
     );
   }
@@ -65,8 +78,13 @@ export default function InventoryScreen() {
                 <Ionicons name="briefcase-outline" size={20} color="white" />
               </View>
               <View>
-                <Text className="text-sm font-semibold text-indigo-800 dark:text-indigo-200">{strings.manageServices}</Text>
-                <Text className="text-xs text-indigo-600 dark:text-indigo-400">{servicesCount} servicio{servicesCount !== 1 ? 's' : ''} activo{servicesCount !== 1 ? 's' : ''}</Text>
+                <Text className="text-sm font-semibold text-indigo-800 dark:text-indigo-200">
+                  {strings.manageServices}
+                </Text>
+                <Text className="text-xs text-indigo-600 dark:text-indigo-400">
+                  {servicesCount} servicio{servicesCount !== 1 ? 's' : ''}{' '}
+                  activo{servicesCount !== 1 ? 's' : ''}
+                </Text>
               </View>
             </View>
             <Ionicons name="chevron-forward" size={18} color={colors.primary} />
@@ -75,12 +93,20 @@ export default function InventoryScreen() {
         ListEmptyComponent={
           <View className="flex-1 items-center justify-center p-6">
             <Ionicons name="cube-outline" size={64} color={colors.border} />
-            <Text className="text-gray-400 dark:text-gray-500 text-lg mt-4">{strings.emptyInventory}</Text>
-            <Text className="text-gray-400 dark:text-gray-500 text-sm mt-1">{strings.addMaterial}</Text>
+            <Text className="text-gray-400 dark:text-gray-500 text-lg mt-4">
+              {strings.emptyInventory}
+            </Text>
+            <Text className="text-gray-400 dark:text-gray-500 text-sm mt-1">
+              {strings.addMaterial}
+            </Text>
           </View>
         }
         refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={loadItems} tintColor={colors.primary} />
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={loadItems}
+            tintColor={colors.primary}
+          />
         }
       />
       <TouchableOpacity

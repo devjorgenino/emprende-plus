@@ -1,4 +1,4 @@
-// Jest global setup for EmprendePlus
+// Jest global setup for Emprende+
 // Registers mocks for native modules that are not available in the Node test env.
 
 jest.mock('expo-sqlite');
@@ -16,7 +16,9 @@ jest.mock('expo-file-system', () => {
       written[uri] = { content };
       lastWrite = { uri, content };
     }),
-    readAsStringAsync: jest.fn(async (uri) => (written[uri] ? written[uri].content : '')),
+    readAsStringAsync: jest.fn(async (uri) =>
+      written[uri] ? written[uri].content : '',
+    ),
     __getWritten: (uri) => written[uri] || null,
     __getLastWrite: () => lastWrite,
     __clearWritten: () => {
@@ -46,7 +48,7 @@ jest.mock('expo-sharing', () => {
 });
 
 jest.mock('@react-native-async-storage/async-storage', () =>
-  require('@react-native-async-storage/async-storage/jest/async-storage-mock')
+  require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
 
 jest.mock('expo-document-picker', () => ({

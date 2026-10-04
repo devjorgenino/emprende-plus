@@ -13,7 +13,16 @@ interface PieChartProps {
   prefix?: string;
 }
 
-const PIE_COLORS = ['#6366F1', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4', '#F97316', '#84CC16'];
+const PIE_COLORS = [
+  '#6366F1',
+  '#10B981',
+  '#F59E0B',
+  '#EF4444',
+  '#8B5CF6',
+  '#06B6D4',
+  '#F97316',
+  '#84CC16',
+];
 
 /**
  * Gráfico circular (donut) simple dibujado con sectores usando borderColor.
@@ -56,12 +65,18 @@ export function PieChart({ data, size = 140, prefix = '$' }: PieChartProps) {
               <View className="flex-row items-center gap-2 flex-1">
                 <View
                   className="w-3 h-3 rounded-sm"
-                  style={{ backgroundColor: d.color || PIE_COLORS[idx % PIE_COLORS.length] }}
+                  style={{
+                    backgroundColor:
+                      d.color || PIE_COLORS[idx % PIE_COLORS.length],
+                  }}
                 />
-                <Text className="text-sm text-gray-700 dark:text-gray-300 flex-1">{d.label}</Text>
+                <Text className="text-sm text-gray-700 dark:text-gray-300 flex-1">
+                  {d.label}
+                </Text>
               </View>
               <Text className="text-sm text-gray-600 dark:text-gray-400">
-                {prefix}{d.value.toFixed(2)} · {pct}%
+                {prefix}
+                {d.value.toFixed(2)} · {pct}%
               </Text>
             </View>
           );

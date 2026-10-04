@@ -77,8 +77,14 @@ describe('ServiceRepository', () => {
   });
 
   it('listar todos ordena por createdAt DESC', () => {
-    const old = makeService({ name: 'Viejo', createdAt: '2020-01-01T00:00:00.000Z' });
-    const recent = makeService({ name: 'Nuevo', createdAt: '2026-01-01T00:00:00.000Z' });
+    const old = makeService({
+      name: 'Viejo',
+      createdAt: '2020-01-01T00:00:00.000Z',
+    });
+    const recent = makeService({
+      name: 'Nuevo',
+      createdAt: '2026-01-01T00:00:00.000Z',
+    });
     serviceRepository.createService(old);
     serviceRepository.createService(recent);
     const all = serviceRepository.getAllServices();
@@ -88,7 +94,13 @@ describe('ServiceRepository', () => {
   it('actualiza un servicio', () => {
     const s = makeService({ name: 'A', priceUSD: 10 });
     serviceRepository.createService(s);
-    serviceRepository.updateService({ ...s, name: 'B', priceUSD: 99, priceVES: 99 * 36.5, updatedAt: new Date().toISOString() });
+    serviceRepository.updateService({
+      ...s,
+      name: 'B',
+      priceUSD: 99,
+      priceVES: 99 * 36.5,
+      updatedAt: new Date().toISOString(),
+    });
     expect(serviceRepository.getServiceById(s.id)?.name).toBe('B');
     expect(serviceRepository.getServiceById(s.id)?.priceUSD).toBe(99);
   });
@@ -148,8 +160,14 @@ describe('ExpenseRepository', () => {
   });
 
   it('listar todos ordena por createdAt DESC', () => {
-    const old = makeExpense({ description: 'Viejo', createdAt: '2020-01-01T00:00:00.000Z' });
-    const recent = makeExpense({ description: 'Nuevo', createdAt: '2026-01-01T00:00:00.000Z' });
+    const old = makeExpense({
+      description: 'Viejo',
+      createdAt: '2020-01-01T00:00:00.000Z',
+    });
+    const recent = makeExpense({
+      description: 'Nuevo',
+      createdAt: '2026-01-01T00:00:00.000Z',
+    });
     expenseRepository.createExpense(old);
     expenseRepository.createExpense(recent);
     expect(expenseRepository.getAllExpenses()[0].description).toBe('Nuevo');

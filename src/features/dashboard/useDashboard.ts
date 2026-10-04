@@ -66,10 +66,22 @@ export function useDashboard(period: Period): DashboardData {
       return t >= startTime && t <= endTime;
     });
 
-    const totalIncomeUSD = filteredSales.reduce((sum, s) => sum + s.totalUSD, 0);
-    const totalIncomeVES = filteredSales.reduce((sum, s) => sum + s.totalVES, 0);
-    const totalExpensesUSD = filteredExpenses.reduce((sum, e) => sum + e.amountUSD, 0);
-    const totalExpensesVES = filteredExpenses.reduce((sum, e) => sum + e.amountVES, 0);
+    const totalIncomeUSD = filteredSales.reduce(
+      (sum, s) => sum + s.totalUSD,
+      0,
+    );
+    const totalIncomeVES = filteredSales.reduce(
+      (sum, s) => sum + s.totalVES,
+      0,
+    );
+    const totalExpensesUSD = filteredExpenses.reduce(
+      (sum, e) => sum + e.amountUSD,
+      0,
+    );
+    const totalExpensesVES = filteredExpenses.reduce(
+      (sum, e) => sum + e.amountVES,
+      0,
+    );
 
     return {
       totalIncomeUSD,
@@ -79,8 +91,14 @@ export function useDashboard(period: Period): DashboardData {
       netIncomeUSD: totalIncomeUSD - totalExpensesUSD,
       netIncomeVES: totalIncomeVES - totalExpensesVES,
       activeServicesCount: services.filter((s) => s.isActive).length,
-      inventoryItemsCount: Math.round(inventoryItems.reduce((sum, i) => sum + i.quantity, 0) * 100) / 100,
-      totalInventoryCostUSD: inventoryItems.reduce((sum, i) => sum + i.purchasePriceUSD * i.quantity, 0),
+      inventoryItemsCount:
+        Math.round(
+          inventoryItems.reduce((sum, i) => sum + i.quantity, 0) * 100,
+        ) / 100,
+      totalInventoryCostUSD: inventoryItems.reduce(
+        (sum, i) => sum + i.purchasePriceUSD * i.quantity,
+        0,
+      ),
       saleCount: filteredSales.length,
       expenseCount: filteredExpenses.length,
     };

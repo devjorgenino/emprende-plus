@@ -16,7 +16,13 @@ const textVariants: Record<string, string> = {
   ghost: 'text-indigo-600 dark:text-indigo-400',
 };
 
-export function Button({ title, onPress, variant = 'primary', disabled, className = '' }: ButtonProps) {
+export function Button({
+  title,
+  onPress,
+  variant = 'primary',
+  disabled,
+  className = '',
+}: ButtonProps) {
   const c = useThemeColors();
 
   const variantStyles: Record<string, ViewStyle> = {
@@ -36,7 +42,9 @@ export function Button({ title, onPress, variant = 'primary', disabled, classNam
       className={`py-3 px-6 rounded-lg items-center justify-center ${disabled ? 'opacity-50' : ''} ${className}`}
       style={variantStyles[variant]}
     >
-      <Text className={`font-semibold text-base ${textVariants[variant]}`}>{title}</Text>
+      <Text className={`font-semibold text-base ${textVariants[variant]}`}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 }

@@ -14,7 +14,9 @@ export default function ServiceDetailScreen() {
   const router = useRouter();
   const isNew = id === 'new';
 
-  const existing = useServiceStore((s) => s.services.find((svc) => svc.id === id)) ?? undefined;
+  const existing =
+    useServiceStore((s) => s.services.find((svc) => svc.id === id)) ??
+    undefined;
   const { rate, isLoading: rateLoading, error: rateError } = useExchangeRate();
   const { submit: create, isSubmitting: isCreating } = useCreateService(rate);
   const { submit: update, isSubmitting: isUpdating } = useUpdateService(rate);
@@ -39,7 +41,11 @@ export default function ServiceDetailScreen() {
 
   return (
     <View className="flex-1 bg-gray-50 dark:bg-gray-900">
-      <Stack.Screen options={{ title: isNew ? strings.newServiceTitle : strings.editService }} />
+      <Stack.Screen
+        options={{
+          title: isNew ? strings.newServiceTitle : strings.editService,
+        }}
+      />
       {rateError && (
         <View className="mx-4 mt-4 p-3 bg-red-50 rounded-lg">
           <Text className="text-red-600 text-sm">{rateError}</Text>

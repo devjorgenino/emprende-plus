@@ -29,22 +29,29 @@ export function DoubleBarChart({
 }: DoubleBarChartProps) {
   const [selected, setSelected] = useState<number | null>(null);
 
-  const maxVal = Math.max(
-    ...data.flatMap((d) => [d.income, d.expense]),
-    1
-  );
+  const maxVal = Math.max(...data.flatMap((d) => [d.income, d.expense]), 1);
 
   return (
     <View>
       {/* Leyenda */}
       <View className="flex-row gap-4 mb-2">
         <View className="flex-row items-center gap-1.5">
-          <View className="w-3 h-3 rounded-sm" style={{ backgroundColor: incomeColor }} />
-          <Text className="text-xs text-gray-500 dark:text-gray-400">{strings.income}</Text>
+          <View
+            className="w-3 h-3 rounded-sm"
+            style={{ backgroundColor: incomeColor }}
+          />
+          <Text className="text-xs text-gray-500 dark:text-gray-400">
+            {strings.income}
+          </Text>
         </View>
         <View className="flex-row items-center gap-1.5">
-          <View className="w-3 h-3 rounded-sm" style={{ backgroundColor: expenseColor }} />
-          <Text className="text-xs text-gray-500 dark:text-gray-400">{strings.expenses}</Text>
+          <View
+            className="w-3 h-3 rounded-sm"
+            style={{ backgroundColor: expenseColor }}
+          />
+          <Text className="text-xs text-gray-500 dark:text-gray-400">
+            {strings.expenses}
+          </Text>
         </View>
       </View>
 
@@ -62,10 +69,15 @@ export function DoubleBarChart({
             >
               {isSelected && (
                 <Text className="text-[10px] text-gray-700 dark:text-gray-300 mb-1 text-center">
-                  {prefix}{item.income.toFixed(2)} / {prefix}{item.expense.toFixed(2)}
+                  {prefix}
+                  {item.income.toFixed(2)} / {prefix}
+                  {item.expense.toFixed(2)}
                 </Text>
               )}
-              <View className="flex-row items-end gap-0.5" style={{ height: height - 24 }}>
+              <View
+                className="flex-row items-end gap-0.5"
+                style={{ height: height - 24 }}
+              >
                 <View
                   style={{
                     width: 10,

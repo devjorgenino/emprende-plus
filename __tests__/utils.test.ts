@@ -37,7 +37,13 @@ describe('CSV export', () => {
   const sale: Sale = {
     id: 's1',
     items: [
-      { serviceId: 'sv1', serviceName: 'Diseño, Premium', priceUSD: 100, quantity: 2, subtotalUSD: 200 },
+      {
+        serviceId: 'sv1',
+        serviceName: 'Diseño, Premium',
+        priceUSD: 100,
+        quantity: 2,
+        subtotalUSD: 200,
+      },
     ],
     totalUSD: 200,
     totalVES: 7300,

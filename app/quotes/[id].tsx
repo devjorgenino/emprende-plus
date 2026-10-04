@@ -3,7 +3,10 @@ import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, Stack, useRouter } from 'expo-router';
 import ViewShot from 'react-native-view-shot';
 import * as Sharing from 'expo-sharing';
-import { getQuoteById, updateQuoteStatus } from '../../src/services/db/repositories/quote.repository';
+import {
+  getQuoteById,
+  updateQuoteStatus,
+} from '../../src/services/db/repositories/quote.repository';
 import { useSaleStore } from '../../src/store/sale.store';
 import { QuoteImage } from '../../src/components/shared/QuoteImage';
 import { SaleForm } from '../../src/components/forms/SaleForm';
@@ -17,7 +20,9 @@ export default function QuoteDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const viewShotRef = useRef<ViewShot>(null);
-  const [quote, setQuote] = useState<Quote | undefined>(() => (id ? getQuoteById(id) : undefined));
+  const [quote, setQuote] = useState<Quote | undefined>(() =>
+    id ? getQuoteById(id) : undefined,
+  );
   const [isExporting, setIsExporting] = useState(false);
   const [isExportingPdf, setIsExportingPdf] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
@@ -48,7 +53,9 @@ export default function QuoteDetailScreen() {
       updateQuoteStatus(quote.id, 'sent');
       setQuote({ ...quote, status: 'sent' });
     } catch (e) {
-      setExportError(e instanceof Error ? e.message : strings.shareErrorGeneric);
+      setExportError(
+        e instanceof Error ? e.message : strings.shareErrorGeneric,
+      );
     } finally {
       setIsExporting(false);
     }
@@ -111,37 +118,69 @@ export default function QuoteDetailScreen() {
 
       <ScrollView className="flex-1" contentContainerStyle={{ padding: 16 }}>
         <View className="flex-row items-center gap-2 mb-4">
-          <View className="rounded-full px-3 py-1" style={{ backgroundColor: statusInfo.color + '20' }}>
-            <Text style={{ color: statusInfo.color }} className="text-xs font-semibold">{statusInfo.label}</Text>
+          <View
+            className="rounded-full px-3 py-1"
+            style={{ backgroundColor: statusInfo.color + '20' }}
+          >
+            <Text
+              style={{ color: statusInfo.color }}
+              className="text-xs font-semibold"
+            >
+              {statusInfo.label}
+            </Text>
           </View>
-          <Text className="text-xs text-gray-400">{new Date(quote.createdAt).toLocaleDateString('es-VE')}</Text>
+          <Text className="text-xs text-gray-400">
+            {new Date(quote.createdAt).toLocaleDateString('es-VE')}
+          </Text>
         </View>
 
         {quote.clientName && (
-          <Text className="text-lg font-semibold text-gray-900 mb-4">{strings.clientLabel}: {quote.clientName}</Text>
+          <Text className="text-lg font-semibold text-gray-900 mb-4">
+            {strings.clientLabel}: {quote.clientName}
+          </Text>
         )}
 
         <View className="bg-white rounded-xl p-4 border border-gray-100 mb-4">
-          <Text className="text-sm font-semibold text-gray-500 uppercase mb-3">{strings.sectionServices}</Text>
+          <Text className="text-sm font-semibold text-gray-500 uppercase mb-3">
+            {strings.sectionServices}
+          </Text>
           {quote.items.map((item, idx) => (
-            <View key={idx} className="flex-row justify-between items-center py-2 border-b border-gray-100 last:border-0">
+            <View
+              key={idx}
+              className="flex-row justify-between items-center py-2 border-b border-gray-100 last:border-0"
+            >
               <View className="flex-1 mr-3">
-                <Text className="text-sm text-gray-900">{item.serviceName}</Text>
-                <Text className="text-xs text-gray-400">x{item.quantity} · ${item.priceUSD.toFixed(2)} {strings.perUnit}</Text>
+                <Text className="text-sm text-gray-900">
+                  {item.serviceName}
+                </Text>
+                <Text className="text-xs text-gray-400">
+                  x{item.quantity} · ${item.priceUSD.toFixed(2)}{' '}
+                  {strings.perUnit}
+                </Text>
               </View>
-              <Text className="text-sm font-medium text-gray-900">${item.subtotalUSD.toFixed(2)}</Text>
+              <Text className="text-sm font-medium text-gray-900">
+                ${item.subtotalUSD.toFixed(2)}
+              </Text>
             </View>
           ))}
         </View>
 
         <View className="bg-white rounded-xl p-4 border border-gray-100 mb-4">
           <View className="flex-row justify-between mb-2">
-            <Text className="text-base text-gray-600">{strings.totalUSDLabel}</Text>
-            <Text className="text-base font-bold text-gray-900">${quote.totalUSD.toFixed(2)}</Text>
+            <Text className="text-base text-gray-600">
+              {strings.totalUSDLabel}
+            </Text>
+            <Text className="text-base font-bold text-gray-900">
+              ${quote.totalUSD.toFixed(2)}
+            </Text>
           </View>
           <View className="flex-row justify-between mb-2">
-            <Text className="text-base text-gray-600">{strings.totalVESLabel}</Text>
-            <Text className="text-base font-bold text-gray-900">Bs. {quote.totalVES.toFixed(2)}</Text>
+            <Text className="text-base text-gray-600">
+              {strings.totalVESLabel}
+            </Text>
+            <Text className="text-base font-bold text-gray-900">
+              Bs. {quote.totalVES.toFixed(2)}
+            </Text>
           </View>
           <Text className="text-xs text-gray-400 mt-2">
             {strings.rateLabel} {quote.exchangeRate.toFixed(2)}
@@ -150,7 +189,9 @@ export default function QuoteDetailScreen() {
 
         {quote.notes && (
           <View className="bg-white rounded-xl p-4 border border-gray-100 mb-4">
-            <Text className="text-sm font-semibold text-gray-500 uppercase mb-1">{strings.notesLabel}</Text>
+            <Text className="text-sm font-semibold text-gray-500 uppercase mb-1">
+              {strings.notesLabel}
+            </Text>
             <Text className="text-sm text-gray-700">{quote.notes}</Text>
           </View>
         )}
@@ -176,7 +217,9 @@ export default function QuoteDetailScreen() {
 
         {saleSuccess && (
           <View className="p-3 bg-emerald-50 rounded-lg mb-4">
-            <Text className="text-emerald-700 text-sm font-medium">{strings.saleRegisteredSuccess}</Text>
+            <Text className="text-emerald-700 text-sm font-medium">
+              {strings.saleRegisteredSuccess}
+            </Text>
           </View>
         )}
       </ScrollView>
@@ -186,14 +229,28 @@ export default function QuoteDetailScreen() {
           <>
             <View className="flex-row gap-3">
               <View className="flex-1">
-                <Button title={isExporting ? strings.exporting : strings.share} onPress={handleShare} disabled={isExporting} variant="ghost" />
+                <Button
+                  title={isExporting ? strings.exporting : strings.share}
+                  onPress={handleShare}
+                  disabled={isExporting}
+                  variant="ghost"
+                />
               </View>
               <View className="flex-1">
-                <Button title={isExportingPdf ? strings.exporting : strings.exportPDF} onPress={handleExportPdf} disabled={isExportingPdf} variant="ghost" />
+                <Button
+                  title={isExportingPdf ? strings.exporting : strings.exportPDF}
+                  onPress={handleExportPdf}
+                  disabled={isExportingPdf}
+                  variant="ghost"
+                />
               </View>
             </View>
             <Button
-              title={quote.status === 'draft' ? strings.registerSale : strings.saleAlreadyRegistered}
+              title={
+                quote.status === 'draft'
+                  ? strings.registerSale
+                  : strings.saleAlreadyRegistered
+              }
               onPress={() => setShowSaleForm(true)}
               disabled={quote.status !== 'draft'}
             />

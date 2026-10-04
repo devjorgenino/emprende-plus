@@ -1,4 +1,11 @@
-import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native';
 import { useRouter, Stack } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useServiceList } from '../../src/features/services/useServiceList';
@@ -36,7 +43,10 @@ export default function ServicesListScreen() {
       <View className="flex-1 items-center justify-center bg-gray-50 dark:bg-gray-900 p-6">
         <Ionicons name="alert-circle-outline" size={48} color={colors.error} />
         <Text className="text-red-500 text-base mt-4 text-center">{error}</Text>
-        <TouchableOpacity onPress={refresh} className="mt-4 bg-indigo-600 px-6 py-3 rounded-lg">
+        <TouchableOpacity
+          onPress={refresh}
+          className="mt-4 bg-indigo-600 px-6 py-3 rounded-lg"
+        >
           <Text className="text-white font-medium">{strings.retry}</Text>
         </TouchableOpacity>
       </View>
@@ -62,12 +72,20 @@ export default function ServicesListScreen() {
         ListEmptyComponent={
           <View className="flex-1 items-center justify-center p-6">
             <Ionicons name="cube-outline" size={64} color={colors.border} />
-            <Text className="text-gray-400 text-lg mt-4">{strings.emptyServices}</Text>
-            <Text className="text-gray-400 text-sm mt-1">{strings.addFirstService}</Text>
+            <Text className="text-gray-400 text-lg mt-4">
+              {strings.emptyServices}
+            </Text>
+            <Text className="text-gray-400 text-sm mt-1">
+              {strings.addFirstService}
+            </Text>
           </View>
         }
         refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={refresh} tintColor={colors.primary} />
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={refresh}
+            tintColor={colors.primary}
+          />
         }
       />
       <TouchableOpacity

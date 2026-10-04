@@ -64,7 +64,9 @@ function queryRows(sql, db) {
   var rows = table.rows.slice();
   var whereMatch = sql.match(/WHERE\s+([\s\S]*?)(?:\s+ORDER\s+BY|\s+LIMIT|$)/i);
   if (whereMatch && whereMatch[1]) {
-    rows = rows.filter(function (r) { return matchesWhere(r, whereMatch[1]); });
+    rows = rows.filter(function (r) {
+      return matchesWhere(r, whereMatch[1]);
+    });
   }
   var orderMatch = sql.match(/ORDER\s+BY\s+([\s\S]+?)(?:\s+LIMIT|$)/i);
   if (orderMatch && orderMatch[1]) {
@@ -92,7 +94,12 @@ function createInMemoryDatabaseImpl() {
 
     execSync: function (sql) {
       // Split multi-statement SQL on semicolons and execute each.
-      var statements = sql.split(';').map(function (s) { return s.trim(); }).filter(Boolean);
+      var statements = sql
+        .split(';')
+        .map(function (s) {
+          return s.trim();
+        })
+        .filter(Boolean);
       statements.forEach(function (stmt) {
         db.execOne(stmt);
       });
@@ -105,11 +112,17 @@ function createInMemoryDatabaseImpl() {
         var cols = (sql.match(/\(([\s\S]*)\)/) || [])[1] || '';
         var columnNames = cols
           .split(',')
-          .map(function (c) { return c.trim().split(/\s+/)[0]; })
+          .map(function (c) {
+            return c.trim().split(/\s+/)[0];
+          })
           .filter(function (c) {
             if (!c) return false;
             var uc = c.toUpperCase();
-            return !uc.startsWith('FOREIGN') && !uc.startsWith('PRIMARY') && !uc.startsWith('UNIQUE');
+            return (
+              !uc.startsWith('FOREIGN') &&
+              !uc.startsWith('PRIMARY') &&
+              !uc.startsWith('UNIQUE')
+            );
           });
         db.tables.set(name, { columns: columnNames, rows: [] });
         return;
@@ -171,12 +184,16 @@ function createInMemoryDatabaseImpl() {
         if (!table) return;
         var valMatch = bound.match(/VALUES\s*\(([\s\S]*)\)/i);
         if (!valMatch) return;
-        var values = valMatch[1].split(',').map(function (v) { return v.trim().replace(/^'(.*)'$/, '$1'); });
+        var values = valMatch[1].split(',').map(function (v) {
+          return v.trim().replace(/^'(.*)'$/, '$1');
+        });
         // Use the explicit column list from the INSERT when present (in order).
         var colListMatch = bound.match(/\(([^()]*)\)\s*VALUES/i);
         var targetColumns;
         if (colListMatch && colListMatch[1].trim()) {
-          targetColumns = colListMatch[1].split(',').map(function (c) { return c.trim(); });
+          targetColumns = colListMatch[1].split(',').map(function (c) {
+            return c.trim();
+          });
         } else {
           targetColumns = table.columns;
         }
@@ -198,7 +215,11 @@ function createInMemoryDatabaseImpl() {
         setMatch[1].split(',').forEach(function (part) {
           var parts = part.trim().split('=');
           var k = parts[0].trim();
-          var v = parts.slice(1).join('=').trim().replace(/^'(.*)'$/, '$1');
+          var v = parts
+            .slice(1)
+            .join('=')
+            .trim()
+            .replace(/^'(.*)'$/, '$1');
           sets[k] = coerce(v);
         });
         table2.rows.forEach(function (row) {
@@ -213,7 +234,9 @@ function createInMemoryDatabaseImpl() {
         var table3 = db.tables.get(name3);
         if (!table3) return;
         var whereMatch2 = bound.match(/WHERE\s+([\s\S]*)$/i);
-        table3.rows = table3.rows.filter(function (row) { return !matchesWhere(row, whereMatch2 ? whereMatch2[1] : ''); });
+        table3.rows = table3.rows.filter(function (row) {
+          return !matchesWhere(row, whereMatch2 ? whereMatch2[1] : '');
+        });
       }
     },
 

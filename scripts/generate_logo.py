@@ -1,5 +1,5 @@
 """
-EmprendePlus logo generator.
+Emprende+ logo generator.
 
 Renders the brand mark + full icon set using Pillow + numpy with
 supersampled anti-aliasing, then writes every asset referenced by app.json.
@@ -120,7 +120,7 @@ def render_mark(size, mode="color"):
     Render the transparent brand mark on a `size`x`size` canvas (float RGBA).
 
     The mark: three ascending rounded bars (growth) whose top carries a "+"
-    (the EmprendePlus "+"), plus a thin upward arc underlining momentum.
+    (the Emprende+ "+"), plus a thin upward arc underlining momentum.
 
     mode:
       "color" -> bars in brand colors (indigo/violet/emerald), plus+arc white
@@ -161,7 +161,7 @@ def render_mark(size, mode="color"):
         arr = blend_rgba(arr, layer)
 
     # ---- "Plus" formed by a vertical stem on the tallest (rightmost) bar ----
-    # A bright white "+" on the emerald bar top-right = EmprendePlus "+"
+    # A bright white "+" on the emerald bar top-right = Emprende+ "+"
     plus_x = xs[2] + bar_w / 2.0
     plus_top = base_y - hs[2]
     stem_w = S * 0.075
@@ -271,7 +271,7 @@ def squircle_mask(size, radius_frac=0.20):
 
 
 def main():
-    print("Rendering EmprendePlus logo set...")
+    print("Rendering Emprende+ logo set...")
 
     # Render the transparent brand mark at high resolution (supersampled).
     SS = 2048

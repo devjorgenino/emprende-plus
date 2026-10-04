@@ -5,7 +5,14 @@ import { Button } from '../ui/Button';
 import { strings } from '../../constants/strings';
 import type { CreateExpenseInput, PaymentMethod } from '../../types';
 
-const CATEGORIES = [strings.categoryMaterials, strings.categorySupplies, strings.categoryServices, strings.categoryTransport, strings.categoryMarketing, strings.paymentOther];
+const CATEGORIES = [
+  strings.categoryMaterials,
+  strings.categorySupplies,
+  strings.categoryServices,
+  strings.categoryTransport,
+  strings.categoryMarketing,
+  strings.paymentOther,
+];
 const PAYMENT_METHODS: { key: PaymentMethod; label: string }[] = [
   { key: 'usd_cash', label: strings.paymentUsdCash },
   { key: 'ves_cash', label: strings.paymentVesCash },
@@ -24,11 +31,25 @@ interface ExpenseFormProps {
   isSubmitting: boolean;
 }
 
-export function ExpenseForm({ initialValues, exchangeRate, onSubmit, onCancel, isSubmitting }: ExpenseFormProps) {
-  const [description, setDescription] = useState(initialValues?.description ?? '');
-  const [category, setCategory] = useState(initialValues?.category ?? CATEGORIES[0]);
-  const [amountUSD, setAmountUSD] = useState(initialValues?.amountUSD?.toString() ?? '');
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(initialValues?.paymentMethod ?? 'usd_cash');
+export function ExpenseForm({
+  initialValues,
+  exchangeRate,
+  onSubmit,
+  onCancel,
+  isSubmitting,
+}: ExpenseFormProps) {
+  const [description, setDescription] = useState(
+    initialValues?.description ?? '',
+  );
+  const [category, setCategory] = useState(
+    initialValues?.category ?? CATEGORIES[0],
+  );
+  const [amountUSD, setAmountUSD] = useState(
+    initialValues?.amountUSD?.toString() ?? '',
+  );
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
+    initialValues?.paymentMethod ?? 'usd_cash',
+  );
   const [supplier, setSupplier] = useState(initialValues?.supplier ?? '');
   const [notes, setNotes] = useState(initialValues?.notes ?? '');
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -38,9 +59,11 @@ export function ExpenseForm({ initialValues, exchangeRate, onSubmit, onCancel, i
 
   function validate(): boolean {
     const newErrors: Record<string, string> = {};
-    if (!description.trim()) newErrors.description = strings.descriptionRequired;
+    if (!description.trim())
+      newErrors.description = strings.descriptionRequired;
     const amount = parseFloat(amountUSD);
-    if (isNaN(amount) || amount <= 0) newErrors.amountUSD = strings.amountMustBePositive;
+    if (isNaN(amount) || amount <= 0)
+      newErrors.amountUSD = strings.amountMustBePositive;
     if (!exchangeRate) newErrors.exchangeRate = strings.noRateAvailableShort;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -69,7 +92,9 @@ export function ExpenseForm({ initialValues, exchangeRate, onSubmit, onCancel, i
           error={errors.description}
         />
 
-        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{strings.category}</Text>
+        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          {strings.category}
+        </Text>
         <View className="flex-row flex-wrap gap-2 mb-4">
           {CATEGORIES.map((cat) => (
             <TouchableOpacity
@@ -84,7 +109,9 @@ export function ExpenseForm({ initialValues, exchangeRate, onSubmit, onCancel, i
                   : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600'
               }`}
             >
-              <Text className={`text-sm ${category === cat ? 'text-white' : 'text-gray-700 dark:text-gray-300'}`}>
+              <Text
+                className={`text-sm ${category === cat ? 'text-white' : 'text-gray-700 dark:text-gray-300'}`}
+              >
                 {cat}
               </Text>
             </TouchableOpacity>
@@ -103,7 +130,10 @@ export function ExpenseForm({ initialValues, exchangeRate, onSubmit, onCancel, i
         {exchangeRate && (
           <View className="mb-4 p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg">
             <Text className="text-sm text-gray-600 dark:text-gray-300">
-              {strings.amountInVES} <Text className="font-bold text-indigo-700 dark:text-indigo-300">Bs. {amountVES.toFixed(2)}</Text>
+              {strings.amountInVES}{' '}
+              <Text className="font-bold text-indigo-700 dark:text-indigo-300">
+                Bs. {amountVES.toFixed(2)}
+              </Text>
             </Text>
             <Text className="text-xs text-gray-400 dark:text-gray-500 mt-1">
               {strings.rateLabel} {exchangeRate.toFixed(2)}
@@ -113,11 +143,15 @@ export function ExpenseForm({ initialValues, exchangeRate, onSubmit, onCancel, i
 
         {errors.exchangeRate && (
           <View className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 rounded-lg">
-            <Text className="text-red-600 dark:text-red-400 text-sm">{errors.exchangeRate}</Text>
+            <Text className="text-red-600 dark:text-red-400 text-sm">
+              {errors.exchangeRate}
+            </Text>
           </View>
         )}
 
-        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{strings.paymentMethod}</Text>
+        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          {strings.paymentMethod}
+        </Text>
         <View className="flex-row flex-wrap gap-2 mb-4">
           {PAYMENT_METHODS.map((pm) => (
             <TouchableOpacity
@@ -132,7 +166,9 @@ export function ExpenseForm({ initialValues, exchangeRate, onSubmit, onCancel, i
                   : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600'
               }`}
             >
-              <Text className={`text-sm ${paymentMethod === pm.key ? 'text-white' : 'text-gray-700 dark:text-gray-300'}`}>
+              <Text
+                className={`text-sm ${paymentMethod === pm.key ? 'text-white' : 'text-gray-700 dark:text-gray-300'}`}
+              >
                 {pm.label}
               </Text>
             </TouchableOpacity>

@@ -9,10 +9,17 @@ interface QuoteFormProps {
   onNotesChange: (notes: string) => void;
 }
 
-export function QuoteForm({ clientName, notes, onClientNameChange, onNotesChange }: QuoteFormProps) {
+export function QuoteForm({
+  clientName,
+  notes,
+  onClientNameChange,
+  onNotesChange,
+}: QuoteFormProps) {
   return (
     <View className="mb-4">
-      <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{strings.additionalInfo}</Text>
+      <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+        {strings.additionalInfo}
+      </Text>
       <Input
         label={strings.clientNameOptional}
         value={clientName}

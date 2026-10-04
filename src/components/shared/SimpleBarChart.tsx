@@ -13,18 +13,27 @@ interface SimpleBarChartProps {
   prefix?: string;
 }
 
-export function SimpleBarChart({ data, height = 120, prefix = '' }: SimpleBarChartProps) {
+export function SimpleBarChart({
+  data,
+  height = 120,
+  prefix = '',
+}: SimpleBarChartProps) {
   const c = useThemeColors();
   const maxVal = Math.max(...data.map((d) => d.value), 1);
 
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'flex-end', height, gap: 6 }}>
+    <View
+      style={{ flexDirection: 'row', alignItems: 'flex-end', height, gap: 6 }}
+    >
       {data.map((item, idx) => {
         const barHeight = (item.value / maxVal) * (height - 20);
         return (
           <View key={idx} style={{ flex: 1, alignItems: 'center' }}>
-            <Text style={{ fontSize: 10, color: c.textSecondary, marginBottom: 4 }}>
-              {prefix}{item.value.toFixed(0)}
+            <Text
+              style={{ fontSize: 10, color: c.textSecondary, marginBottom: 4 }}
+            >
+              {prefix}
+              {item.value.toFixed(0)}
             </Text>
             <View
               style={{
@@ -35,7 +44,14 @@ export function SimpleBarChart({ data, height = 120, prefix = '' }: SimpleBarCha
                 minWidth: 20,
               }}
             />
-            <Text style={{ fontSize: 10, color: c.textSecondary, marginTop: 4, textAlign: 'center' }}>
+            <Text
+              style={{
+                fontSize: 10,
+                color: c.textSecondary,
+                marginTop: 4,
+                textAlign: 'center',
+              }}
+            >
               {item.label}
             </Text>
           </View>

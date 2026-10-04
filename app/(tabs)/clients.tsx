@@ -1,8 +1,22 @@
 import { useEffect, useState, useCallback } from 'react';
-import { View, Text, FlatList, TouchableOpacity, TextInput, Alert, ActivityIndicator, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { getAllClients, createClient, deleteClient, type Client } from '../../src/services/db/repositories/client.repository';
+import {
+  getAllClients,
+  createClient,
+  deleteClient,
+  type Client,
+} from '../../src/services/db/repositories/client.repository';
 import { colors } from '../../src/constants/colors';
 import { strings } from '../../src/constants/strings';
 
@@ -28,7 +42,9 @@ export default function ClientsScreen() {
   }, [load]);
 
   const filtered = search.trim()
-    ? clients.filter((c) => c.name.toLowerCase().includes(search.trim().toLowerCase()))
+    ? clients.filter((c) =>
+        c.name.toLowerCase().includes(search.trim().toLowerCase()),
+      )
     : clients;
 
   function handleAdd() {
@@ -49,9 +65,12 @@ export default function ClientsScreen() {
         {
           text: strings.deleteClient,
           style: 'destructive',
-          onPress: () => { deleteClient(client.id); load(); },
+          onPress: () => {
+            deleteClient(client.id);
+            load();
+          },
         },
-      ]
+      ],
     );
   }
 
@@ -69,17 +88,31 @@ export default function ClientsScreen() {
           >
             <View className="flex-row items-center justify-between">
               <View className="flex-1 mr-3">
-                <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">{client.name}</Text>
+                <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">
+                  {client.name}
+                </Text>
                 {client.phone && (
                   <View className="flex-row items-center gap-1 mt-1">
-                    <Ionicons name="call-outline" size={12} color={colors.textSecondary} />
-                    <Text className="text-sm text-gray-500 dark:text-gray-400">{client.phone}</Text>
+                    <Ionicons
+                      name="call-outline"
+                      size={12}
+                      color={colors.textSecondary}
+                    />
+                    <Text className="text-sm text-gray-500 dark:text-gray-400">
+                      {client.phone}
+                    </Text>
                   </View>
                 )}
                 {client.email && (
                   <View className="flex-row items-center gap-1 mt-0.5">
-                    <Ionicons name="mail-outline" size={12} color={colors.textSecondary} />
-                    <Text className="text-sm text-gray-500 dark:text-gray-400">{client.email}</Text>
+                    <Ionicons
+                      name="mail-outline"
+                      size={12}
+                      color={colors.textSecondary}
+                    />
+                    <Text className="text-sm text-gray-500 dark:text-gray-400">
+                      {client.email}
+                    </Text>
                   </View>
                 )}
               </View>
@@ -122,12 +155,22 @@ export default function ClientsScreen() {
           ) : (
             <View className="py-12 items-center px-6">
               <Ionicons name="people-outline" size={48} color={colors.border} />
-              <Text className="text-gray-400 dark:text-gray-500 text-base mt-3 text-center">{strings.emptyClients}</Text>
-              <Text className="text-gray-400 dark:text-gray-500 text-sm mt-1 text-center">{strings.clientSaved}</Text>
+              <Text className="text-gray-400 dark:text-gray-500 text-base mt-3 text-center">
+                {strings.emptyClients}
+              </Text>
+              <Text className="text-gray-400 dark:text-gray-500 text-sm mt-1 text-center">
+                {strings.clientSaved}
+              </Text>
             </View>
           )
         }
-        refreshControl={<RefreshControl refreshing={loading} onRefresh={load} tintColor={colors.primary} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={load}
+            tintColor={colors.primary}
+          />
+        }
       />
       <TouchableOpacity
         onPress={handleAdd}

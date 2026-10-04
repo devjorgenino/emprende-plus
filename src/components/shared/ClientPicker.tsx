@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { getAllClients, type Client } from '../../services/db/repositories/client.repository';
+import {
+  getAllClients,
+  type Client,
+} from '../../services/db/repositories/client.repository';
 import { strings } from '../../constants/strings';
 
 interface ClientPickerProps {
@@ -37,18 +40,32 @@ export function ClientPicker({ value, onChange }: ClientPickerProps) {
         className="flex-row items-center"
       >
         <View className="flex-1 border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-3 bg-white dark:bg-gray-800">
-          <Text className={`text-base ${value ? 'text-gray-900 dark:text-gray-100' : 'text-gray-400 dark:text-gray-500'}`}>
+          <Text
+            className={`text-base ${value ? 'text-gray-900 dark:text-gray-100' : 'text-gray-400 dark:text-gray-500'}`}
+          >
             {value || strings.selectClient}
           </Text>
         </View>
-        <Ionicons name="chevron-down" size={18} color="#6b7280" className="ml-2" />
+        <Ionicons
+          name="chevron-down"
+          size={18}
+          color="#6b7280"
+          className="ml-2"
+        />
       </TouchableOpacity>
 
-      <Modal visible={visible} transparent animationType="slide" onRequestClose={() => setVisible(false)}>
+      <Modal
+        visible={visible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setVisible(false)}
+      >
         <View className="flex-1 bg-black/40 justify-end">
           <View className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 rounded-t-3xl p-5 max-h-[70%]">
             <View className="flex-row justify-between items-center mb-4">
-              <Text className="text-lg font-semibold text-gray-900 dark:text-gray-100">{strings.tabClients}</Text>
+              <Text className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                {strings.tabClients}
+              </Text>
               <TouchableOpacity
                 onPress={() => setVisible(false)}
                 accessibilityRole="button"
@@ -77,7 +94,9 @@ export function ClientPicker({ value, onChange }: ClientPickerProps) {
                     accessibilityLabel={item.name}
                     className="py-3.5 border-b border-gray-100 dark:border-gray-700"
                   >
-                    <Text className="text-base text-gray-900 dark:text-gray-100">{item.name}</Text>
+                    <Text className="text-base text-gray-900 dark:text-gray-100">
+                      {item.name}
+                    </Text>
                   </TouchableOpacity>
                 )}
               />

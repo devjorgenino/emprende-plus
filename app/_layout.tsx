@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { initializeDatabase } from '../src/services/db/schema';
 import { runMigrations } from '../src/services/db/migrations';
 import { RateProvider } from '../src/components/shared/RateProvider';
@@ -42,13 +42,28 @@ export default function RootLayout() {
         <ToastProvider>
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="services/index" options={{ headerShown: true }} />
-            <Stack.Screen name="services/[id]" options={{ headerShown: true }} />
+            <Stack.Screen
+              name="services/index"
+              options={{ headerShown: true }}
+            />
+            <Stack.Screen
+              name="services/[id]"
+              options={{ headerShown: true }}
+            />
             <Stack.Screen name="quotes/[id]" options={{ headerShown: true }} />
             <Stack.Screen name="sales/[id]" options={{ headerShown: true }} />
-            <Stack.Screen name="inventory/[id]" options={{ headerShown: true }} />
-            <Stack.Screen name="inventory/expenses/[id]" options={{ headerShown: true }} />
-            <Stack.Screen name="inventory/expenses/new" options={{ headerShown: true }} />
+            <Stack.Screen
+              name="inventory/[id]"
+              options={{ headerShown: true }}
+            />
+            <Stack.Screen
+              name="inventory/expenses/[id]"
+              options={{ headerShown: true }}
+            />
+            <Stack.Screen
+              name="inventory/expenses/new"
+              options={{ headerShown: true }}
+            />
             <Stack.Screen name="clients/[id]" options={{ headerShown: true }} />
           </Stack>
         </ToastProvider>

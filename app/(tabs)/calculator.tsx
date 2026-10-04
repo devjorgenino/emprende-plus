@@ -1,11 +1,22 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, InteractionManager, TextInput, Alert, Animated } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+  InteractionManager,
+  TextInput,
+  Alert,
+  Animated,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import ViewShot from 'react-native-view-shot';
 import * as Sharing from 'expo-sharing';
 import { useServiceStore } from '../../src/store/service.store';
 import { useQuoteStore } from '../../src/store/quote.store';
+import { useDraftQuoteStore } from '../../src/store/draft-quote.store';
 import { useRateStore } from '../../src/store/rate.store';
 import { useToastStore } from '../../src/store/toast.store';
 import { ClientPicker } from '../../src/components/shared/ClientPicker';
@@ -29,8 +40,42 @@ export default function CalculatorScreen() {
   const setClientName = useQuoteStore((s) => s.setClientName);
   const setNotes = useQuoteStore((s) => s.setNotes);
   const saveQuote = useQuoteStore((s) => s.saveQuote);
+  const showToast = useToastStore((s) => s.showToast);
+  const draftItems = useDraftQuoteStore((s) => s.items);
+  const draftClientName = useDraftQuoteStore((s) => s.clientName);
+  const draftNotes = useDraftQuoteStore((s) => s.notes);
+  const loadDraft = useDraftQuoteStore((s) => s.loadDraft);
+  const saveDraft = useDraftQuoteStore((s) => s.saveDraft);
+  const clearDraft = useDraftQuoteStore((s) => s.clearDraft);
 
-  useEffect(() => { loadServices(); }, [loadServices]);
+  useEffect(() => {
+    loadServices();
+    loadDraft();
+  }, [loadServices, loadDraft]);
+
+  // Restaurar borrador cuando cambia
+  useEffect(() => {
+    if (draftItems.length > 0) {
+      setClientName(draftClientName);
+      setNotes(draftNotes);
+      draftItems.forEach((item) => {
+        addItem({
+          id: item.serviceId,
+          name: item.serviceName,
+          priceUSD: item.priceUSD,
+        });
+        updateQuantity(item.serviceId, item.quantity);
+      });
+      showToast(strings.draftRestored, 'info');
+    }
+  }, [draftItems, draftClientName, draftNotes, setClientName, setNotes, addItem, updateQuantity, showToast]);
+
+  // Guardar borrador cuando cambian los datos del carrito
+  useEffect(() => {
+    if (items.length > 0 || clientName || notes) {
+      saveDraft();
+    }
+  }, [items, clientName, notes, saveDraft]);
 
   const [mode, setMode] = useState('select');
   const [isSaving, setIsSaving] = useState(false);
@@ -39,7 +84,6 @@ export default function CalculatorScreen() {
   const [isExporting, setIsExporting] = useState(false);
   const [isExportingPdf, setIsExportingPdf] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const showToast = useToastStore((s) => s.showToast);
   const savedToastRef = useRef(false);
   const viewShotRef = useRef<ViewShot>(null);
   // Valor de animación estable (creado una sola vez) para el badge del carrito
@@ -50,8 +94,16 @@ export default function CalculatorScreen() {
     if (items.length === 0) return;
     badgeScale.setValue(1);
     Animated.sequence([
-      Animated.timing(badgeScale, { toValue: 1.35, duration: 120, useNativeDriver: true }),
-      Animated.spring(badgeScale, { toValue: 1, friction: 4, useNativeDriver: true }),
+      Animated.timing(badgeScale, {
+        toValue: 1.35,
+        duration: 120,
+        useNativeDriver: true,
+      }),
+      Animated.spring(badgeScale, {
+        toValue: 1,
+        friction: 4,
+        useNativeDriver: true,
+      }),
     ]).start();
   }, [items.length, badgeScale]);
 
@@ -102,7 +154,10 @@ export default function CalculatorScreen() {
         Alert.alert(strings.shareNotAvailable, strings.shareNotAvailableMsg);
         return;
       }
-      await Sharing.shareAsync(uri, { mimeType: 'image/png', dialogTitle: strings.shareQuoteDialog });
+      await Sharing.shareAsync(uri, {
+        mimeType: 'image/png',
+        dialogTitle: strings.shareQuoteDialog,
+      });
     } catch {
       Alert.alert(strings.errorTitle, strings.shareError);
     } finally {
@@ -134,6 +189,14 @@ export default function CalculatorScreen() {
     }
   }
 
+  async function handleClearDraft() {
+    clearDraft();
+    setClientName('');
+    setNotes('');
+    useQuoteStore.getState().reset();
+    showToast(strings.draftCleared, 'info');
+  }
+
   if (isLoading && services.length === 0) {
     return (
       <View className="flex-1 items-center justify-center bg-gray-50 dark:bg-gray-900">
@@ -144,7 +207,7 @@ export default function CalculatorScreen() {
 
   const activeServices = services.filter((s) => s.isActive);
   const filteredServices = activeServices.filter((s) =>
-    s.name.toLowerCase().includes(searchQuery.trim().toLowerCase())
+    s.name.toLowerCase().includes(searchQuery.trim().toLowerCase()),
   );
 
   return (
@@ -158,7 +221,9 @@ export default function CalculatorScreen() {
           accessibilityLabel={strings.modeServices}
           className={`flex-1 py-2 rounded-md items-center ${mode === 'select' ? 'bg-white dark:bg-gray-700' : 'bg-transparent'}`}
         >
-          <Text className={`text-sm font-medium ${mode === 'select' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400'}`}>
+          <Text
+            className={`text-sm font-medium ${mode === 'select' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400'}`}
+          >
             {strings.modeServices}
           </Text>
         </TouchableOpacity>
@@ -169,7 +234,9 @@ export default function CalculatorScreen() {
           accessibilityLabel={`${strings.modeCart}${items.length > 0 ? ` (${items.length})` : ''}`}
           className={`flex-1 py-2 rounded-md items-center flex-row justify-center ${mode === 'cart' ? 'bg-white dark:bg-gray-700' : 'bg-transparent'}`}
         >
-          <Text className={`text-sm font-medium ${mode === 'cart' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400'}`}>
+          <Text
+            className={`text-sm font-medium ${mode === 'cart' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400'}`}
+          >
             {strings.modeCart}
           </Text>
           {items.length > 0 && (
@@ -178,7 +245,9 @@ export default function CalculatorScreen() {
               className="bg-indigo-600 rounded-full w-5 h-5 items-center justify-center ml-1.5"
               accessible={false}
             >
-              <Text className="text-white text-[11px] font-bold">{items.length}</Text>
+              <Text className="text-white text-[11px] font-bold">
+                {items.length}
+              </Text>
             </Animated.View>
           )}
         </TouchableOpacity>
@@ -207,7 +276,9 @@ export default function CalculatorScreen() {
             {filteredServices.length === 0 ? (
               <View className="py-12 items-center">
                 <Text className="text-base text-gray-400">
-                  {activeServices.length === 0 ? strings.noActiveServices : strings.noResults}
+                  {activeServices.length === 0
+                    ? strings.noActiveServices
+                    : strings.noResults}
                 </Text>
               </View>
             ) : (
@@ -221,11 +292,17 @@ export default function CalculatorScreen() {
                 >
                   <View className="flex-row justify-between items-center">
                     <View className="flex-1 mr-3">
-                      <Text className="text-base font-medium text-gray-900 dark:text-gray-100">{s.name}</Text>
-                      <Text className="text-sm text-gray-500 dark:text-gray-400 mt-1">${s.priceUSD.toFixed(2)}</Text>
+                      <Text className="text-base font-medium text-gray-900 dark:text-gray-100">
+                        {s.name}
+                      </Text>
+                      <Text className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        ${s.priceUSD.toFixed(2)}
+                      </Text>
                     </View>
                     <View className="bg-indigo-600 rounded-full w-8 h-8 items-center justify-center">
-                      <Text className="text-white text-lg font-semibold">+</Text>
+                      <Text className="text-white text-lg font-semibold">
+                        +
+                      </Text>
                     </View>
                   </View>
                 </TouchableOpacity>
@@ -236,48 +313,157 @@ export default function CalculatorScreen() {
           <View className="pt-3 pb-16">
             {items.length === 0 ? (
               <View className="py-12 items-center">
-                <Text className="text-base text-gray-400">{strings.cartEmpty}</Text>
-                <Text className="text-sm text-gray-400 mt-1">{strings.selectServices}</Text>
+                <Text className="text-base text-gray-400">
+                  {strings.cartEmpty}
+                </Text>
+                <Text className="text-sm text-gray-400 mt-1">
+                  {strings.selectServices}
+                </Text>
                 <TouchableOpacity
                   onPress={() => switchMode('select')}
                   className="mt-4 bg-indigo-600 px-6 py-3 rounded-lg"
                 >
-                  <Text className="text-white text-sm font-medium">{strings.viewServices}</Text>
+                  <Text className="text-white text-sm font-medium">
+                    {strings.viewServices}
+                  </Text>
                 </TouchableOpacity>
               </View>
             ) : (
               <>
                 {/* ViewShot oculto para exportación limpia — estilos fijos claros */}
                 <View style={{ position: 'absolute', left: -9999, top: -9999 }}>
-                  <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 1.0 }}>
-                    <View style={{ backgroundColor: '#fff', padding: 16, borderRadius: 12 }}>
-                      <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#111827', marginBottom: 4 }}>{strings.quoteTitle}</Text>
-                      <Text style={{ fontSize: 12, color: '#6b7280', marginBottom: 16 }}>
-                        {new Date().toLocaleDateString('es-VE', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  <ViewShot
+                    ref={viewShotRef}
+                    options={{ format: 'png', quality: 1.0 }}
+                  >
+                    <View
+                      style={{
+                        backgroundColor: '#fff',
+                        padding: 16,
+                        borderRadius: 12,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          fontWeight: 'bold',
+                          color: '#111827',
+                          marginBottom: 4,
+                        }}
+                      >
+                        {strings.quoteTitle}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: '#6b7280',
+                          marginBottom: 16,
+                        }}
+                      >
+                        {new Date().toLocaleDateString('es-VE', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
                         {clientName ? ` · ${clientName}` : ''}
                       </Text>
                       {items.map((item) => (
-                        <View key={item.serviceId} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' }}>
+                        <View
+                          key={item.serviceId}
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            paddingVertical: 8,
+                            borderBottomWidth: 1,
+                            borderBottomColor: '#f3f4f6',
+                          }}
+                        >
                           <View style={{ flex: 1, marginRight: 12 }}>
-                            <Text style={{ fontSize: 14, fontWeight: '500', color: '#111827' }}>{item.serviceName}</Text>
-                            <Text style={{ fontSize: 12, color: '#6b7280' }}>x{item.quantity} · ${item.priceUSD.toFixed(2)} {strings.perUnit}</Text>
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                fontWeight: '500',
+                                color: '#111827',
+                              }}
+                            >
+                              {item.serviceName}
+                            </Text>
+                            <Text style={{ fontSize: 12, color: '#6b7280' }}>
+                              x{item.quantity} · ${item.priceUSD.toFixed(2)}{' '}
+                              {strings.perUnit}
+                            </Text>
                           </View>
-                          <Text style={{ fontSize: 14, fontWeight: '600', color: '#111827' }}>${item.subtotalUSD.toFixed(2)}</Text>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: '600',
+                              color: '#111827',
+                            }}
+                          >
+                            ${item.subtotalUSD.toFixed(2)}
+                          </Text>
                         </View>
                       ))}
-                      <View style={{ marginTop: 12, paddingTop: 12, borderTopWidth: 2, borderTopColor: '#e5e7eb' }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                          <Text style={{ fontSize: 16, fontWeight: '600', color: '#111827' }}>{strings.total}</Text>
-                          <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#111827' }}>${totalUSD.toFixed(2)}</Text>
+                      <View
+                        style={{
+                          marginTop: 12,
+                          paddingTop: 12,
+                          borderTopWidth: 2,
+                          borderTopColor: '#e5e7eb',
+                        }}
+                      >
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontWeight: '600',
+                              color: '#111827',
+                            }}
+                          >
+                            {strings.total}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontWeight: 'bold',
+                              color: '#111827',
+                            }}
+                          >
+                            ${totalUSD.toFixed(2)}
+                          </Text>
                         </View>
                         {rate && (
-                          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
-                            <Text style={{ fontSize: 14, color: '#6b7280' }}>{strings.totalVESLabel}</Text>
-                            <Text style={{ fontSize: 14, color: '#6b7280' }}>Bs. {totalVES.toFixed(2)}</Text>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              marginTop: 4,
+                            }}
+                          >
+                            <Text style={{ fontSize: 14, color: '#6b7280' }}>
+                              {strings.totalVESLabel}
+                            </Text>
+                            <Text style={{ fontSize: 14, color: '#6b7280' }}>
+                              Bs. {totalVES.toFixed(2)}
+                            </Text>
                           </View>
                         )}
                         {rate && (
-                          <Text style={{ fontSize: 11, color: '#9ca3af', marginTop: 8 }}>{strings.rateLabel} {rate.toFixed(2)}</Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              color: '#9ca3af',
+                              marginTop: 8,
+                            }}
+                          >
+                            {strings.rateLabel} {rate.toFixed(2)}
+                          </Text>
                         )}
                       </View>
                     </View>
@@ -287,24 +473,48 @@ export default function CalculatorScreen() {
                 {/* Items editables */}
                 <View className="pt-3">
                   {items.map((item) => (
-                    <View key={item.serviceId} className="bg-white dark:bg-gray-800 rounded-xl p-3 mb-2 border border-gray-200 dark:border-gray-700">
+                    <View
+                      key={item.serviceId}
+                      className="bg-white dark:bg-gray-800 rounded-xl p-3 mb-2 border border-gray-200 dark:border-gray-700"
+                    >
                       <View className="flex-row items-center">
                         <View className="flex-1">
-                          <Text className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.serviceName}</Text>
-                          <Text className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">${item.priceUSD.toFixed(2)} {strings.perUnit}</Text>
+                          <Text className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                            {item.serviceName}
+                          </Text>
+                          <Text className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                            ${item.priceUSD.toFixed(2)} {strings.perUnit}
+                          </Text>
                         </View>
                         <View className="flex-row items-center gap-2">
                           <TouchableOpacity
-                            onPress={() => { if (item.quantity <= 1) { removeItem(item.serviceId); showToast(strings.serviceRemovedFromCart, 'info'); } else { updateQuantity(item.serviceId, item.quantity - 1); } }}
+                            onPress={() => {
+                              if (item.quantity <= 1) {
+                                removeItem(item.serviceId);
+                                showToast(
+                                  strings.serviceRemovedFromCart,
+                                  'info',
+                                );
+                              } else {
+                                updateQuantity(
+                                  item.serviceId,
+                                  item.quantity - 1,
+                                );
+                              }
+                            }}
                             accessibilityRole="button"
                             accessibilityLabel={`${strings.delete} ${item.serviceName}`}
                             className="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-900/40 items-center justify-center"
                           >
                             <Ionicons name="remove" size={18} color="#6366F1" />
                           </TouchableOpacity>
-                          <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 min-w-6 text-center">{item.quantity}</Text>
+                          <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 min-w-6 text-center">
+                            {item.quantity}
+                          </Text>
                           <TouchableOpacity
-                            onPress={() => updateQuantity(item.serviceId, item.quantity + 1)}
+                            onPress={() =>
+                              updateQuantity(item.serviceId, item.quantity + 1)
+                            }
                             accessibilityRole="button"
                             accessibilityLabel={`${strings.add} ${item.serviceName}`}
                             className="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-900/40 items-center justify-center"
@@ -313,18 +523,29 @@ export default function CalculatorScreen() {
                           </TouchableOpacity>
                         </View>
                         <View className="items-end ml-3 min-w-[72px]">
-                          <Text className="text-sm font-semibold text-gray-900 dark:text-gray-100">${item.subtotalUSD.toFixed(2)}</Text>
+                          <Text className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                            ${item.subtotalUSD.toFixed(2)}
+                          </Text>
                           {rate && (
-                            <Text className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">Bs. {(item.subtotalUSD * rate).toFixed(2)}</Text>
+                            <Text className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
+                              Bs. {(item.subtotalUSD * rate).toFixed(2)}
+                            </Text>
                           )}
                         </View>
                         <TouchableOpacity
-                          onPress={() => { removeItem(item.serviceId); showToast(strings.serviceRemovedFromCart, 'info'); }}
+                          onPress={() => {
+                            removeItem(item.serviceId);
+                            showToast(strings.serviceRemovedFromCart, 'info');
+                          }}
                           accessibilityRole="button"
                           accessibilityLabel={`${strings.delete} ${item.serviceName}`}
                           className="ml-2 w-8 h-8 rounded-full bg-red-50 dark:bg-red-900/30 items-center justify-center"
                         >
-                          <Ionicons name="trash-outline" size={16} color="#EF4444" />
+                          <Ionicons
+                            name="trash-outline"
+                            size={16}
+                            color="#EF4444"
+                          />
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -334,17 +555,27 @@ export default function CalculatorScreen() {
                 {/* Totales */}
                 <View className="mt-2 pt-4 border-t-2 border-gray-200 dark:border-gray-700">
                   <View className="flex-row justify-between">
-                    <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">{strings.totalUSDLabel}</Text>
-                    <Text className="text-base font-bold text-gray-900 dark:text-gray-100">${totalUSD.toFixed(2)}</Text>
+                    <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">
+                      {strings.totalUSDLabel}
+                    </Text>
+                    <Text className="text-base font-bold text-gray-900 dark:text-gray-100">
+                      ${totalUSD.toFixed(2)}
+                    </Text>
                   </View>
                   {rate && (
                     <View className="flex-row justify-between mt-1">
-                      <Text className="text-sm text-gray-500 dark:text-gray-400">{strings.totalVESLabel}</Text>
-                      <Text className="text-sm text-gray-500 dark:text-gray-400">Bs. {totalVES.toFixed(2)}</Text>
+                      <Text className="text-sm text-gray-500 dark:text-gray-400">
+                        {strings.totalVESLabel}
+                      </Text>
+                      <Text className="text-sm text-gray-500 dark:text-gray-400">
+                        Bs. {totalVES.toFixed(2)}
+                      </Text>
                     </View>
                   )}
                   {rate && (
-                    <Text className="text-[11px] text-gray-400 dark:text-gray-500 mt-2">{strings.rateLabel} {rate.toFixed(2)}</Text>
+                    <Text className="text-[11px] text-gray-400 dark:text-gray-500 mt-2">
+                      {strings.rateLabel} {rate.toFixed(2)}
+                    </Text>
                   )}
                 </View>
 
@@ -358,8 +589,14 @@ export default function CalculatorScreen() {
                       accessibilityLabel={strings.share}
                       className="flex-1 bg-white dark:bg-gray-800 py-3.5 rounded-lg items-center border border-gray-200 dark:border-gray-700 flex-row justify-center gap-1.5"
                     >
-                      <Ionicons name="share-outline" size={18} color="#6366F1" />
-                      <Text className="text-indigo-600 dark:text-indigo-400 text-sm font-medium">{isExporting ? strings.sharing : strings.share}</Text>
+                      <Ionicons
+                        name="share-outline"
+                        size={18}
+                        color="#6366F1"
+                      />
+                      <Text className="text-indigo-600 dark:text-indigo-400 text-sm font-medium">
+                        {isExporting ? strings.sharing : strings.share}
+                      </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={handleExportPdf}
@@ -368,8 +605,14 @@ export default function CalculatorScreen() {
                       accessibilityLabel={strings.exportPDF}
                       className="flex-1 bg-white dark:bg-gray-800 py-3.5 rounded-lg items-center border border-gray-200 dark:border-gray-700 flex-row justify-center gap-1.5"
                     >
-                      <Ionicons name="document-text-outline" size={18} color="#6366F1" />
-                      <Text className="text-indigo-600 dark:text-indigo-400 text-sm font-medium">{isExportingPdf ? strings.exporting : strings.exportPDF}</Text>
+                      <Ionicons
+                        name="document-text-outline"
+                        size={18}
+                        color="#6366F1"
+                      />
+                      <Text className="text-indigo-600 dark:text-indigo-400 text-sm font-medium">
+                        {isExportingPdf ? strings.exporting : strings.exportPDF}
+                      </Text>
                     </TouchableOpacity>
                   </View>
                   <TouchableOpacity
@@ -377,7 +620,10 @@ export default function CalculatorScreen() {
                     disabled={!rate || items.length === 0 || isSaving || saved}
                     accessibilityRole="button"
                     accessibilityLabel={strings.saveQuote}
-                    accessibilityState={{ disabled: !rate || items.length === 0 || isSaving || saved }}
+                    accessibilityState={{
+                      disabled:
+                        !rate || items.length === 0 || isSaving || saved,
+                    }}
                     className={`py-3.5 rounded-lg items-center flex-row justify-center gap-1.5 ${!rate || items.length === 0 || isSaving || saved ? 'bg-gray-400' : 'bg-indigo-600'}`}
                   >
                     <Ionicons name="save-outline" size={18} color="#fff" />
@@ -385,6 +631,19 @@ export default function CalculatorScreen() {
                       {saved ? strings.saved : strings.saveQuote}
                     </Text>
                   </TouchableOpacity>
+                  {items.length > 0 && (
+                    <TouchableOpacity
+                      onPress={handleClearDraft}
+                      accessibilityRole="button"
+                      accessibilityLabel={strings.clearDraft}
+                      className="py-2.5 rounded-lg items-center flex-row justify-center gap-1.5 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800"
+                    >
+                      <Ionicons name="trash-outline" size={16} color="#ef4444" />
+                      <Text className="text-red-600 dark:text-red-400 text-xs font-medium">
+                        {strings.clearDraft}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
 
                 {/* Cliente y notas — colapsable */}
@@ -395,17 +654,28 @@ export default function CalculatorScreen() {
                   accessibilityState={{ expanded: showClientForm }}
                   className="flex-row items-center justify-between py-3 px-1 mb-1"
                 >
-                  <Text className="text-sm font-medium text-gray-500 dark:text-gray-400">{strings.clientAndNotes}</Text>
-                  <Text className="text-xs text-gray-400">{showClientForm ? '▲' : '▼'}</Text>
+                  <Text className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    {strings.clientAndNotes}
+                  </Text>
+                  <Text className="text-xs text-gray-400">
+                    {showClientForm ? '▲' : '▼'}
+                  </Text>
                 </TouchableOpacity>
                 {showClientForm && (
                   <View className="mb-3">
                     <View className="mb-3">
-                      <Text className="text-[13px] text-gray-700 dark:text-gray-300 mb-1">{strings.clientName}</Text>
-                      <ClientPicker value={clientName} onChange={setClientName} />
+                      <Text className="text-[13px] text-gray-700 dark:text-gray-300 mb-1">
+                        {strings.clientName}
+                      </Text>
+                      <ClientPicker
+                        value={clientName}
+                        onChange={setClientName}
+                      />
                     </View>
                     <View>
-                      <Text className="text-[13px] text-gray-700 dark:text-gray-300 mb-1">{strings.clientNotes}</Text>
+                      <Text className="text-[13px] text-gray-700 dark:text-gray-300 mb-1">
+                        {strings.clientNotes}
+                      </Text>
                       <View className="border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-3 bg-white dark:bg-gray-800">
                         <TextInput
                           value={notes}
@@ -422,7 +692,9 @@ export default function CalculatorScreen() {
 
                 {!rate && (
                   <View className="p-3 bg-red-50 dark:bg-red-900/30 rounded-lg mb-4">
-                    <Text className="text-red-600 dark:text-red-400 text-[13px]">{strings.noRateAvailable}</Text>
+                    <Text className="text-red-600 dark:text-red-400 text-[13px]">
+                      {strings.noRateAvailable}
+                    </Text>
                   </View>
                 )}
               </>

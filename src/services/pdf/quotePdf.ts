@@ -227,7 +227,10 @@ function buildQuoteHtml(quote: Quote, exchangeRate: number): string {
 </html>`;
 }
 
-export async function generateQuotePdf(quote: Quote, exchangeRate: number): Promise<string> {
+export async function generateQuotePdf(
+  quote: Quote,
+  exchangeRate: number,
+): Promise<string> {
   const html = buildQuoteHtml(quote, exchangeRate);
   const { uri } = await printToFileAsync({
     html,

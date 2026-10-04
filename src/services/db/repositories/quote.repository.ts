@@ -30,16 +30,24 @@ function mapQuoteItem(row: Record<string, unknown>): QuoteItem {
 
 export function getAllQuotes(): Quote[] {
   const db = getDatabase();
-  const quoteRows = db.getAllSync<Record<string, unknown>>('SELECT * FROM quotes ORDER BY createdAt DESC');
+  const quoteRows = db.getAllSync<Record<string, unknown>>(
+    'SELECT * FROM quotes ORDER BY createdAt DESC',
+  );
   return quoteRows.map(mapQuote);
 }
 
 export function getQuoteById(id: string): Quote | undefined {
   const db = getDatabase();
-  const quoteRow = db.getFirstSync<Record<string, unknown>>('SELECT * FROM quotes WHERE id = ?', id);
+  const quoteRow = db.getFirstSync<Record<string, unknown>>(
+    'SELECT * FROM quotes WHERE id = ?',
+    id,
+  );
   if (!quoteRow) return undefined;
   const quote = mapQuote(quoteRow);
-  const itemRows = db.getAllSync<Record<string, unknown>>('SELECT * FROM quote_items WHERE quoteId = ?', id);
+  const itemRows = db.getAllSync<Record<string, unknown>>(
+    'SELECT * FROM quote_items WHERE quoteId = ?',
+    id,
+  );
   quote.items = itemRows.map(mapQuoteItem);
   return quote;
 }

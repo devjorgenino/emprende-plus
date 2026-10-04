@@ -1,4 +1,4 @@
-// ESLint flat config (v9) para EmprendePlus.
+// ESLint flat config (v9) para Emprende+.
 // Combina eslint-config-expo (React Native + Expo + TypeScript) con
 // eslint-config-prettier (desactiva reglas de formato que maneja Prettier).
 const { defineConfig } = require('eslint/config');

@@ -1,5 +1,14 @@
 import { useEffect, useState, useMemo } from 'react';
-import { View, Text, FlatList, ActivityIndicator, RefreshControl, TextInput, TouchableOpacity, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  RefreshControl,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSaleStore } from '../../src/store/sale.store';
@@ -30,7 +39,9 @@ export default function SalesScreen() {
   const searchSales = useSaleStore((s) => s.searchSales);
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [paymentFilter, setPaymentFilter] = useState<PaymentMethod | 'all'>('all');
+  const [paymentFilter, setPaymentFilter] = useState<PaymentMethod | 'all'>(
+    'all',
+  );
   const [clientFilter, setClientFilter] = useState<string | 'all'>('all');
   const [dateRange, setDateRange] = useState<{ start: string; end: string }>({
     start: new Date(0).toISOString(),
@@ -64,9 +75,17 @@ export default function SalesScreen() {
     }
     return result.filter((s) => {
       const t = new Date(s.createdAt).getTime();
-      if (paymentFilter !== 'all' && s.paymentMethod !== paymentFilter) return false;
-      if (clientFilter !== 'all' && (s.clientName ?? '').trim() !== clientFilter) return false;
-      return t >= new Date(dateRange.start).getTime() && t <= new Date(dateRange.end).getTime();
+      if (paymentFilter !== 'all' && s.paymentMethod !== paymentFilter)
+        return false;
+      if (
+        clientFilter !== 'all' &&
+        (s.clientName ?? '').trim() !== clientFilter
+      )
+        return false;
+      return (
+        t >= new Date(dateRange.start).getTime() &&
+        t <= new Date(dateRange.end).getTime()
+      );
     });
   }, [sales, searchQuery, dateRange, paymentFilter, clientFilter, searchSales]);
 
@@ -85,7 +104,9 @@ export default function SalesScreen() {
     return (
       <View className="flex-1 items-center justify-center bg-gray-50 dark:bg-gray-900">
         <ActivityIndicator size="large" color={colors.primary} />
-        <Text className="mt-4 text-gray-500 dark:text-gray-400">{strings.loading}</Text>
+        <Text className="mt-4 text-gray-500 dark:text-gray-400">
+          {strings.loading}
+        </Text>
       </View>
     );
   }
@@ -97,13 +118,20 @@ export default function SalesScreen() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View className="px-4">
-            <SaleItem sale={item} onPress={() => router.push(`/sales/${item.id}`)} />
+            <SaleItem
+              sale={item}
+              onPress={() => router.push(`/sales/${item.id}`)}
+            />
           </View>
         )}
         contentContainerStyle={{ paddingVertical: 16, flexGrow: 1 }}
         ListHeaderComponent={
           <View className="px-4">
-            <SalesSummary totalUSD={totalUSD} totalVES={totalVES} saleCount={filteredSales.length} />
+            <SalesSummary
+              totalUSD={totalUSD}
+              totalVES={totalVES}
+              saleCount={filteredSales.length}
+            />
             <DateRangeFilter
               onPeriodChange={(start, end) => setDateRange({ start, end })}
             />
@@ -116,10 +144,24 @@ export default function SalesScreen() {
                 className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 pl-10 text-base text-gray-900 dark:text-gray-100"
                 placeholderTextColor={colors.textSecondary}
               />
-              <Ionicons name="search" size={18} color={colors.textSecondary} className="absolute left-3 top-3.5" />
+              <Ionicons
+                name="search"
+                size={18}
+                color={colors.textSecondary}
+                className="absolute left-3 top-3.5"
+              />
               {searchQuery ? (
-                <TouchableOpacity onPress={() => setSearchQuery('')} accessibilityRole="button" accessibilityLabel={strings.cancel} className="absolute right-3 top-3">
-                  <Ionicons name="close-circle" size={20} color={colors.textSecondary} />
+                <TouchableOpacity
+                  onPress={() => setSearchQuery('')}
+                  accessibilityRole="button"
+                  accessibilityLabel={strings.cancel}
+                  className="absolute right-3 top-3"
+                >
+                  <Ionicons
+                    name="close-circle"
+                    size={20}
+                    color={colors.textSecondary}
+                  />
                 </TouchableOpacity>
               ) : null}
             </View>
@@ -135,7 +177,9 @@ export default function SalesScreen() {
                   accessibilityLabel={f.label}
                   className={`px-3 py-1.5 rounded-full border ${paymentFilter === f.key ? 'bg-indigo-600 border-indigo-600' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600'}`}
                 >
-                  <Text className={`text-xs font-medium ${paymentFilter === f.key ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}>
+                  <Text
+                    className={`text-xs font-medium ${paymentFilter === f.key ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}
+                  >
                     {f.label}
                   </Text>
                 </TouchableOpacity>
@@ -152,20 +196,26 @@ export default function SalesScreen() {
                   accessibilityLabel={strings.all}
                   className={`px-3 py-1.5 rounded-full border ${clientFilter === 'all' ? 'bg-indigo-600 border-indigo-600' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600'}`}
                 >
-                  <Text className={`text-xs font-medium ${clientFilter === 'all' ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}>
+                  <Text
+                    className={`text-xs font-medium ${clientFilter === 'all' ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}
+                  >
                     {strings.all}
                   </Text>
                 </TouchableOpacity>
                 {frequentClients.map((name) => (
                   <TouchableOpacity
                     key={name}
-                    onPress={() => setClientFilter(clientFilter === name ? 'all' : name)}
+                    onPress={() =>
+                      setClientFilter(clientFilter === name ? 'all' : name)
+                    }
                     accessibilityRole="button"
                     accessibilityState={{ selected: clientFilter === name }}
                     accessibilityLabel={name}
                     className={`px-3 py-1.5 rounded-full border ${clientFilter === name ? 'bg-indigo-600 border-indigo-600' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600'}`}
                   >
-                    <Text className={`text-xs font-medium ${clientFilter === name ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}>
+                    <Text
+                      className={`text-xs font-medium ${clientFilter === name ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}
+                    >
                       {name.length > 14 ? `${name.slice(0, 14)}…` : name}
                     </Text>
                   </TouchableOpacity>
@@ -181,8 +231,14 @@ export default function SalesScreen() {
                 accessibilityLabel={strings.exportCSV}
                 className="flex-row items-center justify-center mb-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl py-2.5"
               >
-                <Ionicons name="download-outline" size={18} color={colors.primary} />
-                <Text className="text-indigo-600 dark:text-indigo-400 text-sm font-medium ml-2">{strings.exportCSV}</Text>
+                <Ionicons
+                  name="download-outline"
+                  size={18}
+                  color={colors.primary}
+                />
+                <Text className="text-indigo-600 dark:text-indigo-400 text-sm font-medium ml-2">
+                  {strings.exportCSV}
+                </Text>
               </TouchableOpacity>
             )}
           </View>
@@ -190,12 +246,22 @@ export default function SalesScreen() {
         ListEmptyComponent={
           <View className="flex-1 items-center justify-center p-6">
             <Ionicons name="cash-outline" size={64} color={colors.border} />
-            <Text className="text-gray-400 dark:text-gray-500 text-lg mt-4">{strings.emptySales}</Text>
-            {searchQuery && <Text className="text-gray-400 dark:text-gray-500 text-sm mt-1">{strings.tryAnother}</Text>}
+            <Text className="text-gray-400 dark:text-gray-500 text-lg mt-4">
+              {strings.emptySales}
+            </Text>
+            {searchQuery && (
+              <Text className="text-gray-400 dark:text-gray-500 text-sm mt-1">
+                {strings.tryAnother}
+              </Text>
+            )}
           </View>
         }
         refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={loadSales} tintColor={colors.primary} />
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={loadSales}
+            tintColor={colors.primary}
+          />
         }
       />
     </View>

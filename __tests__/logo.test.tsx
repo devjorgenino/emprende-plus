@@ -12,18 +12,20 @@ jest.mock('../src/hooks/useThemeColors', () => ({
 
 describe('Logo', () => {
   it('renders the mark image with the requested size', () => {
-    const { getByLabelText } = render(<Logo size={64} accessibilityLabel="EmprendePlus logo" />);
-    const img = getByLabelText('EmprendePlus logo');
+    const { getByLabelText } = render(
+      <Logo size={64} accessibilityLabel="Emprende+ logo" />,
+    );
+    const img = getByLabelText('Emprende+ logo');
     expect(img).toBeTruthy();
   });
 
   it('renders the app name when showName is true', () => {
     const { getByText } = render(<Logo showName />);
-    expect(getByText('EmprendePlus')).toBeTruthy();
+    expect(getByText('Emprende+')).toBeTruthy();
   });
 
   it('does not render the name by default', () => {
     const { queryByText } = render(<Logo />);
-    expect(queryByText('EmprendePlus')).toBeNull();
+    expect(queryByText('Emprende+')).toBeNull();
   });
 });

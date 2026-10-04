@@ -32,7 +32,9 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         this.props.fallback ?? (
           <View className="flex-1 items-center justify-center bg-gray-50 dark:bg-gray-900 p-6">
-            <Text className="text-red-500 dark:text-red-400 text-lg font-semibold mb-2">{strings.somethingWentWrong}</Text>
+            <Text className="text-red-500 dark:text-red-400 text-lg font-semibold mb-2">
+              {strings.somethingWentWrong}
+            </Text>
             <Text className="text-gray-500 dark:text-gray-400 text-sm text-center mb-4">
               {this.state.error?.message ?? strings.unknownError}
             </Text>

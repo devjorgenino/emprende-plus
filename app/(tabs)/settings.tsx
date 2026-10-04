@@ -1,10 +1,18 @@
 import { useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 import { getDatabase } from '../../src/lib/db';
+import { removeKey } from '../../src/lib/storage';
 import { strings } from '../../src/constants/strings';
 import { Logo } from '../../src/components/brand/Logo';
 
@@ -24,13 +32,13 @@ export default function SettingsScreen() {
     try {
       const db = getDatabase();
       const sales = db.getAllSync<Record<string, unknown>>(
-        "SELECT exchangeRate, 'venta' as source, createdAt FROM sales ORDER BY createdAt DESC LIMIT 10"
+        "SELECT exchangeRate, 'venta' as source, createdAt FROM sales ORDER BY createdAt DESC LIMIT 10",
       );
       const quotes = db.getAllSync<Record<string, unknown>>(
-        "SELECT exchangeRate, 'cotización' as source, createdAt FROM quotes ORDER BY createdAt DESC LIMIT 10"
+        "SELECT exchangeRate, 'cotización' as source, createdAt FROM quotes ORDER BY createdAt DESC LIMIT 10",
       );
       const expenses = db.getAllSync<Record<string, unknown>>(
-        "SELECT exchangeRate, 'egreso' as source, createdAt FROM expenses ORDER BY createdAt DESC LIMIT 10"
+        "SELECT exchangeRate, 'egreso' as source, createdAt FROM expenses ORDER BY createdAt DESC LIMIT 10",
       );
 
       const all = [...sales, ...quotes, ...expenses]
@@ -55,12 +63,23 @@ export default function SettingsScreen() {
     try {
       const db = getDatabase();
       // Export a JSON snapshot of all tables
-      const tables = ['services', 'quotes', 'quote_items', 'sales', 'sale_items', 'expenses', 'inventory_items', 'clients'];
+      const tables = [
+        'services',
+        'quotes',
+        'quote_items',
+        'sales',
+        'sale_items',
+        'expenses',
+        'inventory_items',
+        'clients',
+      ];
       const backup: Record<string, unknown[]> = {};
 
       for (const table of tables) {
         try {
-          backup[table] = db.getAllSync<Record<string, unknown>>(`SELECT * FROM ${table}`);
+          backup[table] = db.getAllSync<Record<string, unknown>>(
+            `SELECT * FROM ${table}`,
+          );
         } catch {
           backup[table] = [];
         }
@@ -72,7 +91,10 @@ export default function SettingsScreen() {
 
       const available = await Sharing.isAvailableAsync();
       if (available) {
-        await Sharing.shareAsync(uri, { mimeType: 'application/json', dialogTitle: strings.appName + ' Backup' });
+        await Sharing.shareAsync(uri, {
+          mimeType: 'application/json',
+          dialogTitle: strings.appName + ' Backup',
+        });
       } else {
         Alert.alert(strings.backupCreated, `${strings.backupSavedTo} ${uri}`);
       }
@@ -84,36 +106,61 @@ export default function SettingsScreen() {
   }
 
   async function handleRestore() {
-    Alert.alert(
-      strings.restoreBackup,
-      strings.restoreWarning,
-      [
-        { text: strings.cancel, style: 'cancel' },
-        {
-          text: strings.restore,
-          style: 'destructive',
-          onPress: async () => {
-            setIsRestoring(true);
+    Alert.alert(strings.restoreBackup, strings.restoreWarning, [
+      { text: strings.cancel, style: 'cancel' },
+      {
+        text: strings.restore,
+        style: 'destructive',
+        onPress: async () => {
+          setIsRestoring(true);
+          try {
+            const result = await DocumentPicker.getDocumentAsync({
+              type: 'application/json',
+              copyToCacheDirectory: true,
+            });
+            if (result.canceled || !result.assets?.[0]?.uri) {
+              return;
+            }
+
+            const json = await FileSystem.readAsStringAsync(
+              result.assets[0].uri,
+            );
+            const backup = JSON.parse(json) as Record<
+              string,
+              Record<string, unknown>[]
+            >;
+
+            const db = getDatabase();
+            const tables = [
+              'quote_items',
+              'sale_items',
+              'sales',
+              'quotes',
+              'expenses',
+              'inventory_items',
+              'services',
+              'clients',
+            ];
+
+            // Rebuild tables from backup
+            // Start transaction
+            db.execSync('BEGIN TRANSACTION');
+            // Disable foreign key constraints during restore to avoid ordering issues
+            db.execSync('PRAGMA foreign_keys = OFF');
             try {
-              const result = await DocumentPicker.getDocumentAsync({
-                type: 'application/json',
-                copyToCacheDirectory: true,
-              });
-              if (result.canceled || !result.assets?.[0]?.uri) {
-                return;
-              }
+              // Restore parent tables first (quotes, sales), then child tables
+              const parentTables = ['quotes', 'sales'];
+              const childTables = ['quote_items', 'sale_items'];
+              const otherTables = ['expenses', 'inventory_items', 'services', 'clients'];
+              const orderedTables = [...parentTables, ...childTables, ...otherTables];
 
-              const json = await FileSystem.readAsStringAsync(result.assets[0].uri);
-              const backup = JSON.parse(json) as Record<string, Record<string, unknown>[]>;
-
-              const db = getDatabase();
-              const tables = ['quote_items', 'sale_items', 'sales', 'quotes', 'expenses', 'inventory_items', 'services', 'clients'];
-
-              // Rebuild tables from backup
-              for (const table of tables) {
-                const rows = backup[table] ?? [];
+              for (const table of orderedTables) {
+                const rows = backup[table];
+                if (!rows) {
+                  console.warn(`Table ${table} not found in backup`);
+                  continue;
+                }
                 if (rows.length > 0) {
-                  // Derive columns from the first row (keys)
                   const columns = Object.keys(rows[0]);
                   for (const row of rows) {
                     const placeholders = columns.map(() => '?').join(', ');
@@ -122,31 +169,50 @@ export default function SettingsScreen() {
                       if (v === undefined || v === null) return null;
                       return typeof v === 'number' ? v : String(v);
                     });
-                    db.runSync(
-                      `INSERT OR REPLACE INTO ${table} (${columns.join(', ')}) VALUES (${placeholders})`,
-                      ...values
-                    );
+                    try {
+                      db.runSync(
+                        `INSERT OR IGNORE INTO ${table} (${columns.join(', ')}) VALUES (${placeholders})`,
+                        ...values,
+                      );
+                    } catch (insertErr) {
+                      console.error(`Insert failed for table ${table}:`, insertErr);
+                    }
                   }
                 }
               }
-
-              Alert.alert(strings.done, strings.restoreSuccess);
-            } catch {
-              Alert.alert(strings.errorTitle, strings.restoreError);
+              db.execSync('COMMIT');
+            } catch (e) {
+              db.execSync('ROLLBACK');
+              throw e;
             } finally {
-              setIsRestoring(false);
+              db.execSync('PRAGMA foreign_keys = ON');
             }
-          },
+
+            Alert.alert(strings.done, strings.restoreSuccess);
+            // Clear BCV rate cache so it refreshes on next open
+            await removeKey('bcv_exchange_rate');
+          } catch (e) {
+            const errorMessage = e instanceof Error ? e.message : String(e);
+            console.error('Restore error:', errorMessage);
+            Alert.alert(strings.errorTitle, `${strings.restoreError}: ${errorMessage}`);
+          } finally {
+            setIsRestoring(false);
+          }
         },
-      ]
-    );
+      },
+    ]);
   }
 
   return (
-    <ScrollView className="flex-1 bg-gray-50 dark:bg-gray-900" contentContainerStyle={{ padding: 16 }}>
+    <ScrollView
+      className="flex-1 bg-gray-50 dark:bg-gray-900"
+      contentContainerStyle={{ padding: 16 }}
+    >
       {/* Sección: Backup */}
       <View className="bg-white dark:bg-gray-800 rounded-xl p-5 mb-4 border border-gray-200 dark:border-gray-700">
-        <Text className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">{strings.dataBackup}</Text>
+        <Text className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">
+          {strings.dataBackup}
+        </Text>
         <Text className="text-sm text-gray-500 dark:text-gray-400 mb-4">
           {strings.dataBackupDesc}
         </Text>
@@ -180,7 +246,9 @@ export default function SettingsScreen() {
 
       {/* Sección: Historial de Tasas */}
       <View className="bg-white dark:bg-gray-800 rounded-xl p-5 mb-4 border border-gray-200 dark:border-gray-700">
-        <Text className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">{strings.rateHistory}</Text>
+        <Text className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">
+          {strings.rateHistory}
+        </Text>
         <Text className="text-sm text-gray-500 dark:text-gray-400 mb-4">
           {strings.rateHistoryDesc}
         </Text>
@@ -192,7 +260,10 @@ export default function SettingsScreen() {
         ) : (
           <View className="gap-1">
             {rates.map((r, idx) => (
-              <View key={idx} className="flex-row justify-between items-center py-2 border-b border-gray-50 dark:border-gray-700">
+              <View
+                key={idx}
+                className="flex-row justify-between items-center py-2 border-b border-gray-50 dark:border-gray-700"
+              >
                 <Text className="text-sm text-gray-700 dark:text-gray-300">
                   {strings.rateShortLabel} {r.rate.toFixed(2)}
                 </Text>
@@ -220,16 +291,28 @@ export default function SettingsScreen() {
         </Text>
         <View className="gap-1 mt-2">
           <View className="flex-row justify-between">
-            <Text className="text-sm text-gray-500 dark:text-gray-400">{strings.appName}</Text>
-            <Text className="text-sm text-gray-700 dark:text-gray-300">{strings.version}</Text>
+            <Text className="text-sm text-gray-500 dark:text-gray-400">
+              {strings.appName}
+            </Text>
+            <Text className="text-sm text-gray-700 dark:text-gray-300">
+              {strings.version}
+            </Text>
           </View>
           <View className="flex-row justify-between">
-            <Text className="text-sm text-gray-500 dark:text-gray-400">{strings.sdk}</Text>
-            <Text className="text-sm text-gray-700 dark:text-gray-300">{strings.expoVersion}</Text>
+            <Text className="text-sm text-gray-500 dark:text-gray-400">
+              {strings.sdk}
+            </Text>
+            <Text className="text-sm text-gray-700 dark:text-gray-300">
+              {strings.expoVersion}
+            </Text>
           </View>
           <View className="flex-row justify-between">
-            <Text className="text-sm text-gray-500 dark:text-gray-400">{strings.framework}</Text>
-            <Text className="text-sm text-gray-700 dark:text-gray-300">{strings.reactNativeVersion}</Text>
+            <Text className="text-sm text-gray-500 dark:text-gray-400">
+              {strings.framework}
+            </Text>
+            <Text className="text-sm text-gray-700 dark:text-gray-300">
+              {strings.reactNativeVersion}
+            </Text>
           </View>
         </View>
       </View>

@@ -24,7 +24,7 @@ function mapRow(row: Record<string, unknown>): InventoryItem {
 export function getAllItems(): InventoryItem[] {
   const db = getDatabase();
   const rows = db.getAllSync<Record<string, unknown>>(
-    'SELECT * FROM inventory_items ORDER BY createdAt DESC'
+    'SELECT * FROM inventory_items ORDER BY createdAt DESC',
   );
   return rows.map(mapRow);
 }
@@ -32,7 +32,8 @@ export function getAllItems(): InventoryItem[] {
 export function getItemById(id: string): InventoryItem | undefined {
   const db = getDatabase();
   const row = db.getFirstSync<Record<string, unknown>>(
-    'SELECT * FROM inventory_items WHERE id = ?', id
+    'SELECT * FROM inventory_items WHERE id = ?',
+    id,
   );
   return row ? mapRow(row) : undefined;
 }

@@ -32,16 +32,25 @@ export function SaleItem({ sale, onPress }: SaleItemProps) {
               {sale.clientName || strings.clientNotSpecified}
             </Text>
             <View className="flex-row items-center gap-2 mt-1">
-              <Badge label={methodLabels[sale.paymentMethod] || sale.paymentMethod} variant="secondary" />
+              <Badge
+                label={methodLabels[sale.paymentMethod] || sale.paymentMethod}
+                variant="secondary"
+              />
               <Text className="text-xs text-gray-400 dark:text-gray-500">
                 {new Date(sale.createdAt).toLocaleDateString('es-VE')}
               </Text>
             </View>
-            <Text className="text-xs text-gray-400 dark:text-gray-500 mt-1">{sale.items.length} servicio{sale.items.length !== 1 ? 's' : ''}</Text>
+            <Text className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+              {sale.items.length} servicio{sale.items.length !== 1 ? 's' : ''}
+            </Text>
           </View>
           <View className="items-end">
-            <Text className="text-base font-bold text-gray-900 dark:text-gray-100">${sale.totalUSD.toFixed(2)}</Text>
-            <Text className="text-sm text-gray-500 dark:text-gray-400">Bs. {sale.totalVES.toFixed(2)}</Text>
+            <Text className="text-base font-bold text-gray-900 dark:text-gray-100">
+              ${sale.totalUSD.toFixed(2)}
+            </Text>
+            <Text className="text-sm text-gray-500 dark:text-gray-400">
+              Bs. {sale.totalVES.toFixed(2)}
+            </Text>
           </View>
         </View>
         <View className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-700 flex-row justify-end">

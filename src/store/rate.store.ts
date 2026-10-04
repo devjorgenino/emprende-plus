@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { getObject, setObject } from '../lib/storage';
 
 const CACHE_KEY = 'bcv_exchange_rate';
-const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hora
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutos
 
 interface CachedRate {
   rate: number;
@@ -50,12 +50,14 @@ export const useRateStore = create<RateState & RateActions>((set, get) => ({
       // DolarApi.com — open source
       {
         url: 'https://ve.dolarapi.com/v1/dolares/oficial',
-        extract: (d: any) => (typeof d?.promedio === 'number' ? d.promedio : null),
+        extract: (d: any) =>
+          typeof d?.promedio === 'number' ? d.promedio : null,
       },
       // rafnixg — actualmente caída, pero la dejamos como último intento
       {
         url: 'https://bcv-api.rafnixg.dev/v1/exchange-rates/latest/USD',
-        extract: (d: any) => d?.rate ?? d?.rates?.USD?.rate ?? d?.USD?.rate ?? null,
+        extract: (d: any) =>
+          d?.rate ?? d?.rates?.USD?.rate ?? d?.USD?.rate ?? null,
       },
     ];
 
@@ -80,7 +82,12 @@ export const useRateStore = create<RateState & RateActions>((set, get) => ({
     // Mostrar cache inmediatamente para primer pintado rápido
     const cached = await getObject<CachedRate>(CACHE_KEY);
     if (cached) {
-      set({ rate: cached.rate, source: cached.source, fetchedAt: cached.fetchedAt, isLoading: false });
+      set({
+        rate: cached.rate,
+        source: cached.source,
+        fetchedAt: cached.fetchedAt,
+        isLoading: false,
+      });
     }
 
     // Siempre intentar fetch en background (salta cache fresco)
@@ -88,17 +95,34 @@ export const useRateStore = create<RateState & RateActions>((set, get) => ({
       const apiRate = await get().fetchRate();
       if (apiRate !== null) {
         const now = new Date().toISOString();
-        const entry: CachedRate = { rate: apiRate, fetchedAt: now, source: 'bcv' };
+        const entry: CachedRate = {
+          rate: apiRate,
+          fetchedAt: now,
+          source: 'bcv',
+        };
         await setObject(CACHE_KEY, entry);
         // No sobrescribir si el usuario puso una tasa manual
         if (get().source === 'manual') return;
-        set({ rate: apiRate, source: 'bcv', fetchedAt: now, isLoading: false, error: null });
+        set({
+          rate: apiRate,
+          source: 'bcv',
+          fetchedAt: now,
+          isLoading: false,
+          error: null,
+        });
         return;
       }
 
       // Todas las APIs fallaron
       if (!cached) {
-        set({ rate: null, source: null, fetchedAt: null, isLoading: false, error: 'No se pudo obtener la tasa BCV de ninguna fuente. Ingresa la tasa manualmente.' });
+        set({
+          rate: null,
+          source: null,
+          fetchedAt: null,
+          isLoading: false,
+          error:
+            'No se pudo obtener la tasa BCV de ninguna fuente. Ingresa la tasa manualmente.',
+        });
       } else {
         set({ error: 'Usando tasa cacheada. Conéctate para actualizar.' });
       }
@@ -113,7 +137,13 @@ export const useRateStore = create<RateState & RateActions>((set, get) => ({
     const now = new Date().toISOString();
     const entry: CachedRate = { rate, fetchedAt: now, source: 'manual' };
     await setObject(CACHE_KEY, entry);
-    set({ rate, source: 'manual', fetchedAt: now, error: null, isLoading: false });
+    set({
+      rate,
+      source: 'manual',
+      fetchedAt: now,
+      error: null,
+      isLoading: false,
+    });
   },
 
   refresh: async () => {

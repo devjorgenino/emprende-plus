@@ -13,7 +13,9 @@ export interface UseClientSalesResult {
  * Obtiene las ventas asociadas a un cliente por nombre,
  * con el total gastado en USD y VES.
  */
-export function useClientSales(clientName: string | undefined): UseClientSalesResult {
+export function useClientSales(
+  clientName: string | undefined,
+): UseClientSalesResult {
   const sales = useSaleStore((s) => s.sales);
   const loadSales = useSaleStore((s) => s.loadSales);
   const isLoading = useSaleStore((s) => s.isLoading);
@@ -36,7 +38,7 @@ export function useClientSales(clientName: string | undefined): UseClientSalesRe
         totalUSD: acc.totalUSD + s.totalUSD,
         totalVES: acc.totalVES + s.totalVES,
       }),
-      { totalUSD: 0, totalVES: 0 }
+      { totalUSD: 0, totalVES: 0 },
     );
   }, [clientSales]);
 

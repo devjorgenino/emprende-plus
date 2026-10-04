@@ -29,7 +29,7 @@ const logoAssets = {
 } as const;
 
 /**
- * EmprendePlus brand logo.
+ * Emprende+ brand logo.
  *
  * - `variant="mark"` (default): the multicolor growth-bar mark on a
  *   transparent background.  Reads well on light surfaces and light cards.

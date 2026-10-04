@@ -1,5 +1,14 @@
 import { useEffect, useState, useMemo } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl, TextInput, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+  RefreshControl,
+  TextInput,
+  Alert,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useExpenseStore } from '../../../src/store/expense.store';
@@ -32,7 +41,9 @@ export default function ExpensesScreen() {
   // Categorías disponibles ordenadas por frecuencia de uso
   const categories = useMemo(() => {
     const counts = new Map<string, number>();
-    expenses.forEach((e) => counts.set(e.category, (counts.get(e.category) ?? 0) + 1));
+    expenses.forEach((e) =>
+      counts.set(e.category, (counts.get(e.category) ?? 0) + 1),
+    );
     return Array.from(counts.entries())
       .sort((a, b) => b[1] - a[1])
       .map(([cat]) => cat);
@@ -45,7 +56,7 @@ export default function ExpensesScreen() {
         (e) =>
           e.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
           e.supplier?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          e.category.toLowerCase().includes(searchQuery.toLowerCase())
+          e.category.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
     if (categoryFilter !== 'all') {
@@ -69,34 +80,61 @@ export default function ExpensesScreen() {
     <View className="flex-1 bg-gray-50 dark:bg-gray-900">
       <ScrollView
         className="flex-1"
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor={colors.primary} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            tintColor={colors.primary}
+          />
+        }
       >
         <View className="p-4">
           {isLoading && expenses.length === 0 ? (
             <View className="py-12 items-center">
               <ActivityIndicator size="large" color={colors.primary} />
-              <Text className="mt-4 text-gray-500 dark:text-gray-400">{strings.loadingExpenses}</Text>
+              <Text className="mt-4 text-gray-500 dark:text-gray-400">
+                {strings.loadingExpenses}
+              </Text>
             </View>
           ) : error && expenses.length === 0 ? (
             <View className="py-12 items-center">
-              <Ionicons name="alert-circle-outline" size={48} color={colors.error} />
-              <Text className="text-red-500 dark:text-red-400 text-base mt-2">{error}</Text>
-              <TouchableOpacity onPress={loadExpenses} accessibilityRole="button" accessibilityLabel={strings.retry} className="mt-4">
-                <Text className="text-indigo-600 dark:text-indigo-400 font-medium">{strings.retry}</Text>
+              <Ionicons
+                name="alert-circle-outline"
+                size={48}
+                color={colors.error}
+              />
+              <Text className="text-red-500 dark:text-red-400 text-base mt-2">
+                {error}
+              </Text>
+              <TouchableOpacity
+                onPress={loadExpenses}
+                accessibilityRole="button"
+                accessibilityLabel={strings.retry}
+                className="mt-4"
+              >
+                <Text className="text-indigo-600 dark:text-indigo-400 font-medium">
+                  {strings.retry}
+                </Text>
               </TouchableOpacity>
             </View>
           ) : expenses.length === 0 ? (
             <View className="py-12 items-center">
               <Ionicons name="cart-outline" size={48} color={colors.border} />
-              <Text className="text-gray-400 dark:text-gray-500 text-base mt-2">{strings.noExpenses}</Text>
-              <Text className="text-gray-400 dark:text-gray-500 text-sm mt-1">{strings.addFirstExpense}</Text>
+              <Text className="text-gray-400 dark:text-gray-500 text-base mt-2">
+                {strings.noExpenses}
+              </Text>
+              <Text className="text-gray-400 dark:text-gray-500 text-sm mt-1">
+                {strings.addFirstExpense}
+              </Text>
               <TouchableOpacity
                 onPress={() => router.push('/inventory/expenses/new')}
                 accessibilityRole="button"
                 accessibilityLabel={strings.registerExpense}
                 className="mt-6 bg-indigo-600 px-6 py-3 rounded-lg"
               >
-                <Text className="text-white font-medium">{strings.registerExpense}</Text>
+                <Text className="text-white font-medium">
+                  {strings.registerExpense}
+                </Text>
               </TouchableOpacity>
             </View>
           ) : (
@@ -111,10 +149,24 @@ export default function ExpensesScreen() {
                   className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 pl-10 text-base text-gray-900 dark:text-gray-100"
                   placeholderTextColor={colors.textSecondary}
                 />
-                <Ionicons name="search" size={18} color={colors.textSecondary} className="absolute left-3 top-3.5" />
+                <Ionicons
+                  name="search"
+                  size={18}
+                  color={colors.textSecondary}
+                  className="absolute left-3 top-3.5"
+                />
                 {searchQuery ? (
-                  <TouchableOpacity onPress={() => setSearchQuery('')} accessibilityRole="button" accessibilityLabel={strings.cancel} className="absolute right-3 top-3">
-                    <Ionicons name="close-circle" size={20} color={colors.textSecondary} />
+                  <TouchableOpacity
+                    onPress={() => setSearchQuery('')}
+                    accessibilityRole="button"
+                    accessibilityLabel={strings.cancel}
+                    className="absolute right-3 top-3"
+                  >
+                    <Ionicons
+                      name="close-circle"
+                      size={20}
+                      color={colors.textSecondary}
+                    />
                   </TouchableOpacity>
                 ) : null}
               </View>
@@ -128,20 +180,26 @@ export default function ExpensesScreen() {
                   accessibilityLabel={strings.all}
                   className={`px-3 py-1.5 rounded-full border ${categoryFilter === 'all' ? 'bg-indigo-600 border-indigo-600' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'}`}
                 >
-                  <Text className={`text-xs font-medium ${categoryFilter === 'all' ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}>
+                  <Text
+                    className={`text-xs font-medium ${categoryFilter === 'all' ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}
+                  >
                     {strings.all}
                   </Text>
                 </TouchableOpacity>
                 {categories.map((cat) => (
                   <TouchableOpacity
                     key={cat}
-                    onPress={() => setCategoryFilter(categoryFilter === cat ? 'all' : cat)}
+                    onPress={() =>
+                      setCategoryFilter(categoryFilter === cat ? 'all' : cat)
+                    }
                     accessibilityRole="button"
                     accessibilityState={{ selected: categoryFilter === cat }}
                     accessibilityLabel={cat}
                     className={`px-3 py-1.5 rounded-full border ${categoryFilter === cat ? 'bg-indigo-600 border-indigo-600' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'}`}
                   >
-                    <Text className={`text-xs font-medium ${categoryFilter === cat ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}>
+                    <Text
+                      className={`text-xs font-medium ${categoryFilter === cat ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`}
+                    >
                       {cat}
                     </Text>
                   </TouchableOpacity>
@@ -156,8 +214,12 @@ export default function ExpensesScreen() {
                       {filtered.length} egreso{filtered.length !== 1 ? 's' : ''}
                     </Text>
                     <View className="flex-row gap-4 mt-1">
-                      <Text className="text-base font-bold text-red-600">- ${totalUSD.toFixed(2)}</Text>
-                      <Text className="text-base font-bold text-gray-700 dark:text-gray-200">Bs. {totalVES.toFixed(2)}</Text>
+                      <Text className="text-base font-bold text-red-600">
+                        - ${totalUSD.toFixed(2)}
+                      </Text>
+                      <Text className="text-base font-bold text-gray-700 dark:text-gray-200">
+                        Bs. {totalVES.toFixed(2)}
+                      </Text>
                     </View>
                   </View>
 
@@ -168,23 +230,37 @@ export default function ExpensesScreen() {
                     accessibilityLabel={strings.exportCSV}
                     className="flex-row items-center justify-center mb-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl py-2.5"
                   >
-                    <Ionicons name="download-outline" size={18} color={colors.primary} />
-                    <Text className="text-indigo-600 dark:text-indigo-400 text-sm font-medium ml-2">{strings.exportCSV}</Text>
+                    <Ionicons
+                      name="download-outline"
+                      size={18}
+                      color={colors.primary}
+                    />
+                    <Text className="text-indigo-600 dark:text-indigo-400 text-sm font-medium ml-2">
+                      {strings.exportCSV}
+                    </Text>
                   </TouchableOpacity>
                 </>
               )}
 
               {filtered.length === 0 ? (
                 <View className="py-8 items-center">
-                  <Ionicons name="search-outline" size={36} color={colors.border} />
-                  <Text className="text-gray-400 text-base mt-2">{strings.noResults}</Text>
+                  <Ionicons
+                    name="search-outline"
+                    size={36}
+                    color={colors.border}
+                  />
+                  <Text className="text-gray-400 text-base mt-2">
+                    {strings.noResults}
+                  </Text>
                 </View>
               ) : (
                 filtered.map((expense) => (
                   <ExpenseItem
                     key={expense.id}
                     expense={expense}
-                    onPress={() => router.push(`/inventory/expenses/${expense.id}`)}
+                    onPress={() =>
+                      router.push(`/inventory/expenses/${expense.id}`)
+                    }
                   />
                 ))
               )}

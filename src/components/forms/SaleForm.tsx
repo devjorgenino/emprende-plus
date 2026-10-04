@@ -22,7 +22,13 @@ interface SaleFormProps {
   isSubmitting: boolean;
 }
 
-export function SaleForm({ totalUSD, totalVES, onConfirm, onCancel, isSubmitting }: SaleFormProps) {
+export function SaleForm({
+  totalUSD,
+  totalVES,
+  onConfirm,
+  onCancel,
+  isSubmitting,
+}: SaleFormProps) {
   const [selected, setSelected] = useState<PaymentMethod | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -36,26 +42,38 @@ export function SaleForm({ totalUSD, totalVES, onConfirm, onCancel, isSubmitting
 
   return (
     <View className="p-4">
-      <Text className="text-lg font-bold text-gray-900 mb-2">{strings.registerSale}</Text>
+      <Text className="text-lg font-bold text-gray-900 mb-2">
+        {strings.registerSale}
+      </Text>
       <Text className="text-sm text-gray-500 mb-4">
-        {strings.confirmSaleAmount} ${totalUSD.toFixed(2)} (Bs. {totalVES.toFixed(2)})
+        {strings.confirmSaleAmount} ${totalUSD.toFixed(2)} (Bs.{' '}
+        {totalVES.toFixed(2)})
       </Text>
 
-      <Text className="text-sm font-medium text-gray-700 mb-3">{strings.paymentMethod}</Text>
+      <Text className="text-sm font-medium text-gray-700 mb-3">
+        {strings.paymentMethod}
+      </Text>
       <View className="gap-2 mb-6">
         {PAYMENT_METHODS.map((method) => (
           <TouchableOpacity
             key={method.key}
-            onPress={() => { setSelected(method.key); setError(null); }}
+            onPress={() => {
+              setSelected(method.key);
+              setError(null);
+            }}
             className={`p-3 rounded-lg border ${
               selected === method.key
                 ? 'bg-indigo-50 border-indigo-500'
                 : 'bg-white border-gray-200'
             }`}
           >
-            <Text className={`text-base ${
-              selected === method.key ? 'text-indigo-700 font-medium' : 'text-gray-700'
-            }`}>
+            <Text
+              className={`text-base ${
+                selected === method.key
+                  ? 'text-indigo-700 font-medium'
+                  : 'text-gray-700'
+              }`}
+            >
               {method.label}
             </Text>
           </TouchableOpacity>
@@ -69,7 +87,12 @@ export function SaleForm({ totalUSD, totalVES, onConfirm, onCancel, isSubmitting
           <Button title={strings.cancel} onPress={onCancel} variant="ghost" />
         </View>
         <View className="flex-1">
-          <Button title={strings.confirmSale} onPress={handleConfirm} disabled={isSubmitting} variant="primary" />
+          <Button
+            title={strings.confirmSale}
+            onPress={handleConfirm}
+            disabled={isSubmitting}
+            variant="primary"
+          />
         </View>
       </View>
     </View>
